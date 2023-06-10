@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -18,17 +16,22 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## 1. Branching Strategy
 
-To learn more about Next.js, take a look at the following resources:
+* Follow a branching strategy like GitFlow or GitHub Flow for effective collaboration.
+* Create feature branches for developing new features or fixing bugs.
+* Name branches descriptively, using a consistent naming convention (e.g., feature/<branch-name> or bugfix/<branch-name>).
+## 2. Pull Requests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Create a pull request (PR) for each significant change you want to merge into the main branch.
+* Include a clear title and description in your PR, explaining the purpose and changes made.
+* Assign appropriate reviewers to the PR for code review.
+* Respond to review comments promptly and make necessary changes.
+* Use the "Squash and Merge" or "Rebase and Merge" options to maintain a clean commit history.
+  
+## 3. Code Style and Quality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* Follow consistent code style guidelines agreed upon by the team (e.g., indentations, variable naming conventions).
+* Utilize linters and code formatters (e.g., ESLint, Prettier) to ensure code quality and consistency.
+* Write self-explanatory code and include comments for complex logic or important information.
+* Write meaningful commit messages that summarize the changes made.
