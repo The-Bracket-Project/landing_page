@@ -20,7 +20,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 * Follow a branching strategy like GitFlow or GitHub Flow for effective collaboration.
 * Create feature branches for developing new features or fixing bugs.
-* Name branches descriptively, using a consistent naming convention (e.g., feature/<branch-name> or bugfix/<branch-name>).
+* Name branches descriptively, using a consistent naming convention (e.g., feature/\<branch-name\> or bugfix/\<branch-name\>).
 ## 2. Pull Requests
 
 * Create a pull request (PR) for each significant change you want to merge into the main branch.
