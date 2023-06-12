@@ -32,7 +32,7 @@ export default function Home() {
           </div> 
         </div>
       </div>
-      <div className="flex justify-center lg:justify-start xl:ml-52 lg:ml-16 lg:mt-20  bg-white py-5 h-1/6">
+      <div className="flex justify-center lg:justify-start xl:ml-52 lg:ml-16 lg:mt-10  bg-white py-5 h-1/6">
         <div className='lg:mx-8 mx-2 self-center' >
           <Image  src={banner1} alt="Picture of the author" width={150}/>
         </div>
