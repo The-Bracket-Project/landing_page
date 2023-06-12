@@ -1,5 +1,4 @@
 import Image from 'next/image'
-//import and image from public folder
 import phone from '/public/iphone-mockup2.png'
 import banner1 from '/public/banner1.png'
 import banner2 from '/public/banner2.png'
@@ -10,8 +9,8 @@ export default function Home() {
   return (
     <main className="h-screen w-screen bg-white">
       <div className="h-12 w-full bg-white"></div>
-      <div className="h-2/3 w-full bg-[#480C3B] flex px-52">
-        <div className="h-full w-3/5 bg-[#480C3B] flex flex-col justify-center mx-5">
+      <div className="lg:h-2/3 h-full w-full bg-[#480C3B] flex lg:px-52 px-10">
+        <div className="h-full w-3/5 bg-[#480C3B] flex flex-col justify-center mx-5 lg:mr-20">
           <h1 className="text-white text-8xl font-bold tracking-tighter"><span className='text-6xl font-bold'>The</span> <span className='font-bold'>Bracket.</span></h1>
           <div className='mt-16'>
             <p className="text-white text-xl">Connect with other college students in <span className='font-bold'>new</span> and <span className='font-bold'>exciting</span> ways on our social platform</p>
@@ -27,8 +26,8 @@ export default function Home() {
         </div>
       </div>
         </div>
-        <div className="h-5/6 w-2/5 bg-[#480C3B] flex flex-col justify-center">
-          <div className='mt-60 ml-24'>
+        <div className="h-full w-2/5 bg-[#480C3B] lg:flex hidden flex-col justify-center">
+          <div className='mt-60 mx-auto'>
             <Image src={phone} alt="Picture of the author" width={310}/>
           </div> 
         </div>

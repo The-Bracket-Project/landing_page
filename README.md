@@ -27,7 +27,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 * Include a clear title and description in your PR, explaining the purpose and changes made.
 * Assign appropriate reviewers to the PR for code review.
 * Respond to review comments promptly and make necessary changes.
-* Use the "Squash and Merge" or "Rebase and Merge" options to maintain a clean commit history.
+* Use ``` git push --set-upstream origin <branch name>``` to create a pull request.
   
 ## 3. Code Style and Quality
 
