@@ -28,12 +28,12 @@ export default function Home() {
       </div>
         </div>
         <div className="h-5/6 w-2/5 bg-[#480C3B] flex flex-col justify-center">
-          <div className='mt-60 ml-24te'>
+          <div className='mt-60 ml-24'>
             <Image src={phone} alt="Picture of the author" width={310}/>
           </div> 
         </div>
       </div>
-      <div className="flex justify-start mt-20 ml-24">
+      <div className="flex justify-start mt-20 ml-52">
         <div className='mr-32'>
           <Image src={banner1} alt="Picture of the author" width={150}/>
         </div>
