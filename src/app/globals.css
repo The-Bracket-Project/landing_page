@@ -31,10 +31,13 @@ p {
 }
 
 .styles.button {
-  background-color: #fff;
-  transition: background-color 0.3s ease;
+  /* Add your button styles here */
 }
 
-.styles.button:hover {
-  background-color: #f0f0f0;
+.button-image {
+  transition: filter 0.2s ease; /* Add transition for a smooth effect */
+}
+
+.button-image:hover {
+  filter: brightness(80%); /* Adjust the brightness percentage as desired */
 }

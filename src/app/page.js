@@ -20,15 +20,17 @@ export default function Home() {
           <div className="ml-4">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNnr_NntS9ywV8JF3ZIZc7oya40HtsVLlQ_LSxNGNQkILHzQ/viewform" target="_blank" rel="noopener noreferrer">
               <button className="styles.button">
-                <Image src={join} alt="Join Now" width={105} height={105} />
+                <div className="button-image">
+                  <Image src={join} alt="Join Now" width={105} height={105} />
+                </div>
               </button>
             </a>
           </div>
         </div>
       </div>
         <div className=" w-2/5 bg-[#480C3B] lg:flex hidden flex-col justify-center">
-          <div className='mt-60 mx-auto'>
-            <Image src={phone} alt="Picture of the author" width={260}/>
+          <div className='mt-48 mx-auto'>
+            <Image src={phone} alt="Picture of the author" width={295}/>
           </div> 
         </div>
       </div>
