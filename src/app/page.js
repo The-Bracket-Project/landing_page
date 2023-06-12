@@ -32,11 +32,11 @@ export default function Home() {
           </div> 
         </div>
       </div>
-      <div className="flex justify-start mt-20 ml-52">
-        <div className='mr-32'>
+      <div className="flex justify-center lg:justify-start lg:mt-20 lg:ml-52 bg-white py-5 px-5">
+        <div className='lg:mr-32 mx-3'>
           <Image src={banner1} alt="Picture of the author" width={150}/>
         </div>
-        <div className='mr-32'>
+        <div className='lg:mr-32 mx-3'>
           <Image src={banner2} alt="Picture of the author" width={150}/>
         </div>
         <div>
