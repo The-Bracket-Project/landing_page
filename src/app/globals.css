@@ -25,3 +25,16 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+p {
+  font-family: "Inter", sans-serif;
+}
+
+.styles.button {
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.styles.button:hover {
+  background-color: #f0f0f0;
+}
