@@ -32,14 +32,14 @@ export default function Home() {
           </div> 
         </div>
       </div>
-      <div className="flex justify-center lg:justify-start lg:mt-20 lg:ml-52 bg-white py-5 px-5">
-        <div className='lg:mr-32 mx-3'>
+      <div className="flex justify-center lg:justify-start xl:ml-52 lg:ml-16 lg:mt-20  bg-white py-5">
+        <div className='lg:mx-8 mx-4'>
           <Image src={banner1} alt="Picture of the author" width={150}/>
         </div>
-        <div className='lg:mr-32 mx-3'>
+        <div className='lg:mx-8 mx-4'>
           <Image src={banner2} alt="Picture of the author" width={150}/>
         </div>
-        <div>
+        <div className='lg:mx-8 mx-4'>
           <Image src={banner3} alt="Picture of the author" width={150}/>
         </div>
       </div>
