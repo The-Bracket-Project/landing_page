@@ -26,9 +26,9 @@ export default function Home() {
           </div>
         </div>
       </div>
-        <div className="h-full w-2/5 bg-[#480C3B] lg:flex hidden flex-col justify-center">
+        <div className=" w-2/5 bg-[#480C3B] lg:flex hidden flex-col justify-center">
           <div className='mt-60 mx-auto'>
-            <Image src={phone} alt="Picture of the author" width={310}/>
+            <Image src={phone} alt="Picture of the author" width={260}/>
           </div> 
         </div>
       </div>
