@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import phone from '/public/iphone-mockup2.png'
+import phone from '/public/iPhoneMockup.png'
 import banner1 from '/public/banner1.png'
 import banner2 from '/public/banner2.png'
 import banner3 from '/public/banner3.png'
