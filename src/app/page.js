@@ -13,7 +13,7 @@ export default function Home() {
           <div className="h-full  w-full lg:w-3/5 bg-[#480C3B] flex flex-col justify-center mx-5 lg:mr-20">
             <h1 className="text-white text-7xl font-bold tracking-tighter"><span className='text-5xl font-bold'>The</span> <span className='font-bold'>Bracket.</span></h1>
             <div className='mt-16'>
-              <p className="text-white text-xl">Connect with other college students in <span className='font-bold'>new</span> and <span className='font-bold'>exciting</span> ways on our social platform</p>
+              <p className="text-white text-xl">Connect with other college students in <span className='font-bold'>new</span> and <span className='font-bold'>exciting</span> ways.</p>
             </div>
             <div className='mt-16 flex items-center'>
           <p className="text-white text-xl font-bold">Interested in joining the team?</p>
