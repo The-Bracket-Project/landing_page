@@ -27,7 +27,9 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="https://forms.gle/3YfgcqaQUurFfvaX6">Become a tester</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPasswordModal()">Client Portal</a>
+                    </li>                                                                
                     <li class="nav-item"><a class="nav-link" href="https://forms.gle/n6qKYfCU6kncSssL7">Join us</a></li>
                 </ul>
             </div>
@@ -104,6 +106,83 @@
             <p class="m-0 text-center text-white small">Copyright &copy; The Bracket Project 2024</p>
         </div>
     </footer>
+
+    
+    <div id="passwordModal" class="modal-overlay d-none">
+        <div class="modal-box position-relative">
+          <button class="btn-close-modal" onclick="hidePasswordModal()">×</button>
+          <img src="assets/logo-HQ-removebg-preview.png" alt="Logo" class="mb-3" width="60">
+          <h3 class="mb-3">Enter Client Password</h3>
+          <input type="password" id="modalPasswordInput" class="form-control mb-3" placeholder="Password">
+          <button class="btn btn-primary w-100" onclick="validateModalPassword()">Enter</button>
+          <p id="modalError" class="text-danger mt-2" style="display: none;">Incorrect password. Please try again.</p>
+        </div>
+      </div>
+      
+      <style>
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 1050;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(255, 255, 255, 0.2); /* very subtle white tint */
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      
+        .modal-box {
+          background: rgba(255, 255, 255, 0.92);
+          color: #111;
+          padding: 2rem;
+          border-radius: 1rem;
+          width: 90%;
+          max-width: 400px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          position: relative;
+        }
+      
+        .btn-close-modal {
+          position: absolute;
+          top: 0.5rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #555;
+          cursor: pointer;
+        }
+      
+        .btn-close-modal:hover {
+          color: #111;
+        }
+      
+        .d-none {
+          display: none !important;
+        }
+      
+        #modalError {
+          transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+      </style>
+  
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
