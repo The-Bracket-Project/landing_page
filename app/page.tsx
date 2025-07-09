@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Image from "next/image";
 
 const images = [ "/loneliness.jpg", "/cash.jpg", "/earth.jpg" ]
 
@@ -37,13 +38,13 @@ export default function Home() {
                       </div>
                       </div>
                     <div className='w-full h-full rounded-3xl overflow-hidden'>
-                      <img src={images[index]} alt={images[index].slice(0, -4)} className="w-full h-full object-cover" />
+                      <Image src={images[index]} alt={images[index].slice(0, -4)} width={800} height={600} className="w-full h-full object-cover" />
                     </div>
                   </>
                 ) : (
                   <>
                     <div className='w-full h-full rounded-3xl overflow-hidden'>
-                      <img src={images[index]} alt={images[index].slice(0, -4)} className="w-full h-full object-cover" />
+                      <Image src={images[index]} alt={images[index].slice(0, -4)} width={800} height={600} className="w-full h-full object-cover" />
                     </div>
                     <div className="w-full h-full flex flex-col justify-center">
                       <div className="px-10 flex flex-col gap-4 justify-center items-start">
@@ -59,9 +60,9 @@ export default function Home() {
         }
       </div>
 
-      <div className="flex flex-col h-100 w-full border-t border-gray-200 items-center justify-center gap-5"> 
+      <div className="flex flex-col h-140 w-full border-t border-gray-200 items-center justify-center gap-5"> 
         <div className="w-4/5 mx-auto justify-center items-center"><h1 className="text-center text-5xl font-bold">Whatever You Are Connecting, We Make It Compatible.</h1></div>
-        <div className="max-w-100 mx-auto justify-center items-center"><p className="text-center text-3xl">Compatibility is not an afterthought anymore. <span className="font-bold text-3xl font-extrabold">We're Building It</span></p></div>
+        <div className="max-w-100 mx-auto justify-center items-center"><p className="text-center text-3xl">Compatibility is not an afterthought anymore. <span className="font-bold text-3xl font-extrabold">We&apos;re Building It</span></p></div>
       </div>
 
       <Footer />

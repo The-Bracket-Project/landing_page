@@ -1,10 +1,12 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="bg-black text-white py-12 justify-between border-t border-gray-800">
         <div className="flex flex-row items-center justify-between">
 
           <div>
-            <img src="/logo.PNG" alt="Bracket AI" className="h-16" />
+            <Image src="/logo.PNG" alt="Bracket AI" width={64} height={64} className="h-16" />
           </div>
 
           {/* Contact Column */}
