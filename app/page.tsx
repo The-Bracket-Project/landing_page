@@ -2,14 +2,12 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Image from "next/image";
 
-const images = [ "/loneliness.jpg", "/cash.jpg", "/earth.jpg" ]
-
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center pt-10 pb-15 px-10">
-        <p className={`text-4xl md:text-5xl lg:text-7xl text-center font-semibold poppins`} >The AI Engine For Human Compatibility</p>
+      <div className="flex flex-col items-center justify-center py-20 px-10">
+        <p className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins`} >The AI Engine For Human Compatibility</p>
       </div>
 
       <div className="h-130 md:h-140 lg:h-140 flex flex-col items-center justify-center mb-15">
@@ -24,40 +22,51 @@ export default function Home() {
         </video>
       </div>
 
-      <div className="flex gap-1 flex-col items-center justify-center pb-25">
-        {
-          Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="w-full  md:h-110 lg:h-110 md:w-220 lg:w-220 w-full">
-              <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center h-full">
-                {index % 2 === 0 ? (
-                  <>
-                    <div className="w-full h-full flex flex-col justify-center">
-                      <div className="px-10 flex flex-col gap-4 justify-center items-start">
-                        <p className="text-3xl font-bold">A Universal (And Worsening) Problem</p>
-                        <p className="text-xl">Loneliness is a universal problem that affects millions of people around the world. It is a complex issue that can be caused by a variety of factors, including social isolation, lack of meaningful relationships, and a sense of disconnection from others.</p>
-                      </div>
-                      </div>
-                    <div className='w-full h-full rounded-3xl overflow-hidden'>
-                      <Image src={images[index]} alt={images[index].slice(0, -4)} width={800} height={600} className="w-full h-full object-cover" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className='w-full h-full rounded-3xl overflow-hidden'>
-                      <Image src={images[index]} alt={images[index].slice(0, -4)} width={800} height={600} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="w-full h-full flex flex-col justify-center">
-                      <div className="px-10 flex flex-col gap-4 justify-center items-start">
-                        <p className="text-3xl font-bold">A Universal (And Worsening) Problem</p>
-                        <p className="text-xl">Loneliness is a universal problem that affects millions of people around the world. It is a complex issue that can be caused by a variety of factors, including social isolation, lack of meaningful relationships, and a sense of disconnection from others.</p>
-                      </div>
-                    </div>
-                  </>
-                )}
+      <div className="flex gap-10 md:gap-1 lg:gap-1 flex-col items-center justify-center pb-25">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
+            <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
+              <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <p className="text-2xl md:text-3xl font-bold">A Universal (And Worsening) Problem</p>
+                <p className="text-lg md:text-xl"><span className="font-semibold text-3xl md:text-4xl">$1.4 B</span> was spent by U.S consumers on social discovery apps in 2022, inlcuding platforms aimed at meeting new people and finding events (Sensor Tower, 2023)</p>
+                <p className="text-lg md:text-xl"><span className="font-semibold text-3xl md:text-4xl">80%</span> of Gen Z report feeling loneliness compared to 45% of Baby Boomers (Harlow, 2021)</p>
               </div>
             </div>
-          ))
-        }
+            <div className='w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2'>
+              <Image src="/loneliness.jpg" alt="loneliness" width={800} height={600} className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
+            <div className='w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1'>
+              <Image src="/cash.jpg" alt="cash" width={800} height={600} className="w-full h-full object-cover" />
+            </div>
+            <div className="w-full md:w-1/2 flex flex-col justify-center order-2">
+              <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <p className="text-2xl md:text-3xl font-bold">How It Impacts Businesses</p>
+                <p className="text-lg md:text-xl"><span className="font-semibold text-3xl md:text-4xl">$1 T</span> voluntary employee turnover costs U.S business annually, approximately (Gallup, 2019)</p>
+                <p className="text-lg md:text-xl"><span className="font-semibold text-3xl md:text-4xl">53%</span> of employees would trade compensation for meaningful workplace relationships (BetterUp Labs, 2022)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
+            <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
+              <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <p className="text-2xl md:text-3xl font-bold">A Solution That Works</p>
+                <p className="text-lg md:text-xl">Blending established psychological insight and machine learning to create a <span className="font-bold text-2xl">smarter</span>, more <span className="font-bold text-2xl">empathetic</span> approach to compatibility.</p>
+                <p className="text-xl md:text-2xl lg:text-3xl font-medium">…with our model achieving <span className="font-bold text-3xl md:text-4xl">83.9%</span> accuracy and <span className="font-bold text-3xl md:text-4xl">improving every day!</span></p>
+              </div>
+            </div>
+            <div className='w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2'>
+              <Image src="/earth.jpg" alt="earth" width={800} height={600} className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col h-140 w-full border-t border-gray-200 items-center justify-center gap-5"> 
