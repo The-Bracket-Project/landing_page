@@ -58,7 +58,7 @@ export default function Home() {
             <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
               <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
                 <p className="text-2xl md:text-3xl font-bold">A Solution That Works</p>
-                <p className="text-lg md:text-xl">Blending established psychological insight and machine learning to create a <span className="font-bold text-2xl">smarter</span>, more <span className="font-bold text-2xl">empathetic</span> approach to compatibility.</p>
+                <p className="text-lg md:text-xl">We blend established psychological insights and machine learning to create a <span className="font-bold text-2xl">smarter</span>, more <span className="font-bold text-2xl">empathetic</span> approach to compatibility.</p>
                 <p className="text-xl md:text-2xl lg:text-3xl font-medium">…with our model already achieving <span className="font-bold text-3xl md:text-4xl">83.9%</span> accuracy and <span className="font-bold text-3xl md:text-4xl">improving every day!</span></p>
               </div>
             </div>
