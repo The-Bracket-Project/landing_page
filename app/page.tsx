@@ -12,8 +12,8 @@ export default function Home() {
           "linear-gradient(to bottom, #ffffff 0%, #205563 5%, #000000 8%, #000000 30%, #8C7A48 50%, #7F8F42 70%, #000000 90%)",
       }}
     >
+      <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <Navbar />
         <div className="flex flex-col items-center justify-center py-20 px-10">
           <p
             className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins`}

@@ -12,11 +12,20 @@ const poppins = Poppins({
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 100); // Trigger sticky behavior after 100px scroll
+      const documentHeight = document.documentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress percentage
+      const totalScrollable = documentHeight - windowHeight;
+      const progress = totalScrollable > 0 ? (scrollTop / totalScrollable) * 100 : 0;
+      
+      setIsScrolled(scrollTop > 100);
+      setScrollProgress(Math.min(progress, 100)); // Cap at 100%
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -28,12 +37,12 @@ function Navbar() {
       {/* Placeholder to prevent layout jump when navbar becomes fixed */}
       {isScrolled && (
         <div className="px-4 md:px-10 lg:px-10 py-3">
-          <div className="h-16"></div>
+          <div className="h-13"></div>
         </div>
       )}
       
       <div 
-        className={`px-4 md:px-10 lg:px-10 py-3 transition-all duration-300 ease-in-out ${
+        className={`px-4 md:px-10 lg:px-10 py-1 transition-all duration-300 ease-in-out ${
           isScrolled 
             ? "fixed top-0 left-0 right-0 z-50 shadow-lg transform translate-y-0" 
             : "relative"
@@ -90,6 +99,24 @@ function Navbar() {
             </Link>
           </div>
         </div>
+        
+        {/* Scroll Progress Bar */}
+        {isScrolled && (
+        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-200/20">
+          <div 
+            className="h-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transition-all duration-300 ease-out shadow-sm"
+            style={{ 
+              width: `${scrollProgress}%`,
+              boxShadow: '0 0 8px rgba(255, 215, 0, 0.6)'
+            }}
+            role="progressbar"
+            aria-valuenow={Math.round(scrollProgress)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Page scroll progress: ${Math.round(scrollProgress)}%`}
+          />
+        </div>
+        )}
       </div>
     </>
   );

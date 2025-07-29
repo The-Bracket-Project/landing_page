@@ -19,12 +19,12 @@ export default function Footer() {
         <div className="text-end">
           <ul className="space-y-2">
             <li>
-              <Link href="/not-found" className="hover:text-gray-300">
+              <Link href="/" className="hover:text-gray-300">
                 About Us
               </Link>
             </li>
             <li>
-              <a href="mailto:hello@bracket.ai" className="hover:text-gray-300">
+              <a href="/contactus" className="hover:text-gray-300">
                 Contact
               </a>
             </li>
