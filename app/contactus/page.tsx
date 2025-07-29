@@ -40,7 +40,7 @@ export default function ContactUs() {
         setSubmitStatus('error');
         setSubmitMessage(result.error || 'Something went wrong. Please try again.');
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
       setSubmitMessage('Network error. Please check your connection and try again.');
     } finally {
