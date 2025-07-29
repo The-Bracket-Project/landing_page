@@ -5,13 +5,11 @@ import Footer from "./../components/Footer";
 
 export default function ContactUs() {
   const [isHovering, setIsHovering] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
   const [submitMessage, setSubmitMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setSubmitStatus(null);
 
     const form = e.target as HTMLFormElement;
@@ -46,7 +44,6 @@ export default function ContactUs() {
       setSubmitStatus('error');
       setSubmitMessage('Network error. Please check your connection and try again.');
     } finally {
-      setIsSubmitting(false);
     }
   };
   return (
