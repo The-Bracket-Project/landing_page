@@ -24,12 +24,6 @@ export default function ResultsSummaryStep({
         </div>
       </div>
 
-      {/* No navigation buttons - assessment is complete */}
-      <div className="text-center">
-        <p className="text-sm text-black/60">
-          Assessment Complete
-        </p>
-      </div>
     </div>
   );
 } 

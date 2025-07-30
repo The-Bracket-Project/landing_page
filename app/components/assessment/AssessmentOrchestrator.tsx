@@ -123,11 +123,8 @@ export default function AssessmentOrchestrator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
-          Personality Assessment
-        </h1>
-        <h2 className="text-xl md:text-2xl text-black/80">
+      <div className="text-center mb-5">
+        <h2 className="text-2xl md:text-3xl font-semibold text-black">
           {getStepTitle()}
         </h2>
       </div>

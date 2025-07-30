@@ -17,16 +17,16 @@ export default function PersonalityAssessment() {
                     {/* Introduction Section */}
                     <div className="text-center space-y-6">
                         <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
-                            Personality Assessment
+                            Try Our Personality Assessment
                         </h1>
                         <div className="space-y-4 text-black/80">
                             <p className="text-lg md:text-xl">
                                 Discover your unique personality traits and gain insights into your behavioral patterns.
                             </p>
                             <p className="text-base md:text-lg">
-                                This comprehensive assessment will help you understand your strengths, preferences, 
-                                and how you interact with the world around you. The test takes approximately 10-15 minutes 
-                                to complete and consists of carefully crafted questions designed to reveal your personality type.
+                                This modern personality assessment goes beyond traditional methods to provide deeper insights 
+                                into who you are. Using advanced techniques, we analyze your unique patterns and preferences 
+                                to create a more accurate and comprehensive personality profile.
                             </p>
                             <p className="text-sm md:text-base text-black/70">
                                 Answer honestly for the most accurate results. There are no right or wrong answers.
@@ -69,14 +69,14 @@ export default function PersonalityAssessment() {
                                 <span className="text-xl">⚡</span>
                             </div>
                             <h3 className="font-semibold text-black">Quick & Easy</h3>
-                            <p className="text-sm text-black/70">Takes only 10-15 minutes</p>
+                            <p className="text-sm text-black/70">Takes only 3-6 minutes</p>
                         </div>
                         <div className="text-center space-y-2">
                             <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center mx-auto">
-                                <span className="text-xl">📊</span>
+                                <span className="text-xl">🔬</span>
                             </div>
-                            <h3 className="font-semibold text-black">Detailed Results</h3>
-                            <p className="text-sm text-black/70">Personalized personality profile</p>
+                            <h3 className="font-semibold text-black">Contribute to Research</h3>
+                            <p className="text-sm text-black/70">Anonymous data helps advance understanding</p>
                         </div>
                     </div>
                 </>

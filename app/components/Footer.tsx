@@ -11,7 +11,6 @@ export default function Footer() {
             alt="Bracket AI"
             width={64}
             height={64}
-            className="h-16"
           />
         </div>
 
