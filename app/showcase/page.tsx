@@ -13,7 +13,7 @@ export default function Showcase() {
         >
             <Navbar />
             <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 justify-center">
-                <div className="flex flex-col items-center px-4 pt-20 min-h-screen">
+                <div className="flex flex-col items-center px-4 pt-20 max-h-screen">
                     <div 
                         className="rounded-3xl p-8 max-w-4xl w-full mx-auto min-h-140"
                         style={{
@@ -25,7 +25,7 @@ export default function Showcase() {
                     </div>
                     
                     {/* Warning text */}
-                    <p className="text-center text-sm text-white/70 mt-2">
+                    <p className="text-center text-sm text-white/70 mt-2 mb-10">
                         ⚠️ Please don't refresh the page during the assessment - your progress will be lost
                     </p>
                 </div>
