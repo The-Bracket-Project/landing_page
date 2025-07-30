@@ -92,7 +92,7 @@ function Navbar() {
               <h1>Contact</h1>
             </Link>
             <Link
-              href="/contactus"
+              href="https://dashboard.thebracket.io/"
               className="hover:opacity-70 transition-all duration-200 hover:transform hover:scale-105"
             >
               <h1>Dashboard</h1>
