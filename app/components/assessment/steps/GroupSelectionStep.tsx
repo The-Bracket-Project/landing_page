@@ -2,10 +2,10 @@ import { StepProps } from '../types';
 
 export default function GroupSelectionStep({ 
   onNext, 
-  onUpdateData, 
+  /* onUpdateData, 
   onApiCall, 
   assessmentState, 
-  isLastStep 
+  isLastStep */
 }: StepProps) {
   return (
     <div className="text-center space-y-6">

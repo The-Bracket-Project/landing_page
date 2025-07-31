@@ -26,7 +26,7 @@ export default function Showcase() {
                     
                     {/* Warning text */}
                     <p className="text-center text-sm text-white/70 mt-2 mb-10">
-                        ⚠️ Please don't refresh the page during the assessment - your progress will be lost
+                        ⚠️ Please don&apos;t refresh the page during the assessment - your progress will be lost
                     </p>
                 </div>
                 

@@ -1,11 +1,11 @@
 import { StepProps } from '../types';
 
 export default function ResultsSummaryStep({ 
-  onNext, 
+  /* onNext, 
   onUpdateData, 
   onApiCall, 
   assessmentState, 
-  isLastStep 
+  isLastStep */
 }: StepProps) {
   return (
     <div className="text-center space-y-6">

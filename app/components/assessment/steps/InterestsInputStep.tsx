@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, KeyboardEvent } from 'react';
-import { StepProps } from '../types';
+import { InterestsApiResponse, StepProps } from '../types';
 
 // Predefined interests for quick selection
 const predefinedInterests = [
@@ -26,7 +26,7 @@ export default function InterestsInputStep({
   onUpdateData, 
   onApiCall, 
   assessmentState, 
-  isLastStep 
+  /* isLastStep */
 }: StepProps) {
   const [interests, setInterests] = useState<string[]>(assessmentState.interests.interests);
   const [inputValue, setInputValue] = useState('');
@@ -71,8 +71,9 @@ export default function InterestsInputStep({
 
     try {
       // Make API call using the orchestrator's API handler
-      const result: any = await onApiCall(async () => {
-        const response = await fetch('/api/interests', {
+      await onApiCall(async () => {
+        const baseURL = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(baseURL + '/api/get-groups-showcase/v1', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -84,15 +85,17 @@ export default function InterestsInputStep({
           throw new Error('Failed to save interests');
         }
         
-        return await response.json();
+        const result: InterestsApiResponse = await response.json();
+        
+        // Store the available groups from API response for next step
+        if (result?.groups) {
+          onUpdateData({ 
+            availableGroups: result.groups.flat().map(group => group.description)
+          });
+        }
+        
+        return result;
       }, 'interestsApiStatus');
-
-      // Store the available groups from API response for next step
-      if (result?.data?.availableGroups) {
-        onUpdateData({ 
-          availableGroups: result.data.availableGroups 
-        });
-      }
 
       // Move to next step
       onNext();

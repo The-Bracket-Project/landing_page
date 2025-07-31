@@ -60,7 +60,21 @@ export interface AssessmentState {
 export interface StepProps {
   onNext: () => void;
   onUpdateData: (data: Partial<AssessmentState>) => void;
-  onApiCall: (apiCall: () => Promise<any>, statusKey: keyof AssessmentState) => void;
+  onApiCall: <T>(apiCall: () => Promise<T>, statusKey: keyof AssessmentState) => Promise<T>;
   assessmentState: AssessmentState;
   isLastStep: boolean;
 } 
+
+export interface InterestsGroups {
+  description: string;
+  target_ocean: string;
+  ocean_score: string;
+}
+
+export interface InterestsApiRequest {
+  interests: string[];
+}
+
+export interface InterestsApiResponse {
+  groups: InterestsGroups[][];
+}

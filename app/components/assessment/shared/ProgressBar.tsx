@@ -6,11 +6,11 @@ interface ProgressBarProps {
   allSteps: AssessmentStep[];
 }
 
-export default function ProgressBar({ currentStep, completedSteps, allSteps }: ProgressBarProps) {
+export default function ProgressBar({ currentStep, /* completedSteps, */ allSteps }: ProgressBarProps) {
   const currentIndex = allSteps.indexOf(currentStep);
   const progress = ((currentIndex + 1) / allSteps.length) * 100;
 
-  const getStepLabel = (step: AssessmentStep): string => {
+  /* const getStepLabel = (step: AssessmentStep): string => {
     switch (step) {
       case 'interests-input':
         return 'Interests';
@@ -25,7 +25,7 @@ export default function ProgressBar({ currentStep, completedSteps, allSteps }: P
       default:
         return step;
     }
-  };
+  }; */
 
   return (
     <div className="w-full">

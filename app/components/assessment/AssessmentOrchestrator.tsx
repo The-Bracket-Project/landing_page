@@ -34,10 +34,10 @@ export default function AssessmentOrchestrator() {
   ];
 
   // Generic API call handler
-  const handleApiCall = async (
-    apiCall: () => Promise<any>, 
+  async function handleApiCall<T>(
+    apiCall: () => Promise<T>, 
     statusKey: keyof AssessmentState
-  ) => {
+  ): Promise<T> {
     setAssessmentState(prev => ({
       ...prev,
       [statusKey]: { loading: true, error: null, success: false }
@@ -50,18 +50,19 @@ export default function AssessmentOrchestrator() {
         [statusKey]: { loading: false, error: null, success: true }
       }));
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       setAssessmentState(prev => ({
         ...prev,
         [statusKey]: { 
           loading: false, 
-          error: error.message, 
+          error: errorMessage, 
           success: false 
         }
       }));
       throw error;
     }
-  };
+  }
 
   const updateAssessmentData = (data: Partial<AssessmentState>) => {
     setAssessmentState(prev => ({ ...prev, ...data }));
