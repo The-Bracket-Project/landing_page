@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, KeyboardEvent } from 'react';
-import { InterestsApiResponse, StepProps } from '../types';
+import { InterestsApiResponse, InterestsApiRequest, StepProps } from '../types';
+import ContinueButton from '../shared/ContinueButton';
+import { apiCall } from '../../../utils/api';
 
 // Predefined interests for quick selection
 const predefinedInterests = [
@@ -31,6 +33,7 @@ export default function InterestsInputStep({
   const [interests, setInterests] = useState<string[]>(assessmentState.interests.interests);
   const [inputValue, setInputValue] = useState('');
 
+/* The three functions below used to handle updating AssessmentOrchestrator.tsx state */
   const handleAddPredefined = (interest: string) => {
     if (!interests.includes(interest)) {
       const newInterests = [...interests, interest];
@@ -41,7 +44,7 @@ export default function InterestsInputStep({
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleAddTyped = (e: KeyboardEvent<HTMLInputElement>) => {
     const val: string = toTitleCase(inputValue.trim());
     if (e.key === 'Enter' && val && !assessmentState.interestsApiStatus.loading) {
       e.preventDefault();
@@ -72,23 +75,16 @@ export default function InterestsInputStep({
     try {
       // Make API call using the orchestrator's API handler
       await onApiCall(async () => {
-        const baseURL = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(baseURL + '/api/get-groups-showcase/v1', {
+        const requestData: InterestsApiRequest = { interests };
+        
+        const result: InterestsApiResponse = await apiCall('/api/get-groups-showcase/v1', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ interests }),
+          body: JSON.stringify(requestData),
         });
-        
-        if (!response.ok) {
-          throw new Error('Failed to save interests');
-        }
-        
-        const result: InterestsApiResponse = await response.json();
         
         // Store the available groups from API response for next step
         if (result?.groups) {
+          console.log('result.groups', result.groups);
           onUpdateData({ 
             availableGroups: result.groups.flat().map(group => group.description)
           });
@@ -134,10 +130,10 @@ export default function InterestsInputStep({
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleAddTyped}
             disabled={assessmentState.interestsApiStatus.loading}
-            placeholder="e.g. Reading non fiction, casual football... it can be anything"
-            className="w-full px-4 py-3 text-black border border-gray-300 text-sm rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed pr-10"
+            placeholder="Or type it in here!"
+            className="w-full px-4 py-3 text-black border border-gray-300 text-sm rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed pr-10 bg-white"
           />
           {inputValue.trim() && !assessmentState.interestsApiStatus.loading && (
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
@@ -153,7 +149,7 @@ export default function InterestsInputStep({
       {/* Interest List */}
       <div className="min-h-[100px] bg-gray-50 rounded-xl p-4 max-w-2xl mx-auto">
         {interests.length === 0 ? (
-          <p className="text-gray-500 text-center">Enter your interests and press Enter or select from the list</p>
+          <p className="text-gray-500 text-center">Choose from our predefined list or type in your own, they will appear here</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {interests.map((interest, index) => (
@@ -185,22 +181,16 @@ export default function InterestsInputStep({
       )}
 
       {/* Continue Button */}
-      <div className="flex justify-center">
-        <button
-          onClick={handleContinue}
-          disabled={interests.length < 3 || assessmentState.interestsApiStatus.loading}
-          className="px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          {assessmentState.interestsApiStatus.loading ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Saving...
-            </>
-          ) : (
-            `Continue to Self Description (${interests.length}/3+)`
-          )}
-        </button>
-      </div>
+      <ContinueButton
+        onClick={handleContinue}
+        disabled={interests.length < 3}
+        loading={assessmentState.interestsApiStatus.loading}
+      >
+        {assessmentState.interestsApiStatus.loading 
+          ? "Saving..." 
+          : `Continue (${interests.length}/3+)`
+        }
+      </ContinueButton>
     </div>
   );
 } 

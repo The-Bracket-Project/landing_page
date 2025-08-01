@@ -1,4 +1,5 @@
 import { StepProps } from '../types';
+import ContinueButton from '../shared/ContinueButton';
 
 export default function PersonalityQuestionsStep({ 
   onNext, 
@@ -25,14 +26,9 @@ export default function PersonalityQuestionsStep({
       </div>
 
       {/* Navigation - Only Next button */}
-      <div className="flex justify-center">
-        <button
-          onClick={onNext}
-          className="px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-        >
-          Generate My Results
-        </button>
-      </div>
+      <ContinueButton onClick={onNext} fullWidth>
+        See my results!
+      </ContinueButton>
     </div>
   );
 } 

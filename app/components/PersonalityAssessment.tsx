@@ -16,7 +16,7 @@ export default function PersonalityAssessment() {
                 <>
                     {/* Introduction Section */}
                     <div className="text-center space-y-6">
-                        <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
+                        <h1 className="text-2xl md:text-4xl font-bold text-black mb-6">
                             Try Our Personality Assessment
                         </h1>
                         <div className="space-y-4 text-black/80">
@@ -25,7 +25,7 @@ export default function PersonalityAssessment() {
                             </p>
                             <p className="text-base md:text-lg">
                                 This modern personality assessment goes beyond traditional methods to provide deeper insights 
-                                into who you are. Using advanced techniques, we analyze your unique patterns and preferences 
+                                into who you are. Using novel techniques, we analyze your unique patterns and preferences 
                                 to create a more accurate and comprehensive personality profile.
                             </p>
                             <p className="text-sm md:text-base text-black/70">

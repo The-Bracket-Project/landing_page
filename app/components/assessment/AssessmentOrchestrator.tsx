@@ -111,7 +111,7 @@ export default function AssessmentOrchestrator() {
       case 'self-description':
         return 'Describe yourself';
       case 'group-selection':
-        return 'Choose your groups';
+        return 'Select what resonates with you';
       case 'personality-questions':
         return 'Personality assessment';
       case 'results-summary':
@@ -122,10 +122,10 @@ export default function AssessmentOrchestrator() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 px-2">
       {/* Header */}
-      <div className="text-center mb-5">
-        <h2 className="text-2xl md:text-3xl font-semibold text-black">
+      <div className="text-center mb-4">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-black">
           {getStepTitle()}
         </h2>
       </div>
@@ -138,7 +138,7 @@ export default function AssessmentOrchestrator() {
       />
 
       {/* Current Step Content */}
-      <div className="min-h-[400px]">
+      <div className="min-h-[250px] pb-4">
         {renderCurrentStep()}
       </div>
     </div>

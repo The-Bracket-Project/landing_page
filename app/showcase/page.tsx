@@ -13,9 +13,9 @@ export default function Showcase() {
         >
             <Navbar />
             <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 justify-center">
-                <div className="flex flex-col items-center px-4 pt-20 max-h-screen">
+                <div className="flex flex-col items-center md:px-4 pt-10">
                     <div 
-                        className="rounded-3xl p-8 max-w-4xl w-full mx-auto min-h-140"
+                        className="rounded-3xl p-4 md:p-6 max-w-4xl w-full mx-auto min-h-140"
                         style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                             boxShadow: '0 8px 32px 0 rgba(255, 255, 255, 0.37), 0 0 0 4px rgba(255, 255, 255, 0.18)',
