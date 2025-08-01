@@ -19,31 +19,15 @@ export async function POST(request) {
       );
     }
 
-    // Here you would typically:
-    // 1. Process the interests data
-    // 2. Save to database
-    // 3. Generate available groups based on interests
-    // 4. Return processed data
-
-    // For now, we'll simulate processing and return mock data
-    const mockGroups = [
-      'Creative Arts',
-      'Sports & Fitness', 
-      'Technology',
-      'Outdoor Activities',
-      'Social & Entertainment',
-      'Learning & Development'
-    ];
-
-    // Simulate API processing time
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Process the interests data
+    // TODO: Save to database when backend is ready
+    // TODO: Generate available groups based on interests when algorithm is implemented
 
     return NextResponse.json({
       success: true,
       message: 'Interests saved successfully',
       data: {
         interests,
-        availableGroups: mockGroups,
         processedAt: new Date().toISOString()
       }
     });

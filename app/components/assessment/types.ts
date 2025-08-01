@@ -82,3 +82,19 @@ export interface InterestsApiRequest {
 export interface InterestsApiResponse {
   groups: InterestsGroups[][]; // Raw API data
 }
+
+export interface FollowUpOption {
+  text: string;
+  score: Float16Array;
+}
+
+export interface FollowUpQuestion {
+  target_ocean: string;
+  interest: string;
+  question: string;
+  options: FollowUpOption[];
+}
+
+export interface FollowUpQuestionsReponse {
+  questions: FollowUpQuestion[];
+}

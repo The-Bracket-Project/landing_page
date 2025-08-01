@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse } from './types';
+import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse, FollowUpQuestionsReponse } from './types';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
 import SelfDescriptionStep from './steps/SelfDescriptionStep';
@@ -69,10 +69,23 @@ export default function AssessmentOrchestrator() {
     const interests = assessmentState.interests.interests;
     if (interests.length < 3) return;
 
+    const requestData: InterestsApiRequest = { interests };
+
+    // Start both API calls independently
+    // Groups API call - controls the main loading state for GroupSelection
+    const groupsApiCall = handleGroupsApiCall(requestData);
+    
+    // Follow-up questions API call - runs independently in background
+    handleFollowUpQuestionsApiCall(requestData);
+    
+    // Only wait for groups API to complete (GroupSelection depends on this)
+    await groupsApiCall;
+  };
+
+  // Groups API call - controls GroupSelection loading state
+  const handleGroupsApiCall = async (requestData: InterestsApiRequest) => {
     try {
-      const requestData: InterestsApiRequest = { interests };
-      
-      const result = await handleApiCall<InterestsApiResponse>(
+      const groupsResult = await handleApiCall<InterestsApiResponse>(
         async () => {
           const response = await fetch('/api/get-groups-showcase/v1', {
             method: 'POST',
@@ -83,7 +96,7 @@ export default function AssessmentOrchestrator() {
           });
 
           if (!response.ok) {
-            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+            throw new Error(`Groups API call failed: ${response.status} ${response.statusText}`);
           }
 
           return response.json();
@@ -92,15 +105,43 @@ export default function AssessmentOrchestrator() {
       );
 
       // Store the available groups from API response
-      if (result?.groups) {
-        // console.log('result.groups', result.groups);
+      if (groupsResult?.groups) {
         updateAssessmentData({ 
-          availableGroups: result.groups
+          availableGroups: groupsResult.groups
         });
       }
     } catch (error) {
-      console.error('Error saving interests:', error);
+      console.error('Error with groups API:', error);
       // Error is already handled by the generic handler
+    }
+  };
+
+  // Follow-up questions API call - runs independently in background
+  const handleFollowUpQuestionsApiCall = async (requestData: InterestsApiRequest) => {
+    try {
+      const followUpResult = await fetch('/api/follow-up-questions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!followUpResult.ok) {
+        throw new Error(`Follow-up questions API call failed: ${followUpResult.status} ${followUpResult.statusText}`);
+      }
+
+      const data = await followUpResult.json();
+      
+      // Console log the follow-up questions response
+      console.log('Follow-up questions response:', data);
+      
+      // Could store this data in state if needed later
+      // updateAssessmentData({ followUpQuestions: data.questions });
+      
+    } catch (error) {
+      console.error('Error with follow-up questions API:', error);
+      // This doesn't affect the main flow
     }
   };
 
@@ -164,7 +205,7 @@ export default function AssessmentOrchestrator() {
       case 'group-selection':
         return 'Select what resonates with you';
       case 'personality-questions':
-        return 'Personality assessment';
+        return 'Further questions';
       case 'results-summary':
         return 'Your personality summary';
       default:

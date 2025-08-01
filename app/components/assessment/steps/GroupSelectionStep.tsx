@@ -68,7 +68,7 @@ export default function GroupSelectionStep({
       <div className="space-y-6">
         <div className="text-center px-8">
           <p className="text-lg text-black/80 mb-8">
-            We&apos;re analyzing your interests to find the perfect groups for you...
+            We&apos;re personalizing your questions based on your interests...
           </p>
         </div>
         
@@ -111,7 +111,7 @@ export default function GroupSelectionStep({
     <div className="space-y-6">
       <div className="text-center px-8">
         <p className="text-lg text-black/80 mb-2">
-          Based on your interests, here are some groups that might resonate with you.
+          Select how you approach your interests.
         </p>
         <p className="text-sm text-gray-600 mb-6">
           Set {currentSetIndex + 1} of {maxSets} • Select the ones that resonate with you
