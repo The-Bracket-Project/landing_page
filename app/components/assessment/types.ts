@@ -41,7 +41,7 @@ export interface AssessmentState {
   selfDescription: string;
   
   // Phase 3: Group Selection
-  availableGroups: string[]; // From interests API
+  availableGroups: InterestsGroups[][]; // From interests API (raw data)
   groupSelection: GroupSelectionData;
   
   // Phase 4: Personality Questions
@@ -60,11 +60,15 @@ export interface AssessmentState {
 export interface StepProps {
   onNext: () => void;
   onUpdateData: (data: Partial<AssessmentState>) => void;
-  onApiCall: <T>(apiCall: () => Promise<T>, statusKey: keyof AssessmentState) => Promise<T>;
   assessmentState: AssessmentState;
   isLastStep: boolean;
+}
+
+export interface InterestsStepProps extends StepProps {
+  onSubmitInterests: () => Promise<void>;
 } 
 
+// Groups interface (raw API data)
 export interface InterestsGroups {
   description: string;
   target_ocean: string;
@@ -76,5 +80,5 @@ export interface InterestsApiRequest {
 }
 
 export interface InterestsApiResponse {
-  groups: InterestsGroups[][];
+  groups: InterestsGroups[][]; // Raw API data
 }
