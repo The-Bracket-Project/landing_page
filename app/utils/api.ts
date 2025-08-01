@@ -1,5 +1,5 @@
-// API Configuration
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// API Configuration - Frontend should always call local Next.js API routes
+const baseURL = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
 
 export { baseURL };
 

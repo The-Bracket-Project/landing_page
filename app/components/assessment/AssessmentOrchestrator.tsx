@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AssessmentState, AssessmentStep } from './types';
+import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse } from './types';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
 import SelfDescriptionStep from './steps/SelfDescriptionStep';
@@ -64,6 +64,58 @@ export default function AssessmentOrchestrator() {
     }
   }
 
+  // Interests API call handler - runs in background
+  const handleInterestsApiCall = async () => {
+    const interests = assessmentState.interests.interests;
+    if (interests.length < 3) return;
+
+    try {
+      const requestData: InterestsApiRequest = { interests };
+      
+      const result = await handleApiCall<InterestsApiResponse>(
+        async () => {
+          const response = await fetch('/api/get-groups-showcase/v1', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+          });
+
+          if (!response.ok) {
+            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+          }
+
+          return response.json();
+        },
+        'interestsApiStatus'
+      );
+
+      // Store the available groups from API response
+      if (result?.groups) {
+        // console.log('result.groups', result.groups);
+        updateAssessmentData({ 
+          availableGroups: result.groups
+        });
+      }
+    } catch (error) {
+      console.error('Error saving interests:', error);
+      // Error is already handled by the generic handler
+    }
+  };
+
+  // Interests submission handler - moves to next step immediately and awaits background API call
+  const handleInterestsSubmission = async () => {
+    const interests = assessmentState.interests.interests;
+    if (interests.length < 3) return;
+
+    // Move to next step immediately (synchronous)
+    goToNextStep();
+    
+    // Wait for API call to complete in background
+    await handleInterestsApiCall();
+  };
+
   const updateAssessmentData = (data: Partial<AssessmentState>) => {
     setAssessmentState(prev => ({ ...prev, ...data }));
   };
@@ -83,14 +135,13 @@ export default function AssessmentOrchestrator() {
     const stepProps = {
       onNext: goToNextStep,
       onUpdateData: updateAssessmentData,
-      onApiCall: handleApiCall,
       assessmentState,
       isLastStep: steps.indexOf(assessmentState.currentStep) === steps.length - 1
     };
 
     switch (assessmentState.currentStep) {
       case 'interests-input':
-        return <InterestsInputStep {...stepProps} />;
+        return <InterestsInputStep {...stepProps} onSubmitInterests={handleInterestsSubmission} />;
       case 'self-description':
         return <SelfDescriptionStep {...stepProps} />;
       case 'group-selection':
@@ -100,7 +151,7 @@ export default function AssessmentOrchestrator() {
       case 'results-summary':
         return <ResultsSummaryStep {...stepProps} />;
       default:
-        return <InterestsInputStep {...stepProps} />;
+        return <InterestsInputStep {...stepProps} onSubmitInterests={handleInterestsSubmission} />;
     }
   };
 

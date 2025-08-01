@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, KeyboardEvent } from 'react';
-import { InterestsApiResponse, InterestsApiRequest, StepProps } from '../types';
+import { InterestsStepProps } from '../types';
 import ContinueButton from '../shared/ContinueButton';
-import { apiCall } from '../../../utils/api';
 
 // Predefined interests for quick selection
 const predefinedInterests = [
@@ -24,14 +23,16 @@ function toTitleCase(str: string): string {
 }
 
 export default function InterestsInputStep({ 
-  onNext, 
   onUpdateData, 
-  onApiCall, 
   assessmentState, 
+  onSubmitInterests,
   /* isLastStep */
-}: StepProps) {
+}: InterestsStepProps) {
   const [interests, setInterests] = useState<string[]>(assessmentState.interests.interests);
   const [inputValue, setInputValue] = useState('');
+  
+  // Get loading and error state from the orchestrator
+  const { loading, error } = assessmentState.interestsApiStatus;
 
 /* The three functions below used to handle updating AssessmentOrchestrator.tsx state */
   const handleAddPredefined = (interest: string) => {
@@ -46,7 +47,7 @@ export default function InterestsInputStep({
 
   const handleAddTyped = (e: KeyboardEvent<HTMLInputElement>) => {
     const val: string = toTitleCase(inputValue.trim());
-    if (e.key === 'Enter' && val && !assessmentState.interestsApiStatus.loading) {
+    if (e.key === 'Enter' && val && !loading) {
       e.preventDefault();
       if (!interests.includes(val)) {
         const newInterests = [...interests, val];
@@ -60,7 +61,7 @@ export default function InterestsInputStep({
   };
 
   const handleRemove = (index: number) => {
-    if (!assessmentState.interestsApiStatus.loading) {
+    if (!loading) {
       const newInterests = interests.filter((_, i) => i !== index);
       setInterests(newInterests);
       onUpdateData({ 
@@ -70,33 +71,14 @@ export default function InterestsInputStep({
   };
 
   const handleContinue = async () => {
-    if (interests.length < 3 || assessmentState.interestsApiStatus.loading) return;
+    if (interests.length < 3 || loading) return;
 
     try {
-      // Make API call using the orchestrator's API handler
-      await onApiCall(async () => {
-        const requestData: InterestsApiRequest = { interests };
-        
-        const result: InterestsApiResponse = await apiCall('/api/get-groups-showcase/v1', {
-          method: 'POST',
-          body: JSON.stringify(requestData),
-        });
-        
-        // Store the available groups from API response for next step
-        if (result?.groups) {
-          console.log('result.groups', result.groups);
-          onUpdateData({ 
-            availableGroups: result.groups.flat().map(group => group.description)
-          });
-        }
-        
-        return result;
-      }, 'interestsApiStatus');
-
-      // Move to next step
-      onNext();
+      // Trigger immediate navigation and await background API call through the orchestrator
+      await onSubmitInterests();
     } catch (error) {
-      console.error('Error saving interests:', error);
+      console.error('Error during interests submission:', error);
+      // Error is handled by orchestrator, but we could add component-specific handling here if needed
     }
   };
 
@@ -115,7 +97,7 @@ export default function InterestsInputStep({
             key={interest}
             type="button"
             onClick={() => handleAddPredefined(interest)}
-            disabled={assessmentState.interestsApiStatus.loading || interests.includes(interest)}
+            disabled={loading || interests.includes(interest)}
             className="px-3 py-1.5 rounded-full text-sm border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {interest}
@@ -131,11 +113,11 @@ export default function InterestsInputStep({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleAddTyped}
-            disabled={assessmentState.interestsApiStatus.loading}
+            disabled={loading}
             placeholder="Or type it in here!"
             className="w-full px-4 py-3 text-black border border-gray-300 text-sm rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed pr-10 bg-white"
           />
-          {inputValue.trim() && !assessmentState.interestsApiStatus.loading && (
+          {inputValue.trim() && !loading && (
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 12h12" />
@@ -160,7 +142,7 @@ export default function InterestsInputStep({
                 <span className="text-sm">{interest}</span>
                 <button
                   onClick={() => handleRemove(index)}
-                  disabled={assessmentState.interestsApiStatus.loading}
+                  disabled={loading}
                   className="text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   ×
@@ -172,10 +154,10 @@ export default function InterestsInputStep({
       </div>
 
       {/* Error Display */}
-      {assessmentState.interestsApiStatus.error && (
+      {error && (
         <div className="text-center">
           <p className="text-red-600 text-sm">
-            Error: {assessmentState.interestsApiStatus.error}
+            Error: {error}
           </p>
         </div>
       )}
@@ -184,9 +166,9 @@ export default function InterestsInputStep({
       <ContinueButton
         onClick={handleContinue}
         disabled={interests.length < 3}
-        loading={assessmentState.interestsApiStatus.loading}
+        loading={loading}
       >
-        {assessmentState.interestsApiStatus.loading 
+        {loading 
           ? "Saving..." 
           : `Continue (${interests.length}/3+)`
         }
