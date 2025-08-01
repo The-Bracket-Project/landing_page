@@ -93,9 +93,17 @@ function Navbar() {
             </Link>
             <Link
               href="https://dashboard.thebracket.io/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:opacity-70 transition-all duration-200 hover:transform hover:scale-105"
             >
               <h1>Dashboard</h1>
+            </Link>
+            <Link
+              href="/showcase"
+              className="px-4 py-1 rounded-full bg-cyan-800 text-white font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 hover:transform hover:scale-105 shadow-md hover:shadow-lg"
+            >
+              <h1 className="text-sm">Try?</h1>
             </Link>
           </div>
         </div>
