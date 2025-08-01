@@ -50,9 +50,6 @@ export default function GroupSelectionStep({
   
   // Handle continue (only show after last set)
   const handleContinue = () => {
-    // Console log all selections with metadata at the end
-    const allSelectedWithMetadata = Object.values(setSelections);
-    console.log('Final selected groups:', allSelectedWithMetadata);
     onNext();
   };
   
@@ -134,16 +131,16 @@ export default function GroupSelectionStep({
                       : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300'
                   }`}
                 >
-                  <p className="text-sm">{group.description}</p>
-                  {isSelected && (
-                    <div className="mt-2 flex items-center justify-end">
-                      <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm">{group.description}</p>
+                    {isSelected && (
+                      <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center ml-2 flex-shrink-0">
                         <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -163,7 +160,7 @@ export default function GroupSelectionStep({
           </button>
         ) : isLastSet && Object.keys(setSelections).length > 0 ? (
           <ContinueButton onClick={handleContinue}>
-            Continue ({Object.keys(setSelections).length} selected)
+            Continue           
           </ContinueButton>
         ) : (
           <div className="text-center">

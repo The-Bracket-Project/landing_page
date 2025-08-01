@@ -17,6 +17,7 @@ export default function AssessmentOrchestrator() {
     selfDescription: '',
     availableGroups: [],
     groupSelection: { selectedGroups: [] },
+    followUpQuestions: [],
     personalityResponses: [],
     personalityApiStatus: { loading: false, error: null, success: false },
     generatedSummary: null,
@@ -133,11 +134,8 @@ export default function AssessmentOrchestrator() {
 
       const data = await followUpResult.json();
       
-      // Console log the follow-up questions response
-      console.log('Follow-up questions response:', data);
-      
-      // Could store this data in state if needed later
-      // updateAssessmentData({ followUpQuestions: data.questions });
+      // Store this data in state for PersonalityQuestionsStep
+      updateAssessmentData({ followUpQuestions: data.questions || [] });
       
     } catch (error) {
       console.error('Error with follow-up questions API:', error);
@@ -165,6 +163,19 @@ export default function AssessmentOrchestrator() {
     const currentIndex = steps.indexOf(assessmentState.currentStep);
     if (currentIndex < steps.length - 1) {
       const nextStep = steps[currentIndex + 1];
+      
+      // Console log all assessment data when moving from personality-questions to results-summary
+      if (assessmentState.currentStep === 'personality-questions' && nextStep === 'results-summary') {
+        console.log('=== Complete Assessment Data ===');
+        console.log('Interests:', assessmentState.interests);
+        console.log('Self Description:', assessmentState.selfDescription);
+        console.log('Available Groups:', assessmentState.availableGroups);
+        console.log('Selected Groups:', assessmentState.groupSelection);
+        console.log('Follow-up Questions:', assessmentState.followUpQuestions);
+        console.log('Personality Responses:', assessmentState.personalityResponses);
+        console.log('================================');
+      }
+      
       updateAssessmentData({
         currentStep: nextStep,
         completedSteps: [...assessmentState.completedSteps, assessmentState.currentStep]

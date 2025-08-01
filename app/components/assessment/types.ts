@@ -45,6 +45,7 @@ export interface AssessmentState {
   groupSelection: GroupSelectionData;
   
   // Phase 4: Personality Questions
+  followUpQuestions: FollowUpQuestion[]; // From follow-up questions API
   personalityResponses: PersonalityResponseData[];
   personalityApiStatus: ApiStatus;
   
