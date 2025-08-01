@@ -16,7 +16,7 @@ export default function AssessmentOrchestrator() {
     interestsApiStatus: { loading: false, error: null, success: false },
     selfDescription: '',
     availableGroups: [],
-    groupSelection: { selectedGroups: [] },
+    groupSelection: [],
     followUpQuestions: [],
     personalityResponses: [],
     personalityApiStatus: { loading: false, error: null, success: false },
@@ -218,7 +218,7 @@ export default function AssessmentOrchestrator() {
       case 'personality-questions':
         return 'Further questions';
       case 'results-summary':
-        return 'Your personality summary';
+        return 'Your results';
       default:
         return 'Personality Assessment';
     }

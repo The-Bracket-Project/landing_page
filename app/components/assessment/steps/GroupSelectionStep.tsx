@@ -31,9 +31,7 @@ export default function GroupSelectionStep({
     // Update assessment state with all selected group descriptions from all sets
     const allSelectedGroups = Object.values(newSetSelections).map(g => g.description);
     onUpdateData({
-      groupSelection: {
-        selectedGroups: allSelectedGroups
-      }
+      groupSelection: allSelectedGroups
     });
   };
   

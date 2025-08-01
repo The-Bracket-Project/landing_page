@@ -12,15 +12,12 @@ export interface InterestsData {
   categories?: string[];
 }
 
-export interface GroupSelectionData {
-  selectedGroups: string[];
-  groupScores?: Record<string, number>;
-}
+
 
 export interface PersonalityResponseData {
   questionId: string;
   answer: string;
-  weight?: number;
+  score: Float16Array; // Score array from the selected option
 }
 
 export interface ApiStatus {
@@ -42,7 +39,7 @@ export interface AssessmentState {
   
   // Phase 3: Group Selection
   availableGroups: InterestsGroups[][]; // From interests API (raw data)
-  groupSelection: GroupSelectionData;
+  groupSelection: string[]; // Array of selected group descriptions
   
   // Phase 4: Personality Questions
   followUpQuestions: FollowUpQuestion[]; // From follow-up questions API

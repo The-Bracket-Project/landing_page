@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StepProps, PersonalityResponseData } from '../types';
+import { StepProps, PersonalityResponseData, FollowUpOption } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
 export default function PersonalityQuestionsStep({ 
@@ -18,13 +18,13 @@ export default function PersonalityQuestionsStep({
   const totalQuestions = followUpQuestions.length;
   
   // Handle option selection
-  const handleOptionSelect = (optionText: string) => {
+  const handleOptionSelect = (option: FollowUpOption) => {
     if (!currentQuestion) return; // Safety check
     
     const response: PersonalityResponseData = {
       questionId: `${currentQuestion.target_ocean}_${currentQuestion.interest}_${currentQuestionIndex}`,
-      answer: optionText,
-      weight: 1 // Default weight, could be adjusted based on option score
+      answer: option.text,
+      score: option.score // Store the full score array from the selected option
     };
     
     const newResponses = {
@@ -129,7 +129,7 @@ export default function PersonalityQuestionsStep({
               return (
                 <div 
                   key={optionIndex}
-                  onClick={() => handleOptionSelect(option.text)}
+                  onClick={() => handleOptionSelect(option)}
                   className={`p-4 border-2 rounded-lg transition-all duration-200 cursor-pointer ${
                     isSelected 
                       ? 'border-black bg-black text-white shadow-lg transform scale-[1.02]' 
