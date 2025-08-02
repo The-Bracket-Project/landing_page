@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { StepProps } from '../types';
+import { clearAssessmentState } from '../../../utils/localStorage';
 
 export default function ResultsSummaryStep({
   assessmentState,
@@ -16,6 +17,9 @@ export default function ResultsSummaryStep({
   } = assessmentState;
 
   useEffect(() => {
+    // Clear saved assessment data since user has completed the assessment
+    clearAssessmentState();
+
     const fetchSummary = async () => {
       if (!requestId) return;
 
