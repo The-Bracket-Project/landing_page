@@ -84,7 +84,7 @@ export default function GroupSelectionStep({
   if (interestsApiStatus.error) {
     return (
       <div className="space-y-6">
-        <div className="text-center px-8">
+        <div className="text-center px-2 md:px-8">
           <p className="text-lg text-black/80 mb-4">
             Something went wrong while analyzing your interests.
           </p>
@@ -103,7 +103,7 @@ export default function GroupSelectionStep({
   // Main group selection UI (when API is complete)
   return (
     <div className="space-y-6">
-      <div className="text-center px-8">
+      <div className="text-center md:px-6">
         <p className="text-lg text-black/80 mb-2">
           Select how you approach your interests.
         </p>
@@ -114,7 +114,7 @@ export default function GroupSelectionStep({
 
       {/* Current Set Display */}
       {currentSet.length > 0 && (
-        <div className="max-w-2xl mx-auto">
+        <div className="w-full">
           <div className={`space-y-3 transition-all duration-200 ${isAnimating ? 'opacity-50 transform scale-95' : 'opacity-100 transform scale-100'}`}>
             {currentSet.map((group, groupIndex) => {
               const isSelected = setSelections[currentSetIndex]?.description === group.description;

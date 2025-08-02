@@ -225,7 +225,7 @@ export default function AssessmentOrchestrator() {
   };
 
   return (
-    <div className="space-y-6 px-2">
+    <div className="space-y-6 md:px-2">
       {/* Header */}
       <div className="text-center mb-4">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-black">

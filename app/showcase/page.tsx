@@ -12,25 +12,29 @@ export default function Showcase() {
         >
             <Navbar />
             
-            <main className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 pt-10">
-                <div className="flex flex-col items-center">
-                    <div 
-                        className="rounded-3xl p-4 md:p-6 max-w-4xl w-full mx-auto"
-                        style={{
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            boxShadow: '0 8px 32px 0 rgba(255, 255, 255, 0.37), 0 0 0 4px rgba(255, 255, 255, 0.18)',
-                        }}
-                    >
-                        <PersonalityAssessment />
+            <div className="flex flex-col min-h-[calc(100vh-80px)] justify-between">
+                <main className="flex-1 mx-auto max-w-6xl px-4 sm:px-6 md:px-8 pt-10">
+                    <div className="flex flex-col items-center justify-center min-h-full">
+                        <div 
+                            className="rounded-3xl p-4 md:p-6 w-full sm:w-4xl mx-auto"
+                            style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                boxShadow: '0 8px 32px 0 rgba(255, 255, 255, 0.37), 0 0 0 4px rgba(255, 255, 255, 0.18)',
+                            }}
+                        >
+                            <PersonalityAssessment />
+                        </div>
+                        
+                        <p className="text-center text-sm text-white/70 mt-4 mb-10">
+                            ⚠️ Please don&apos;t refresh the page during the assessment - your progress will be lost
+                        </p>
                     </div>
-                    
-                    <p className="text-center text-sm text-white/70 mt-4 mb-10">
-                        ⚠️ Please don&apos;t refresh the page during the assessment - your progress will be lost
-                    </p>
+                </main>
+
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                    <Footer />
                 </div>
-            </main>
-            
-            <Footer />
+            </div>
         </div>
     )
 }

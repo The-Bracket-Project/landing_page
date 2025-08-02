@@ -102,7 +102,7 @@ export default function PersonalityQuestionsStep({
       </div>
 
       {/* Current Question Display */}
-      <div className="max-w-2xl mx-auto">
+      <div className="w-full">
         <div className={`space-y-4 transition-all duration-200 ${isAnimating ? 'opacity-50 transform scale-95' : 'opacity-100 transform scale-100'}`}>
           {/* Question */}
           <div className="text-center mb-6">
