@@ -12,8 +12,8 @@ export default function Showcase() {
         >
             <Navbar />
             
-            <div className="flex flex-col min-h-[calc(100vh-80px)] justify-between">
-                <main className="flex-1 mx-auto max-w-6xl px-4 sm:px-6 md:px-8 pt-10">
+            <div className="flex flex-col min-h-[calc(100vh-80px)] max-w-6xl px-4 sm:px-6 md:px-8 justify-between">
+                <main className="flex-1 mx-auto pt-10">
                     <div className="flex flex-col items-center justify-center min-h-full">
                         <div 
                             className="rounded-3xl p-4 md:p-6 w-full sm:w-4xl mx-auto"
@@ -31,7 +31,7 @@ export default function Showcase() {
                     </div>
                 </main>
 
-                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div className="max-w-6xl md:px-6 lg:px-8">
                     <Footer />
                 </div>
             </div>
