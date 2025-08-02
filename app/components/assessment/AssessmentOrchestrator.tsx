@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse} from './types';
-import { useAssessmentStorage, useApiRetry } from '../../hooks/useAssessmentStorage';
+import { useAssessmentStorage } from '../../hooks/useAssessmentStorage';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
 import SelfDescriptionStep from './steps/SelfDescriptionStep';
@@ -36,23 +36,21 @@ export default function AssessmentOrchestrator() {
     restorePromptInfo,
     handleRestoreProgress,
     handleStartFresh,
-    isStateValid,
-    validationInfo
   } = useAssessmentStorage({
     initialState,
     onStateRestore: handleStateRestore,
     autoSave: true
   });
 
-  const { retryInfo, scheduleRetry, clearRetry } = useApiRetry();
 
-  const steps: AssessmentStep[] = [
+
+  const steps: AssessmentStep[] = useMemo(() => [
     'interests-input',
     'self-description', 
     'group-selection',
     'personality-questions',
     'results-summary'
-  ];
+  ], []);
 
   // Handle state restoration with API fallback logic
   function handleStateRestore(
@@ -60,28 +58,28 @@ export default function AssessmentOrchestrator() {
     fallbackInfo?: { reason: string; needsApiFallback: boolean }
   ) {
     if (fallbackInfo?.needsApiFallback) {
-      console.log('🔄 State restored with fallback:', fallbackInfo.reason);
+      // Execute API retries directly (not through queue) to handle multiple missing APIs
+      const requestData = { interests: state.interests.interests };
       
-      // Schedule API retries based on what's missing (regardless of current step)
       // Check if groups are missing and user has interests
       if (state.availableGroups.length === 0 && state.interests.interests.length >= 3) {
-        console.log('📝 Scheduling groups API retry with interests:', state.interests.interests);
-        scheduleRetry('groups', { interests: state.interests.interests });
+        handleGroupsApiCall(requestData).catch(error => {
+          console.error('Groups API retry failed during restoration:', error);
+        });
       }
       
       // Check if follow-up questions are missing and user has interests  
       if (state.followUpQuestions.length === 0 && state.interests.interests.length >= 3) {
-        console.log('📝 Scheduling followUpQuestions API retry with interests:', state.interests.interests);
-        scheduleRetry('followUpQuestions', { interests: state.interests.interests });
+        handleFollowUpQuestionsApiCall(requestData).catch(error => {
+          console.error('Follow-up questions API retry failed during restoration:', error);
+        });
       }
-    } else {
-      console.log('✅ State restored successfully without API fallback needed');
     }
   }
 
   // Generic API call handler
   const handleApiCall = useCallback(async (
-    apiCall: () => Promise<any>, 
+    apiCall: () => Promise<unknown>, 
     statusKey: keyof AssessmentState
   ) => {
     setAssessmentState(prev => ({
@@ -152,9 +150,10 @@ export default function AssessmentOrchestrator() {
       );
 
       // Store the available groups from API response
-      if (groupsResult?.groups) {
+      const typedResult = groupsResult as InterestsApiResponse;
+      if (typedResult?.groups) {
         updateAssessmentData({ 
-          availableGroups: groupsResult.groups
+          availableGroups: typedResult.groups
         });
       }
     } catch (error) {
@@ -192,35 +191,7 @@ export default function AssessmentOrchestrator() {
     }
   }, [updateAssessmentData]);
 
-  // API retry effect
-  useEffect(() => {
-    console.log('📄 Retry effect triggered. retryInfo:', retryInfo);
-    console.log('📄 shouldRetry?', retryInfo.shouldRetry);
-    if (!retryInfo.shouldRetry) {
-      console.log('📄 No retry needed, exiting effect');
-      return;
-    }
 
-    console.log('📄 Proceeding with retry execution...');
-    const executeRetry = async () => {
-      console.log(`🔄 Executing retry for ${retryInfo.retryType} API call with data:`, retryInfo.retryData);
-      
-      try {
-        if (retryInfo.retryType === 'groups') {
-          await handleGroupsApiCall(retryInfo.retryData);
-          console.log('✅ Groups API retry completed successfully');
-        } else if (retryInfo.retryType === 'followUpQuestions') {
-          await handleFollowUpQuestionsApiCall(retryInfo.retryData);
-          console.log('✅ Follow-up questions API retry completed successfully');
-        }
-        clearRetry();
-      } catch (error) {
-        console.error('❌ API retry failed:', error);
-      }
-    };
-
-    executeRetry();
-  }, [retryInfo, handleGroupsApiCall, handleFollowUpQuestionsApiCall, clearRetry]);
 
   // Interests submission handler - moves to next step immediately and awaits background API call
   const handleInterestsSubmission = async () => {
@@ -256,7 +227,7 @@ export default function AssessmentOrchestrator() {
         completedSteps: [...assessmentState.completedSteps, assessmentState.currentStep]
       });
     }
-  }, [assessmentState, updateAssessmentData]);
+  }, [assessmentState, updateAssessmentData, steps]);
 
   const renderCurrentStep = () => {
     const stepProps = {
@@ -318,7 +289,7 @@ export default function AssessmentOrchestrator() {
               {restorePromptInfo?.needsApiFallback && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
                   <p className="text-sm text-yellow-800">
-                    ⚠️ Some data needs to be refreshed. We'll automatically retry any missing API calls.
+                    ⚠️ Some data needs to be refreshed. We&apos;ll automatically retry any missing API calls.
                   </p>
                 </div>
               )}

@@ -36,6 +36,7 @@ function serializeState(state: AssessmentState): SerializedState {
  * Deserialize stored data back to AssessmentState
  */
 function deserializeState(serialized: SerializedState): AssessmentState {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { _version, _timestamp, ...stateData } = serialized;
   
   return {
@@ -116,7 +117,7 @@ export function clearAssessmentState(): void {
 export function hasSavedState(): boolean {
   try {
     return localStorage.getItem(STORAGE_KEY) !== null;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -131,7 +132,7 @@ export function getSavedStateTimestamp(): Date | null {
     
     const parsed = JSON.parse(storedData) as SerializedState;
     return new Date(parsed._timestamp);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -143,7 +144,7 @@ export function isStorageAvailable(): boolean {
     localStorage.setItem(testKey, 'test');
     localStorage.removeItem(testKey);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -236,24 +237,12 @@ export function loadValidatedAssessmentState(): {
   const state = loadAssessmentState();
   
   if (!state) {
-    console.log('📂 No saved state found');
     return { state: null, needsApiFallback: false };
   }
 
-  console.log('📂 Loaded saved state:', {
-    currentStep: state.currentStep,
-    interests: state.interests.interests.length,
-    availableGroups: state.availableGroups.length,
-    followUpQuestions: state.followUpQuestions.length,
-    completedSteps: state.completedSteps
-  });
-
   const validation = validateStepDataIntegrity(state);
   
-  console.log('🔍 Data integrity validation:', validation);
-  
   if (validation.isValid) {
-    console.log('✅ State is valid, no fallback needed');
     return { state, needsApiFallback: false };
   }
 
@@ -266,8 +255,6 @@ export function loadValidatedAssessmentState(): {
   };
 
   const fallbackReason = `Missing data: ${validation.missingData.join(', ')}. Falling back to ${validation.suggestedStep} step.`;
-
-  console.log('⚠️ State requires fallback:', fallbackReason);
 
   return {
     state: fallbackState,

@@ -7,7 +7,8 @@ import {
   saveValidatedAssessmentState, 
   clearAssessmentState,
   getSavedStateTimestamp,
-  shouldSaveState 
+  shouldSaveState,
+  validateStepDataIntegrity
 } from '../utils/localStorage';
 
 interface UseAssessmentStorageProps {
@@ -76,24 +77,11 @@ export function useAssessmentStorage({
       assessmentState.completedSteps.length === 0 && 
       assessmentState.interests.interests.length === 0;
     
-    console.log('💾 Auto-save check:', {
-      currentStep: assessmentState.currentStep,
-      interests: assessmentState.interests.interests.length,
-      availableGroups: assessmentState.availableGroups.length,
-      followUpQuestions: assessmentState.followUpQuestions.length,
-      isInitialState,
-      shouldSave: shouldSaveState(assessmentState)
-    });
-    
     if (!isInitialState && shouldSaveState(assessmentState)) {
       const saveResult = saveValidatedAssessmentState(assessmentState);
       if (!saveResult.success) {
-        console.warn('❌ Auto-save failed:', saveResult.reason);
-      } else {
-        console.log('✅ Auto-save successful for step:', assessmentState.currentStep);
+        console.warn('Auto-save failed:', saveResult.reason);
       }
-    } else if (!isInitialState) {
-      console.log('⏭️ Skipping auto-save (state not ready for current step)');
     }
   }, [assessmentState, autoSave]);
 
@@ -149,7 +137,6 @@ export function useAssessmentStorage({
   // Validation info
   const validationInfo = (() => {
     try {
-      const { validateStepDataIntegrity } = require('../utils/localStorage');
       const validation = validateStepDataIntegrity(assessmentState);
       return {
         isValid: validation.isValid,
@@ -182,43 +169,3 @@ export function useAssessmentStorage({
   };
 }
 
-// Additional utility hook for API retry logic
-export function useApiRetry() {
-  const [retryInfo, setRetryInfo] = useState<{
-    shouldRetry: boolean;
-    retryType: 'groups' | 'followUpQuestions' | null;
-    retryData: any;
-  }>({
-    shouldRetry: false,
-    retryType: null,
-    retryData: null
-  });
-
-  const scheduleRetry = useCallback((
-    type: 'groups' | 'followUpQuestions',
-    data: any
-  ) => {
-    console.log('🎯 scheduleRetry called:', { type, data });
-    setRetryInfo({
-      shouldRetry: true,
-      retryType: type,
-      retryData: data
-    });
-    console.log('🎯 Retry scheduled - retryInfo updated');
-  }, []);
-
-  const clearRetry = useCallback(() => {
-    console.log('🧹 clearRetry called - clearing retry info');
-    setRetryInfo({
-      shouldRetry: false,
-      retryType: null,
-      retryData: null
-    });
-  }, []);
-
-  return {
-    retryInfo,
-    scheduleRetry,
-    clearRetry
-  };
-}

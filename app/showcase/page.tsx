@@ -25,9 +25,9 @@ export default function Showcase() {
                             <PersonalityAssessment />
                         </div>
                         
-                        <p className="text-center text-sm text-white/70 mt-4 mb-10">
+                        {/* <p className="text-center text-sm text-white/70 mt-4 mb-10">
                             ⚠️ Please don&apos;t refresh the page during the assessment - your progress will be lost
-                        </p>
+                        </p> */}
                     </div>
                 </main>
 
