@@ -25,8 +25,7 @@ function toTitleCase(str: string): string {
 export default function InterestsInputStep({ 
   onUpdateData, 
   assessmentState, 
-  onSubmitInterests,
-  /* isLastStep */
+  onSubmitInterests
 }: InterestsStepProps) {
   const [interests, setInterests] = useState<string[]>(assessmentState.interests.interests);
   const [inputValue, setInputValue] = useState('');

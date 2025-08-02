@@ -72,11 +72,8 @@ export default function AssessmentOrchestrator() {
 
     const requestData: InterestsApiRequest = { interests };
 
-    // Start both API calls independently
-    // Groups API call - controls the main loading state for GroupSelection
     const groupsApiCall = handleGroupsApiCall(requestData);
     
-    // Follow-up questions API call - runs independently in background
     handleFollowUpQuestionsApiCall(requestData);
     
     // Only wait for groups API to complete (GroupSelection depends on this)
@@ -113,7 +110,6 @@ export default function AssessmentOrchestrator() {
       }
     } catch (error) {
       console.error('Error with groups API:', error);
-      // Error is already handled by the generic handler
     }
   };
 
@@ -236,7 +232,6 @@ export default function AssessmentOrchestrator() {
       {/* Progress Bar */}
       <ProgressBar 
         currentStep={assessmentState.currentStep}
-        completedSteps={assessmentState.completedSteps}
         allSteps={steps}
       />
 

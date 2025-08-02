@@ -5,8 +5,7 @@ import ContinueButton from '../shared/ContinueButton';
 export default function GroupSelectionStep({ 
   onNext, 
   assessmentState,
-  onUpdateData,
-  /* isLastStep */
+  onUpdateData
 }: StepProps) {
   const { interestsApiStatus, availableGroups} = assessmentState;
   
