@@ -20,6 +20,7 @@ export default function AssessmentOrchestrator() {
     followUpQuestions: [],
     personalityResponses: [],
     personalityApiStatus: { loading: false, error: null, success: false },
+    requestId: null,
     generatedSummary: null,
     summaryApiStatus: { loading: false, error: null, success: false },
     startTime: new Date(),
@@ -129,9 +130,12 @@ export default function AssessmentOrchestrator() {
       }
 
       const data = await followUpResult.json();
-      
-      // Store this data in state for PersonalityQuestionsStep
-      updateAssessmentData({ followUpQuestions: data.questions || [] });
+
+      // Store this data in state for PersonalityQuestionsStep and save request ID
+      updateAssessmentData({
+        followUpQuestions: data.questions || [],
+        requestId: data.request_id || null
+      });
       
     } catch (error) {
       console.error('Error with follow-up questions API:', error);

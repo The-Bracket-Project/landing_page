@@ -45,6 +45,7 @@ export interface AssessmentState {
   followUpQuestions: FollowUpQuestion[]; // From follow-up questions API
   personalityResponses: PersonalityResponseData[];
   personalityApiStatus: ApiStatus;
+  requestId: string | null;
   
   // Phase 5: Results
   generatedSummary: string | null;
