@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse, FollowUpQuestionsReponse } from './types';
+import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse} from './types';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
 import SelfDescriptionStep from './steps/SelfDescriptionStep';

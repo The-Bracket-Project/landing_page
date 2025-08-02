@@ -7,7 +7,7 @@ export default function PersonalityQuestionsStep({
   onUpdateData, 
   assessmentState
 }: StepProps) {
-  const { followUpQuestions, personalityResponses } = assessmentState;
+  const { followUpQuestions } = assessmentState;
   
   // State for managing question navigation and selections
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -52,17 +52,6 @@ export default function PersonalityQuestionsStep({
     }
   };
   
-  // Handle moving to previous question with animation
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex - 1);
-        setIsAnimating(false);
-      }, 150);
-    }
-  };
-  
   // Handle continue (only show after last question)
   const handleContinue = () => {
     // Console log all responses at the end
@@ -89,7 +78,7 @@ export default function PersonalityQuestionsStep({
             No follow-up questions are available at this time.
           </p>
           <p className="text-sm text-gray-600 mb-6">
-            Let's continue to see your results!
+            Let&apos;s continue to see your results!
           </p>
         </div>
         
