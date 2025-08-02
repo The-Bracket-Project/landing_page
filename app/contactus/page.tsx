@@ -77,7 +77,7 @@ export default function ContactUs() {
             Get In Touch With Us
           </p>
           <p
-            className={`text-3xl md:text-4xl lg:text-5xl text-center font-semibold poppins`}
+            className={`text-3xl md:text-4xl lg:text-5xl text-center font-semibold poppins text-white`}
           >
             Enquiries and Collaborations
           </p>
@@ -100,7 +100,7 @@ export default function ContactUs() {
             <div>
               <label 
                 htmlFor="name" 
-                className="block text-sm font-medium text-white-700 mb-2"
+                className="block text-sm font-medium text-white-700 mb-2 text-white"
               >
                 Name
               </label>
@@ -117,7 +117,7 @@ export default function ContactUs() {
             <div>
               <label 
                 htmlFor="company" 
-                className="block text-sm font-medium text-white-700 mb-2"
+                className="block text-sm font-medium text-white-700 mb-2 text-white"
               >
                 Company
               </label>
@@ -133,7 +133,7 @@ export default function ContactUs() {
             <div>
               <label 
                 htmlFor="email" 
-                className="block text-sm font-medium text-white-900 mb-2"
+                className="block text-sm font-medium text-white-900 mb-2 text-white"
               >
                 Email
               </label>
@@ -150,7 +150,7 @@ export default function ContactUs() {
             <div>
               <label 
                 htmlFor="message" 
-                className="block text-sm font-medium text-white-700 mb-2"
+                className="block text-sm font-medium text-white-700 mb-2 text-white"
               >
                 Message
               </label>

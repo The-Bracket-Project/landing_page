@@ -16,7 +16,7 @@ export default function Home() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center py-30 px-10">
           <p
-            className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins`}
+            className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins text-white`}
           >
             The AI Engine For Human Compatibility
           </p>
@@ -38,7 +38,7 @@ export default function Home() {
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
                   <p className="text-2xl md:text-3xl font-bold">
                     A Universal (And Worsening) Problem
                   </p>
@@ -83,7 +83,7 @@ export default function Home() {
                 />
               </div>
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
                   <p className="text-2xl md:text-3xl font-bold">
                     How It Impacts Businesses
                   </p>
@@ -109,7 +109,7 @@ export default function Home() {
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start">
+                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
                   <p className="text-2xl md:text-3xl font-bold">
                     A Solution That Works
                   </p>
@@ -145,7 +145,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex flex-col h-140 w-full border-t border-gray-200 items-center justify-center gap-5">
+        <div className="flex flex-col h-140 w-full border-t border-gray-200 items-center justify-center gap-5 text-white">
           <div className="w-4/5 mx-auto justify-center items-center">
             <h1 className="text-center text-5xl font-bold">
               Whatever You Are Connecting, We Make It Compatible.

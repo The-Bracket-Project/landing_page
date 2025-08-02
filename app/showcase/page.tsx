@@ -12,7 +12,7 @@ export default function Showcase() {
         >
             <Navbar />
             
-            <div className="flex flex-col min-h-[calc(100vh-80px)] max-w-6xl px-4 sm:px-6 md:px-8 justify-between">
+            <div className="flex flex-col min-h-[calc(100vh-80px)] max-w-6xl px-4 sm:px-6 md:px-8 justify-between mx-auto">
                 <main className="flex-1 mx-auto pt-10">
                     <div className="flex flex-col items-center justify-center min-h-full">
                         <div 
