@@ -108,7 +108,7 @@ export default function ContactUs() {
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Enter your full name"
+                placeholder="Enter your"
                 className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               />

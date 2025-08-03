@@ -27,11 +27,11 @@ export default function Footer() {
                 Contact
               </a>
             </li>
-            <li>
+            {/* <li>
               <Link href="/not-found" className="hover:text-gray-300">
                 Careers
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -28,7 +28,10 @@ export default function Home() {
             loop
             muted
             playsInline
+            controls={false}
+            disablePictureInPicture
             className="h-full object-cover rounded-lg"
+            style={{ outline: 'none' }}
           >
             <source src="/NodeGridScene.mp4" type="video/mp4" />
           </video>
@@ -114,21 +117,7 @@ export default function Home() {
                     A Solution That Works
                   </p>
                   <p className="text-lg md:text-xl">
-                    We blend established psychological insights and machine
-                    learning to create a{" "}
-                    <span className="font-bold text-2xl">smarter</span>, more{" "}
-                    <span className="font-bold text-2xl">empathetic</span>{" "}
-                    approach to compatibility.
-                  </p>
-                  <p className="text-xl md:text-2xl lg:text-3xl font-medium">
-                    …with our model already achieving{" "}
-                    <span className="font-bold text-3xl md:text-4xl">
-                      83.9%
-                    </span>{" "}
-                    accuracy and{" "}
-                    <span className="font-bold text-3xl md:text-4xl">
-                      improving every day!
-                    </span>
+                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI, our assessment system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
                   </p>
                 </div>
               </div>
