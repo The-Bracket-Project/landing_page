@@ -43,7 +43,7 @@ export default function Home() {
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
                 <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
                   <p className="text-2xl md:text-3xl font-bold">
-                    A Universal (And Worsening) Problem
+                    An Expensive And Worsening Problem
                   </p>
                   <p className="text-lg md:text-xl">
                     <span className="font-semibold text-3xl md:text-4xl">
@@ -117,7 +117,7 @@ export default function Home() {
                     A Solution That Works
                   </p>
                   <p className="text-lg md:text-xl">
-                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI, our assessment system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
+                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI technology, our assessment system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
                   </p>
                 </div>
               </div>

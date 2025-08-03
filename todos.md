@@ -1,6 +1,6 @@
-- Fix the video showing a play button in chrome
-- Change the text contents
-- Implement resend (email service for the contact us)
-- Remove careers (temporarily)
+- ~Fix the video showing a play button in chrome~
+- ~Change the text contents~
+- ~Implement resend (email service for the contact us)~
+- ~Remove careers (temporarily)~
 - Implement the generate summary
 - Store to DB
