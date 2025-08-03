@@ -122,7 +122,7 @@ export async function POST(request) {
     
     try {
       await resend.emails.send({
-        from: 'contact@yourdomain.com', // Must be verified domain
+        from: 'contact@thebracket.io', // Must be verified domain
         to: process.env.CONTACT_EMAIL || 'your-email@company.com',
         subject: `New Contact: ${sanitizedData.name} from ${sanitizedData.company}`,
         text: emailContent,
