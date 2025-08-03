@@ -12,6 +12,8 @@ export default function ResultsSummaryStep({
     groupSelection,
     personalityResponses,
     requestId,
+    oceanScores,
+    oceanScoresApiStatus,
     generatedSummary,
     summaryApiStatus
   } = assessmentState;
@@ -61,6 +63,47 @@ export default function ResultsSummaryStep({
         <p className="text-green-700 mb-4">
           Thank you for completing the personality assessment. Your responses have been recorded.
         </p>
+
+        {/* Ocean Scores Section */}
+        {oceanScoresApiStatus.loading && (
+          <p className="text-sm text-gray-600 mb-4">Computing your OCEAN personality scores...</p>
+        )}
+
+        {oceanScoresApiStatus.error && (
+          <p className="text-sm text-red-600 mb-4">Error computing scores: {oceanScoresApiStatus.error}</p>
+        )}
+
+        {oceanScores && (
+          <div className="bg-white rounded-lg p-6 shadow-sm text-left space-y-4 max-w-2xl mx-auto mb-6">
+            <h4 className="font-semibold text-gray-800 text-lg mb-4">Your OCEAN Personality Scores:</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Openness:</span>
+                  <span className="text-lg font-semibold text-blue-600">{oceanScores.openness.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Conscientiousness:</span>
+                  <span className="text-lg font-semibold text-green-600">{oceanScores.conscientiousness.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Extraversion:</span>
+                  <span className="text-lg font-semibold text-orange-600">{oceanScores.extraversion.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Agreeableness:</span>
+                  <span className="text-lg font-semibold text-purple-600">{oceanScores.agreeableness.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Neuroticism:</span>
+                  <span className="text-lg font-semibold text-red-600">{oceanScores.neuroticism.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {summaryApiStatus.loading && (
           <p className="text-sm text-gray-600 mb-4">Generating your personalized summary...</p>

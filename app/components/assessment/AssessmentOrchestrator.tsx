@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
-import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse} from './types';
+import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse, OceanScoresApiRequest, OceanScoresApiResponse} from './types';
 import { useAssessmentStorage } from '../../hooks/useAssessmentStorage';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
@@ -22,6 +22,8 @@ export default function AssessmentOrchestrator() {
     personalityResponses: [],
     personalityApiStatus: { loading: false, error: null, success: false },
     requestId: null,
+    oceanScores: null,
+    oceanScoresApiStatus: { loading: false, error: null, success: false },
     generatedSummary: null,
     summaryApiStatus: { loading: false, error: null, success: false },
     startTime: new Date(),
@@ -191,7 +193,53 @@ export default function AssessmentOrchestrator() {
     }
   }, [updateAssessmentData]);
 
+  // Ocean Scores API call handler  
+  const handleOceanScoresApiCall = useCallback(async () => {
+    try {
+      const requestData: OceanScoresApiRequest = {
+        interests: assessmentState.interests,
+        selfDescription: assessmentState.selfDescription,
+        availableGroups: assessmentState.availableGroups,
+        groupSelection: assessmentState.groupSelection,
+        followUpQuestions: assessmentState.followUpQuestions,
+        personalityResponses: assessmentState.personalityResponses
+      };
 
+      const response = await fetch('/api/compute-ocean-scores', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ocean scores API failed: ${response.status}`);
+      }
+
+      const data: OceanScoresApiResponse = await response.json();
+
+      // Store the ocean scores in state
+      updateAssessmentData({
+        oceanScores: data
+      });
+      
+    } catch (error) {
+      console.error('Error with ocean scores API:', error);
+      throw error; // Re-throw for retry handling
+    }
+  }, [assessmentState.interests, assessmentState.selfDescription, assessmentState.availableGroups, assessmentState.groupSelection, assessmentState.followUpQuestions, assessmentState.personalityResponses, updateAssessmentData]);
+
+  // Personality data submission handler - moves to next step immediately and triggers API call
+  const handlePersonalitySubmission = async () => {
+    if (assessmentState.personalityResponses.length === 0) return;
+
+    // Move to next step immediately (synchronous) 
+    goToNextStep();
+    
+    // Trigger API call in background - results page will wait for completion
+    await handleApiCall(handleOceanScoresApiCall, 'oceanScoresApiStatus');
+  };
 
   // Interests submission handler - moves to next step immediately and awaits background API call
   const handleInterestsSubmission = async () => {
@@ -243,7 +291,7 @@ export default function AssessmentOrchestrator() {
       case 'group-selection':
         return <GroupSelectionStep {...stepProps} />;
       case 'personality-questions':
-        return <PersonalityQuestionsStep {...stepProps} />;
+        return <PersonalityQuestionsStep {...stepProps} onSubmitPersonalityData={handlePersonalitySubmission} />;
       case 'results-summary':
         return <ResultsSummaryStep {...stepProps} />;
       default:

@@ -11,7 +11,7 @@ export default function SelfDescriptionStep({
 }: StepProps) {
   const [description, setDescription] = useState(assessmentState.selfDescription || '');
   const personalityDescriptionMaxLength = 1024;
-  const personalityDescriptionMinLength = 50;
+  const personalityDescriptionMinLength = 30;
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
