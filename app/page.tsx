@@ -117,7 +117,7 @@ export default function Home() {
                     A Solution That Works
                   </p>
                   <p className="text-lg md:text-xl">
-                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI technology, our assessment system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
+                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI technology, our assessment and compatibility system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
                   </p>
                 </div>
               </div>
