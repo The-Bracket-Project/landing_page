@@ -3,15 +3,13 @@ import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
 
 export default function ResultsSummaryStep({
-  assessmentState,
-  onUpdateData
+  assessmentState
 }: StepProps) {
   const {
     interests,
     selfDescription,
     groupSelection,
     personalityResponses,
-    requestId,
     generatedSummary,
     summaryApiStatus
   } = assessmentState;
@@ -19,38 +17,7 @@ export default function ResultsSummaryStep({
   useEffect(() => {
     // Clear saved assessment data since user has completed the assessment
     clearAssessmentState();
-
-    const fetchSummary = async () => {
-      if (!requestId) return;
-
-      onUpdateData({
-        summaryApiStatus: { loading: true, error: null, success: false }
-      });
-
-      try {
-        const response = await fetch(`/api/summary/${requestId}`);
-        if (!response.ok) {
-          throw new Error(`Summary API call failed: ${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
-
-        onUpdateData({
-          generatedSummary: data.summary || null,
-          summaryApiStatus: { loading: false, error: null, success: true }
-        });
-      } catch (error: unknown) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'An unknown error occurred';
-        onUpdateData({
-          summaryApiStatus: { loading: false, error: errorMessage, success: false }
-        });
-      }
-    };
-
-    if (!generatedSummary && !summaryApiStatus.loading) {
-      fetchSummary();
-    }
-  }, [requestId, generatedSummary, summaryApiStatus.loading, onUpdateData]);
+  }, []);
 
   return (
     <div className="text-center space-y-6">

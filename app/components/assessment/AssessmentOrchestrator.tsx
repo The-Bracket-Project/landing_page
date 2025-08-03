@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiResponse} from './types';
 import { useAssessmentStorage } from '../../hooks/useAssessmentStorage';
 import ProgressBar from './shared/ProgressBar';
@@ -28,6 +28,26 @@ export default function AssessmentOrchestrator() {
     completedSteps: []
   };
 
+  const steps: AssessmentStep[] = useMemo(() => [
+    'interests-input',
+    'self-description', 
+    'group-selection',
+    'personality-questions',
+    'results-summary'
+  ], []);
+
+  // Handle state restoration with API fallback logic - simple placeholder
+  const handleStateRestore = useCallback((
+    state: AssessmentState, 
+    fallbackInfo?: { reason: string; needsApiFallback: boolean }
+  ) => {
+    // Store fallback info for useEffect to handle
+    if (fallbackInfo?.needsApiFallback) {
+      // Mark that we need to run fallbacks
+      sessionStorage.setItem('needsApiFallback', JSON.stringify({ state, fallbackInfo }));
+    }
+  }, []);
+
   const {
     assessmentState,
     setAssessmentState,
@@ -41,41 +61,6 @@ export default function AssessmentOrchestrator() {
     onStateRestore: handleStateRestore,
     autoSave: true
   });
-
-
-
-  const steps: AssessmentStep[] = useMemo(() => [
-    'interests-input',
-    'self-description', 
-    'group-selection',
-    'personality-questions',
-    'results-summary'
-  ], []);
-
-  // Handle state restoration with API fallback logic
-  function handleStateRestore(
-    state: AssessmentState, 
-    fallbackInfo?: { reason: string; needsApiFallback: boolean }
-  ) {
-    if (fallbackInfo?.needsApiFallback) {
-      // Execute API retries directly (not through queue) to handle multiple missing APIs
-      const requestData = { interests: state.interests };
-      
-      // Check if groups are missing and user has interests
-      if (state.availableGroups.length === 0 && state.interests.length >= 3) {
-        handleGroupsApiCall(requestData).catch(error => {
-          console.error('Groups API retry failed during restoration:', error);
-        });
-      }
-      
-      // Check if follow-up questions are missing and user has interests  
-      if (state.followUpQuestions.length === 0 && state.interests.length >= 3) {
-        handleFollowUpQuestionsApiCall(requestData).catch(error => {
-          console.error('Follow-up questions API retry failed during restoration:', error);
-        });
-      }
-    }
-  }
 
   // Generic API call handler
   const handleApiCall = useCallback(async (
@@ -191,7 +176,95 @@ export default function AssessmentOrchestrator() {
     }
   }, [updateAssessmentData]);
 
+  // Generate summary API call - triggered when moving to results step
+  const handleGenerateSummaryApiCall = useCallback(async () => {
+    try {
+      const result = await handleApiCall(
+        async () => {
+          const response = await fetch('/api/generate-summary', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              interests: assessmentState.interests,
+              selfDescription: assessmentState.selfDescription,
+              availableGroups: assessmentState.availableGroups,
+              groupSelection: assessmentState.groupSelection,
+              followUpQuestions: assessmentState.followUpQuestions,
+              personalityResponses: assessmentState.personalityResponses
+            }),
+          });
 
+          if (!response.ok) {
+            throw new Error(`Summary generation failed: ${response.status} ${response.statusText}`);
+          }
+
+          return response.json();
+        },
+        'summaryApiStatus'
+      );
+
+      // Store the generated summary
+      const typedResult = result as { summary?: string };
+      if (typedResult?.summary) {
+        updateAssessmentData({ 
+          generatedSummary: typedResult.summary
+        });
+      }
+    } catch (error) {
+      console.error('Error with generate summary API:', error);
+      throw error; // Re-throw for retry handling
+    }
+  }, [handleApiCall, updateAssessmentData, assessmentState.interests, assessmentState.selfDescription, assessmentState.availableGroups, assessmentState.groupSelection, assessmentState.followUpQuestions, assessmentState.personalityResponses]);
+
+  // State restoration fallback logic - runs after API handlers are defined
+  const executeStateRestorationFallbacks = useCallback((
+    state: AssessmentState, 
+    fallbackInfo?: { reason: string; needsApiFallback: boolean }
+  ) => {
+    if (fallbackInfo?.needsApiFallback) {
+      // Execute API retries directly (not through queue) to handle multiple missing APIs
+      const requestData = { interests: state.interests };
+      
+      // Check if groups are missing and user has interests
+      if (state.availableGroups.length === 0 && state.interests.length >= 3) {
+        handleGroupsApiCall(requestData).catch(error => {
+          console.error('Groups API retry failed during restoration:', error);
+        });
+      }
+      
+      // Check if follow-up questions are missing and user has interests  
+      if (state.followUpQuestions.length === 0 && state.interests.length >= 3) {
+        handleFollowUpQuestionsApiCall(requestData).catch(error => {
+          console.error('Follow-up questions API retry failed during restoration:', error);
+        });
+      }
+
+      // Check if summary is missing and user is on results step with complete data
+      if (!state.generatedSummary && state.currentStep === 'results-summary' && 
+          state.personalityResponses.length > 0) {
+        handleGenerateSummaryApiCall().catch(error => {
+          console.error('Generate summary API retry failed during restoration:', error);
+        });
+      }
+    }
+  }, [handleGroupsApiCall, handleFollowUpQuestionsApiCall, handleGenerateSummaryApiCall]);
+
+  // Handle API fallbacks on component mount if needed
+  useEffect(() => {
+    const fallbackData = sessionStorage.getItem('needsApiFallback');
+    if (fallbackData) {
+      try {
+        const { state, fallbackInfo } = JSON.parse(fallbackData);
+        executeStateRestorationFallbacks(state, fallbackInfo);
+        sessionStorage.removeItem('needsApiFallback');
+      } catch (error) {
+        console.error('Error handling API fallbacks:', error);
+        sessionStorage.removeItem('needsApiFallback');
+      }
+    }
+  }, [executeStateRestorationFallbacks]);
 
   // Interests submission handler - moves to next step immediately and awaits background API call
   const handleInterestsSubmission = async () => {
@@ -205,7 +278,7 @@ export default function AssessmentOrchestrator() {
     await handleInterestsApiCall();
   };
 
-  const goToNextStep = useCallback(() => {
+  const goToNextStep = useCallback(async () => {
     const currentIndex = steps.indexOf(assessmentState.currentStep);
     if (currentIndex < steps.length - 1) {
       const nextStep = steps[currentIndex + 1];
@@ -218,6 +291,12 @@ export default function AssessmentOrchestrator() {
         console.log('Selected Groups:', assessmentState.groupSelection);
         console.log('Follow-up Questions:', assessmentState.followUpQuestions);
         console.log('Personality Responses:', assessmentState.personalityResponses);
+        
+        // Trigger summary generation API call
+        handleGenerateSummaryApiCall().catch(error => {
+          console.error('Summary generation failed during step transition:', error);
+          // Continue to results step even if summary generation fails
+        });
       }
       
       updateAssessmentData({
@@ -225,7 +304,7 @@ export default function AssessmentOrchestrator() {
         completedSteps: [...assessmentState.completedSteps, assessmentState.currentStep]
       });
     }
-  }, [assessmentState, updateAssessmentData, steps]);
+  }, [assessmentState, updateAssessmentData, steps, handleGenerateSummaryApiCall]);
 
   const renderCurrentStep = () => {
     const stepProps = {
