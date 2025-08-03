@@ -11,7 +11,7 @@ export default function PersonalityAssessment() {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 w-full">
             {!isStarted ? (
                 <>
                     {/* Introduction Section */}

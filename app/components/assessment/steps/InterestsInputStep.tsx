@@ -27,7 +27,7 @@ export default function InterestsInputStep({
   assessmentState, 
   onSubmitInterests
 }: InterestsStepProps) {
-  const [interests, setInterests] = useState<string[]>(assessmentState.interests.interests);
+  const [interests, setInterests] = useState<string[]>(assessmentState.interests);
   const [inputValue, setInputValue] = useState('');
   
   // Get loading and error state from the orchestrator
@@ -39,7 +39,7 @@ export default function InterestsInputStep({
       const newInterests = [...interests, interest];
       setInterests(newInterests);
       onUpdateData({ 
-        interests: { interests: newInterests }
+        interests: newInterests
       });
     }
   };
@@ -53,7 +53,7 @@ export default function InterestsInputStep({
         setInterests(newInterests);
         setInputValue('');
         onUpdateData({ 
-          interests: { interests: newInterests }
+          interests: newInterests
         });
       }
     }
@@ -64,7 +64,7 @@ export default function InterestsInputStep({
       const newInterests = interests.filter((_, i) => i !== index);
       setInterests(newInterests);
       onUpdateData({ 
-        interests: { interests: newInterests }
+        interests: newInterests
       });
     }
   };

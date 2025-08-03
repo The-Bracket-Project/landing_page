@@ -81,7 +81,7 @@ export default function ResultsSummaryStep({
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <h4 className="font-medium text-gray-800 mb-2">Summary:</h4>
             <ul className="space-y-1 text-sm text-gray-600">
-              <li>• Interests shared: {interests.interests.length}</li>
+              <li>• Interests shared: {interests.length}</li>
               <li>• Self-description provided: {selfDescription ? 'Yes' : 'No'}</li>
               <li>• Groups selected: {groupSelection.length}</li>
               <li>• Questions answered: {personalityResponses.length}</li>

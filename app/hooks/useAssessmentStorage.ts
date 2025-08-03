@@ -75,7 +75,7 @@ export function useAssessmentStorage({
     const isInitialState = 
       assessmentState.currentStep === 'interests-input' && 
       assessmentState.completedSteps.length === 0 && 
-      assessmentState.interests.interests.length === 0;
+      assessmentState.interests.length === 0;
     
     if (!isInitialState && shouldSaveState(assessmentState)) {
       const saveResult = saveValidatedAssessmentState(assessmentState);

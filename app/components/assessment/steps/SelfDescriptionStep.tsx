@@ -11,6 +11,7 @@ export default function SelfDescriptionStep({
 }: StepProps) {
   const [description, setDescription] = useState(assessmentState.selfDescription || '');
   const personalityDescriptionMaxLength = 1024;
+  const personalityDescriptionMinLength = 50;
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -42,7 +43,12 @@ export default function SelfDescriptionStep({
           className="bg-white w-full h-55 px-4 py-3 text-black border border-gray-300 text-base rounded-lg focus:ring-2 focus:ring-black focus:border-transparent resize-none leading-relaxed tracking-wide"
           style={{ fontFamily: '"Playfair Display", "Georgia", "Times New Roman", "Baskerville", serif', fontStyle: 'italic' }}
         />
-        <div className="flex justify-end mt-1">
+        <div className="flex justify-between items-center mt-1">
+          <span className={`text-xs ${description.length < personalityDescriptionMinLength ? 'text-red-500' : 'text-green-600'}`}>
+            {description.length < personalityDescriptionMinLength 
+              ? `${personalityDescriptionMinLength - description.length} more characters needed` 
+              : 'Minimum length reached ✓'}
+          </span>
           <span className="text-xs text-gray-500">
             {description.length}/{personalityDescriptionMaxLength}
           </span>
@@ -50,7 +56,10 @@ export default function SelfDescriptionStep({
       </div>
 
       {/* Continue Button */}
-      <ContinueButton onClick={handleContinue}>
+      <ContinueButton 
+        onClick={handleContinue}
+        disabled={description.length < personalityDescriptionMinLength}
+      >
         Continue
       </ContinueButton>
     </div>

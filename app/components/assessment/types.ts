@@ -7,12 +7,6 @@ export type AssessmentStep =
   | 'results-summary';
 
 // API-related types
-export interface InterestsData {
-  interests: string[];
-  categories?: string[];
-}
-
-
 
 export interface PersonalityResponseData {
   questionId: string;
@@ -31,7 +25,7 @@ export interface AssessmentState {
   currentStep: AssessmentStep;
   
   // Phase 1: Interests
-  interests: InterestsData;
+  interests: string[];
   interestsApiStatus: ApiStatus;
   
   // Phase 2: Description

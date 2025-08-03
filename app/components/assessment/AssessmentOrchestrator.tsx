@@ -13,7 +13,7 @@ import ResultsSummaryStep from './steps/ResultsSummaryStep';
 export default function AssessmentOrchestrator() {
   const initialState: AssessmentState = {
     currentStep: 'interests-input',
-    interests: { interests: [] },
+    interests: [],
     interestsApiStatus: { loading: false, error: null, success: false },
     selfDescription: '',
     availableGroups: [],
@@ -59,17 +59,17 @@ export default function AssessmentOrchestrator() {
   ) {
     if (fallbackInfo?.needsApiFallback) {
       // Execute API retries directly (not through queue) to handle multiple missing APIs
-      const requestData = { interests: state.interests.interests };
+      const requestData = { interests: state.interests };
       
       // Check if groups are missing and user has interests
-      if (state.availableGroups.length === 0 && state.interests.interests.length >= 3) {
+      if (state.availableGroups.length === 0 && state.interests.length >= 3) {
         handleGroupsApiCall(requestData).catch(error => {
           console.error('Groups API retry failed during restoration:', error);
         });
       }
       
       // Check if follow-up questions are missing and user has interests  
-      if (state.followUpQuestions.length === 0 && state.interests.interests.length >= 3) {
+      if (state.followUpQuestions.length === 0 && state.interests.length >= 3) {
         handleFollowUpQuestionsApiCall(requestData).catch(error => {
           console.error('Follow-up questions API retry failed during restoration:', error);
         });
@@ -114,7 +114,7 @@ export default function AssessmentOrchestrator() {
 
   // Interests API call handler - runs in background
   const handleInterestsApiCall = async () => {
-    const interests = assessmentState.interests.interests;
+    const interests = assessmentState.interests;
     if (interests.length < 3) return;
 
     const requestData: InterestsApiRequest = { interests };
@@ -195,7 +195,7 @@ export default function AssessmentOrchestrator() {
 
   // Interests submission handler - moves to next step immediately and awaits background API call
   const handleInterestsSubmission = async () => {
-    const interests = assessmentState.interests.interests;
+    const interests = assessmentState.interests;
     if (interests.length < 3) return;
 
     // Move to next step immediately (synchronous)
@@ -212,14 +212,12 @@ export default function AssessmentOrchestrator() {
       
       // Console log all assessment data when moving from personality-questions to results-summary
       if (assessmentState.currentStep === 'personality-questions' && nextStep === 'results-summary') {
-        console.log('=== Complete Assessment Data ===');
         console.log('Interests:', assessmentState.interests);
         console.log('Self Description:', assessmentState.selfDescription);
         console.log('Available Groups:', assessmentState.availableGroups);
         console.log('Selected Groups:', assessmentState.groupSelection);
         console.log('Follow-up Questions:', assessmentState.followUpQuestions);
         console.log('Personality Responses:', assessmentState.personalityResponses);
-        console.log('================================');
       }
       
       updateAssessmentData({

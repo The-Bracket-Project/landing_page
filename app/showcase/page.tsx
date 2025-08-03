@@ -14,9 +14,9 @@ export default function Showcase() {
             
             <div className="flex flex-col min-h-[calc(100vh-80px)] max-w-6xl px-4 sm:px-6 md:px-8 justify-between mx-auto">
                 <main className="flex-1 mx-auto pt-10">
-                    <div className="flex flex-col items-center justify-center min-h-full">
+                    <div className="items-center justify-center min-h-full">
                         <div 
-                            className="rounded-3xl p-4 md:p-6 w-full sm:w-4xl mx-auto"
+                            className="rounded-3xl p-4 md:p-6 lg:w-4xl md: mx-auto"
                             style={{
                                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                                 boxShadow: '0 8px 32px 0 rgba(255, 255, 255, 0.37), 0 0 0 4px rgba(255, 255, 255, 0.18)',
@@ -31,7 +31,7 @@ export default function Showcase() {
                     </div>
                 </main>
 
-                <div className="max-w-6xl md:px-6 lg:px-8">
+                <div className="max-w-6xl pt-10 md:px-6 lg:px-8">
                     <Footer />
                 </div>
             </div>

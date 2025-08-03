@@ -167,7 +167,7 @@ export function validateStepDataIntegrity(state: AssessmentState): {
 
     case 'self-description':
       // No API dependencies, just check if interests are present
-      if (!state.interests.interests || state.interests.interests.length < 3) {
+      if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
       }
@@ -175,7 +175,7 @@ export function validateStepDataIntegrity(state: AssessmentState): {
 
     case 'group-selection':
       // Requires availableGroups from groups API
-      if (!state.interests.interests || state.interests.interests.length < 3) {
+      if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
@@ -186,7 +186,7 @@ export function validateStepDataIntegrity(state: AssessmentState): {
 
     case 'personality-questions':
       // Requires followUpQuestions from follow-up questions API
-      if (!state.interests.interests || state.interests.interests.length < 3) {
+      if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
@@ -200,7 +200,7 @@ export function validateStepDataIntegrity(state: AssessmentState): {
 
     case 'results-summary':
       // Requires completed personality responses and requestId
-      if (!state.interests.interests || state.interests.interests.length < 3) {
+      if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
@@ -298,17 +298,17 @@ function validateCurrentStepOnly(state: AssessmentState): boolean {
       
     case 'self-description':
       // Only requires interests (no API dependencies)
-      return state.interests.interests && state.interests.interests.length >= 3;
+      return state.interests && state.interests.length >= 3;
       
     case 'group-selection':
       // Requires interests - but we'll save even if availableGroups is missing
       // (will be handled by retry logic on restore)
-      return state.interests.interests && state.interests.interests.length >= 3;
+      return state.interests && state.interests.length >= 3;
       
     case 'personality-questions':
       // Requires interests - but we'll save even if followUpQuestions is missing
       // (will be handled by retry logic on restore)
-      return state.interests.interests && state.interests.interests.length >= 3;
+      return state.interests && state.interests.length >= 3;
       
     case 'results-summary':
       // Only save if we actually have responses (this step should be complete)
