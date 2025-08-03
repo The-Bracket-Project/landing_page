@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
 
@@ -13,10 +13,21 @@ export default function ResultsSummaryStep({
     generatedSummary,
     summaryApiStatus
   } = assessmentState;
+  
+  const hasCleared = useRef(false);
 
   useEffect(() => {
     // Clear saved assessment data since user has completed the assessment
-    clearAssessmentState();
+    // Use ref to ensure this only happens once
+    if (!hasCleared.current) {
+      clearAssessmentState();
+      hasCleared.current = true;
+      
+      // Also clear it again after a short delay to handle any auto-save race conditions
+      setTimeout(() => {
+        clearAssessmentState();
+      }, 100);
+    }
   }, []);
 
   return (
@@ -44,7 +55,7 @@ export default function ResultsSummaryStep({
           </div>
         )}
 
-        <div className="text-left space-y-4 max-w-2xl mx-auto">
+        {/* <div className="text-left space-y-4 max-w-2xl mx-auto">
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <h4 className="font-medium text-gray-800 mb-2">Summary:</h4>
             <ul className="space-y-1 text-sm text-gray-600">
@@ -54,7 +65,7 @@ export default function ResultsSummaryStep({
               <li>• Questions answered: {personalityResponses.length}</li>
             </ul>
           </div>
-        </div>
+        </div> */}
 
         <p className="text-sm text-gray-600 mt-4">
           Your anonymous data helps advance personality research. Thank you for contributing!

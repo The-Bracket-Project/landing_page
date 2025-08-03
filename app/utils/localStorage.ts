@@ -311,8 +311,8 @@ function validateCurrentStepOnly(state: AssessmentState): boolean {
       return state.interests && state.interests.length >= 3;
       
     case 'results-summary':
-      // Only save if we actually have responses (this step should be complete)
-      return state.personalityResponses && state.personalityResponses.length > 0;
+      // Don't save on results summary - user has completed assessment
+      return false;
       
     default:
       return false;
