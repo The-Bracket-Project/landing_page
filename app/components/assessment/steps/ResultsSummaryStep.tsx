@@ -6,10 +6,6 @@ export default function ResultsSummaryStep({
   assessmentState
 }: StepProps) {
   const {
-    interests,
-    selfDescription,
-    groupSelection,
-    personalityResponses,
     generatedSummary,
     summaryApiStatus
   } = assessmentState;
