@@ -41,7 +41,11 @@ export interface AssessmentState {
   personalityApiStatus: ApiStatus;
   requestId: string | null;
   
-  // Phase 5: Results
+  // Phase 5: OCEAN Scores Computation
+  oceanScores: OceanScore | null;
+  oceanScoresApiStatus: ApiStatus;
+  
+  // Phase 6: Results
   generatedSummary: string | null;
   summaryApiStatus: ApiStatus;
   
@@ -59,7 +63,11 @@ export interface StepProps {
 
 export interface InterestsStepProps extends StepProps {
   onSubmitInterests: () => Promise<void>;
-} 
+}
+
+export interface PersonalityQuestionsStepProps extends StepProps {
+  onSubmitPersonalityData: () => Promise<void>;
+}
 
 // Groups interface (raw API data)
 export interface InterestsGroups {
@@ -90,4 +98,29 @@ export interface FollowUpQuestion {
 
 export interface FollowUpQuestionsReponse {
   questions: FollowUpQuestion[];
+}
+
+export interface OceanScore {
+  openness: number;
+  conscientiousness: number;
+  extraversion: number;
+  agreeableness: number;
+  neuroticism: number;
+}
+
+export interface OceanScoresApiRequest {
+  interests: string[];
+  selfDescription: string;
+  availableGroups: InterestsGroups[][];
+  groupSelection: string[];
+  followUpQuestions: FollowUpQuestion[];
+  personalityResponses: PersonalityResponseData[];
+}
+
+export interface OceanScoresApiResponse {
+  openness: number;
+  conscientiousness: number;
+  extraversion: number;
+  agreeableness: number;
+  neuroticism: number;
 }

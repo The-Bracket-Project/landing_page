@@ -22,6 +22,8 @@ export default function AssessmentOrchestrator() {
     personalityResponses: [],
     personalityApiStatus: { loading: false, error: null, success: false },
     requestId: null,
+    oceanScores: null,
+    oceanScoresApiStatus: { loading: false, error: null, success: false },
     generatedSummary: null,
     summaryApiStatus: { loading: false, error: null, success: false },
     startTime: new Date(),
@@ -322,7 +324,7 @@ export default function AssessmentOrchestrator() {
       case 'group-selection':
         return <GroupSelectionStep {...stepProps} />;
       case 'personality-questions':
-        return <PersonalityQuestionsStep {...stepProps} />;
+        return <PersonalityQuestionsStep {...stepProps} onSubmitPersonalityData={handlePersonalitySubmission} />;
       case 'results-summary':
         return <ResultsSummaryStep {...stepProps} />;
       default:
