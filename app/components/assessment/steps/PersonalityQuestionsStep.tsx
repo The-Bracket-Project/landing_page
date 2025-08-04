@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { StepProps, PersonalityResponseData, FollowUpOption } from '../types';
+import { PersonalityQuestionsStepProps, PersonalityResponseData, FollowUpOption } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
 export default function PersonalityQuestionsStep({ 
   onNext, 
   onUpdateData, 
-  assessmentState
-}: StepProps) {
+  assessmentState,
+  onSubmitPersonalityData
+}: PersonalityQuestionsStepProps) {
   const { followUpQuestions } = assessmentState;
   
   // State for managing question navigation and selections
@@ -53,11 +54,18 @@ export default function PersonalityQuestionsStep({
   };
   
   // Handle continue (only show after last question)
-  const handleContinue = () => {
-    // Console log all responses at the end
-    const allResponses = Object.values(questionResponses);
-    console.log('Final personality responses:', allResponses);
-    onNext();
+  const handleContinue = async () => {
+    try {
+      // Console log all responses at the end
+      const allResponses = Object.values(questionResponses);
+      console.log('Final personality responses:', allResponses);
+      
+      // Trigger immediate navigation and background API call through the orchestrator
+      await onSubmitPersonalityData();
+    } catch (error) {
+      console.error('Error during personality data submission:', error);
+      // Error is handled by orchestrator, but we could add component-specific handling here if needed
+    }
   };
   
   // Check if user has answered current question
@@ -82,7 +90,7 @@ export default function PersonalityQuestionsStep({
           </p>
         </div>
         
-        <ContinueButton onClick={onNext}>
+        <ContinueButton onClick={onSubmitPersonalityData}>
           See my results!
         </ContinueButton>
       </div>
