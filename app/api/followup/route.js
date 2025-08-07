@@ -12,10 +12,25 @@ export async function POST(request) {
     // Get the request body
     const body = await request.json();
     
-    // Construct the full API URL
-    const fullApiUrl = `${API_BASE_URL}/api/get-groups-showcase`;
+    // Validate the interests data
+    if (!body.interests || !Array.isArray(body.interests)) {
+      return NextResponse.json(
+        { error: 'Invalid interests data' },
+        { status: 400 }
+      );
+    }
+
+    if (body.interests.length < 3) {
+      return NextResponse.json(
+        { error: 'At least 3 interests are required' },
+        { status: 400 }
+      );
+    }
     
-    // Forward the request to the API
+    // Construct the full API URL
+    const fullApiUrl = `${API_BASE_URL}/api/followup`;
+    
+    // Forward the request to the AWS Lambda API
     const response = await fetch(fullApiUrl, {
       method: 'POST',
       headers: {
@@ -40,10 +55,10 @@ export async function POST(request) {
         'Access-Control-Allow-Headers': 'Content-Type',
       },
     });
-    
+
   } catch (error) {
     console.error('Error proxying request to API:', error);
-    console.error('API URL used:', `${API_BASE_URL}/api/get-groups-showcase`);
+    console.error('API URL used:', `${API_BASE_URL}/api/followup`);
     
     return NextResponse.json(
       { error: 'Failed to process request' },

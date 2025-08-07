@@ -117,7 +117,7 @@ export default function AssessmentOrchestrator() {
     try {
       const groupsResult = await handleApiCall(
         async () => {
-          const response = await fetch('/api/get-groups-showcase', {
+          const response = await fetch('/api/groups', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export default function AssessmentOrchestrator() {
   // Follow-up questions API call - runs independently in background
   const handleFollowUpQuestionsApiCall = useCallback(async (requestData: InterestsApiRequest) => {
     try {
-      const followUpResult = await fetch('/api/follow-up-questions', {
+      const followUpResult = await fetch('/api/followup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
