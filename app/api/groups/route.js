@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+console.log("API_BASE_URL in Vercel:", process.env.NEXT_PUBLIC_API_URL);
 
 export async function POST(request) {
   try {
@@ -8,6 +9,8 @@ export async function POST(request) {
     if (!API_BASE_URL) {
       throw new Error('NEXT_PUBLIC_API_URL environment variable is not configured');
     }
+
+
 
     // Get the request body
     const body = await request.json();
