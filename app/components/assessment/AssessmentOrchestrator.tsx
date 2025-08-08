@@ -177,27 +177,63 @@ export default function AssessmentOrchestrator() {
   }, [updateAssessmentData]);
 
   // Generate summary API call - triggered when moving to results step
-  const handleGenerateSummaryApiCall = useCallback(async () => {
+  // Queue ocean score computation - triggered when moving to results step
+  const handleOceanApiCall = useCallback(async () => {
+    const traitIndex: Record<string, number> = {
+      openness: 0,
+      conscientiousness: 1,
+      extraversion: 2,
+      agreeableness: 3,
+      neuroticism: 4
+    };
+
+    const numericToLevel = (score: number): string => {
+      if (score <= 0.2) return 'Low';
+      if (score <= 0.4) return 'Medium-Low';
+      if (score <= 0.6) return 'Medium';
+      if (score <= 0.8) return 'Medium-High';
+      return 'High';
+    };
     try {
       const result = await handleApiCall(
         async () => {
-          const response = await fetch('/api/generate-summary', {
+          const groupsPayload = assessmentState.availableGroups
+            .slice(0, assessmentState.groupSelection.length)
+            .map(set =>
+              set.map(g => ({
+                name: g.description,
+                description: g.description,
+                target_ocean: g.target_ocean,
+                ocean_score: g.ocean_score
+              }))
+            );
+
+          const targetTraits = groupsPayload.map(set => set[0]?.target_ocean || '');
+
+          const followAnswers = targetTraits.map(trait => {
+            const res = assessmentState.personalityResponses.find(r => r.questionId.startsWith(trait));
+            const arr = res ? (Array.from(res.score as unknown as number[])) : [];
+            const val = arr[traitIndex[trait]] ?? 0;
+            return { target_ocean: trait, level: numericToLevel(val) };
+          });
+
+          const response = await fetch('/api/ocean', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              interests: assessmentState.interests,
-              selfDescription: assessmentState.selfDescription,
-              availableGroups: assessmentState.availableGroups,
-              groupSelection: assessmentState.groupSelection,
-              followUpQuestions: assessmentState.followUpQuestions,
-              personalityResponses: assessmentState.personalityResponses
+              request_id: assessmentState.requestId,
+              groups: groupsPayload,
+              selected_group: assessmentState.groupSelection.map(g => g),
+              target_traits: targetTraits,
+              follow_up_answers: followAnswers,
+              interests: assessmentState.interests
             }),
           });
 
           if (!response.ok) {
-            throw new Error(`Summary generation failed: ${response.status} ${response.statusText}`);
+            throw new Error(`Ocean score API call failed: ${response.status} ${response.statusText}`);
           }
 
           return response.json();
@@ -206,17 +242,15 @@ export default function AssessmentOrchestrator() {
       );
 
       // Store the generated summary
-      const typedResult = result as { summary?: string };
-      if (typedResult?.summary) {
-        updateAssessmentData({ 
-          generatedSummary: typedResult.summary
-        });
+      const typedResult = result as { request_id?: string };
+      if (typedResult?.request_id) {
+        updateAssessmentData({ requestId: typedResult.request_id });
       }
     } catch (error) {
-      console.error('Error with generate summary API:', error);
+      console.error('Error with ocean API:', error);
       throw error; // Re-throw for retry handling
     }
-  }, [handleApiCall, updateAssessmentData, assessmentState.interests, assessmentState.selfDescription, assessmentState.availableGroups, assessmentState.groupSelection, assessmentState.followUpQuestions, assessmentState.personalityResponses]);
+  }, [handleApiCall, updateAssessmentData, assessmentState.availableGroups, assessmentState.groupSelection, assessmentState.personalityResponses, assessmentState.interests, assessmentState.requestId]);
 
   // State restoration fallback logic - runs after API handlers are defined
   const executeStateRestorationFallbacks = useCallback((
@@ -234,22 +268,21 @@ export default function AssessmentOrchestrator() {
         });
       }
       
-      // Check if follow-up questions are missing and user has interests  
+      // Check if follow-up questions are missing and user has interests
       if (state.followUpQuestions.length === 0 && state.interests.length >= 3) {
         handleFollowUpQuestionsApiCall(requestData).catch(error => {
           console.error('Follow-up questions API retry failed during restoration:', error);
         });
       }
 
-      // Check if summary is missing and user is on results step with complete data
-      if (!state.generatedSummary && state.currentStep === 'results-summary' && 
-          state.personalityResponses.length > 0) {
-        handleGenerateSummaryApiCall().catch(error => {
-          console.error('Generate summary API retry failed during restoration:', error);
+      // If ocean computation wasn't queued and we're on results, attempt to queue it
+      if (!state.requestId && state.currentStep === 'results-summary' && state.personalityResponses.length > 0) {
+        handleOceanApiCall().catch(error => {
+          console.error('Ocean API retry failed during restoration:', error);
         });
       }
     }
-  }, [handleGroupsApiCall, handleFollowUpQuestionsApiCall, handleGenerateSummaryApiCall]);
+  }, [handleGroupsApiCall, handleFollowUpQuestionsApiCall, handleOceanApiCall]);
 
   // Handle API fallbacks on component mount if needed
   useEffect(() => {
@@ -292,10 +325,10 @@ export default function AssessmentOrchestrator() {
         console.log('Follow-up Questions:', assessmentState.followUpQuestions);
         console.log('Personality Responses:', assessmentState.personalityResponses);
         
-        // Trigger summary generation API call
-        handleGenerateSummaryApiCall().catch(error => {
-          console.error('Summary generation failed during step transition:', error);
-          // Continue to results step even if summary generation fails
+        // Queue ocean score computation
+        handleOceanApiCall().catch(error => {
+          console.error('Ocean API call failed during step transition:', error);
+          // Continue to results step even if queuing fails
         });
       }
       
@@ -304,7 +337,7 @@ export default function AssessmentOrchestrator() {
         completedSteps: [...assessmentState.completedSteps, assessmentState.currentStep]
       });
     }
-  }, [assessmentState, updateAssessmentData, steps, handleGenerateSummaryApiCall]);
+  }, [assessmentState, updateAssessmentData, steps, handleOceanApiCall]);
 
   const renderCurrentStep = () => {
     const stepProps = {
