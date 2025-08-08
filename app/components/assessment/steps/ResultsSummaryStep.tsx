@@ -44,6 +44,12 @@ export default function ResultsSummaryStep({
           }
           return;
         }
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await res.text();
+          console.error('Unexpected summary response:', text);
+          throw new Error('Invalid summary response');
+        }
         const data = await res.json();
         if (data?.summary) {
           onUpdateData({
