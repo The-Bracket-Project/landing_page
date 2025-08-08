@@ -44,7 +44,7 @@ function deserializeState(serialized: SerializedState): AssessmentState {
     startTime: new Date(stateData.startTime),
     personalityResponses: stateData.personalityResponses.map(response => ({
       ...response,
-      score: new Float64Array(response.score ?? []) // Convert back to Float16Array
+      score: new Float16Array(response.score ?? []) // Convert back to Float16Array
     }))
   };
 }
