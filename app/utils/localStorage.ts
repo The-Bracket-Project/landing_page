@@ -25,7 +25,7 @@ function serializeState(state: AssessmentState): SerializedState {
     startTime: state.startTime.toISOString(),
     personalityResponses: state.personalityResponses.map(response => ({
       ...response,
-      score: Array.from(response.score) // Convert Float16Array to regular array
+      score: Array.from(response.score ?? []) // Convert Float16Array to regular array
     })),
     _version: STORAGE_VERSION,
     _timestamp: new Date().toISOString()
@@ -44,7 +44,7 @@ function deserializeState(serialized: SerializedState): AssessmentState {
     startTime: new Date(stateData.startTime),
     personalityResponses: stateData.personalityResponses.map(response => ({
       ...response,
-      score: new Float16Array(response.score) // Convert back to Float16Array
+      score: new Float64Array(response.score ?? []) // Convert back to Float16Array
     }))
   };
 }

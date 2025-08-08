@@ -212,7 +212,7 @@ export default function AssessmentOrchestrator() {
 
           const followAnswers = targetTraits.map(trait => {
             const res = assessmentState.personalityResponses.find(r => r.questionId.startsWith(trait));
-            const arr = res ? (Array.from(res.score as unknown as number[])) : [];
+            const arr = Array.from((res?.score ?? []) as number[]);
             const val = arr[traitIndex[trait]] ?? 0;
             return { target_ocean: trait, level: numericToLevel(val) };
           });
