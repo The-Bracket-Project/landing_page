@@ -1,5 +1,5 @@
 // API Configuration - Frontend should always call local Next.js API routes
-const baseURL = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+const baseURL = 'https://ecxh6fcfnpzyyywdzyw5rgwwje0gubzx.lambda-url.us-west-1.on.aws';
 
 export { baseURL };
 
