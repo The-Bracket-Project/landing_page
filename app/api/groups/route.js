@@ -13,7 +13,7 @@ export async function POST(request) {
     const body = await request.json();
     
     // Construct the full API URL
-    const fullApiUrl = `${API_BASE_URL}/api/groups`;
+    const fullApiUrl = `${API_BASE_URL}/api/get-groups-showcase`;
     
     // Forward the request to the API
     const response = await fetch(fullApiUrl, {
@@ -43,7 +43,7 @@ export async function POST(request) {
     
   } catch (error) {
     console.error('Error proxying request to API:', error);
-    console.error('API URL used:', `${API_BASE_URL}/api/groups`);
+    console.error('API URL used:', `${API_BASE_URL}/api/get-groups-showcase`);
     
     return NextResponse.json(
       { error: 'Failed to process request' },

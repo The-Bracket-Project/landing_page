@@ -28,7 +28,7 @@ export async function POST(request) {
     }
     
     // Construct the full API URL
-    const fullApiUrl = `${API_BASE_URL}/api/followup`;
+    const fullApiUrl = `${API_BASE_URL}/api/follow-up-questions`;
     
     // Forward the request to the AWS Lambda API
     const response = await fetch(fullApiUrl, {
@@ -58,7 +58,7 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Error proxying request to API:', error);
-    console.error('API URL used:', `${API_BASE_URL}/api/followup`);
+    console.error('API URL used:', `${API_BASE_URL}/api/follow-up-questions`);
     
     return NextResponse.json(
       { error: 'Failed to process request' },
