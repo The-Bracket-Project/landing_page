@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 export async function POST(request) {
