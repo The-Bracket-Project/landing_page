@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const MAX_ATTEMPTS = 5;
+const RETRY_DELAY_MS = 5000;
 
 export async function GET(request, { params }) {
   const { request_id } = params;
@@ -11,13 +13,37 @@ export async function GET(request, { params }) {
 
     const fullApiUrl = `${API_BASE_URL}/api/summary/${request_id}`;
 
-    const response = await fetch(fullApiUrl, {
-      headers: {
-        Accept: 'application/json'
+    let response;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      response = await fetch(fullApiUrl, {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+      if (response.ok || response.status !== 404) {
+        break;
       }
-    });
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+    }
+
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      const contentType = response.headers.get('content-type');
+      let errorBody = {};
+      if (contentType && contentType.includes('application/json')) {
+        errorBody = await response.json();
+      } else {
+        const text = await response.text();
+        errorBody = { error: text.slice(0, 100) };
+      }
+
+      return NextResponse.json(errorBody, {
+        status: response.status,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
     }
 
     const contentType = response.headers.get('content-type');
@@ -26,12 +52,7 @@ export async function GET(request, { params }) {
       throw new Error(`Invalid response format: ${text.slice(0, 100)}`);
     }
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(`Invalid JSON response: ${text.slice(0, 100)}`);
-    }
+    const data = await response.json();
 
     return NextResponse.json(data, {
       status: 200,
