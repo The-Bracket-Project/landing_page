@@ -13,6 +13,7 @@ export async function GET(request, { params }) {
 
     const fullApiUrl = `${API_BASE_URL}/api/ocean_scores/${request_id}`;
 
+    let response;
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       response = await fetch(fullApiUrl, {
         headers: {
