@@ -11,13 +11,27 @@ export async function GET(request, { params }) {
 
     const fullApiUrl = `${API_BASE_URL}/api/summary/${request_id}`;
 
-    const response = await fetch(fullApiUrl);
-
+    const response = await fetch(fullApiUrl, {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
     if (!response.ok) {
       throw new Error(`API request failed: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text();
+      throw new Error(`Invalid response format: ${text.slice(0, 100)}`);
+    }
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Invalid JSON response: ${text.slice(0, 100)}`);
+    }
 
     return NextResponse.json(data, {
       status: 200,

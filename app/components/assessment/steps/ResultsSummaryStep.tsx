@@ -3,11 +3,13 @@ import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
 
 export default function ResultsSummaryStep({
-  assessmentState
+  assessmentState,
+  onUpdateData
 }: StepProps) {
   const {
     generatedSummary,
-    summaryApiStatus
+    summaryApiStatus,
+    requestId
   } = assessmentState;
   
   const hasCleared = useRef(false);
@@ -25,6 +27,48 @@ export default function ResultsSummaryStep({
       }, 100);
     }
   }, []);
+
+  // Poll for summary if not yet generated
+  useEffect(() => {
+    if (!requestId || generatedSummary) return;
+
+    onUpdateData({ summaryApiStatus: { loading: true, error: null, success: false } });
+
+    const fetchSummary = async () => {
+      try {
+        const res = await fetch(`/api/summary/${requestId}`);
+        if (!res.ok) {
+          // If summary not ready (e.g., 404), just keep waiting
+          if (res.status >= 500) {
+            throw new Error(`Summary fetch failed: ${res.status} ${res.statusText}`);
+          }
+          return;
+        }
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await res.text();
+          console.error('Unexpected summary response:', text);
+          throw new Error('Invalid summary response');
+        }
+        const data = await res.json();
+        if (data?.summary) {
+          onUpdateData({
+            generatedSummary: data.summary,
+            summaryApiStatus: { loading: false, error: null, success: true }
+          });
+          clearInterval(interval);
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to fetch summary';
+        onUpdateData({ summaryApiStatus: { loading: false, error: message, success: false } });
+        clearInterval(interval);
+      }
+    };
+
+    fetchSummary();
+    const interval = setInterval(fetchSummary, 3000);
+    return () => clearInterval(interval);
+  }, [requestId, generatedSummary, onUpdateData]);
 
   return (
     <div className="text-center space-y-6">
