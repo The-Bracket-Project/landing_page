@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
 
@@ -11,6 +11,10 @@ export default function ResultsSummaryStep({
     summaryApiStatus,
     requestId
   } = assessmentState;
+
+  type BracketScores = Record<string, { score: number; level: string }>;
+  const [bracketScores, setBracketScores] = useState<BracketScores | null>(null);
+  const [scoresError, setScoresError] = useState<string | null>(null);
   
   const hasCleared = useRef(false);
 
@@ -70,6 +74,26 @@ export default function ResultsSummaryStep({
     return () => clearInterval(interval);
   }, [requestId, generatedSummary, onUpdateData]);
 
+  useEffect(() => {
+    if (!requestId) return;
+    const fetchScores = async () => {
+      try {
+        const res = await fetch(`/api/ocean_scores/${requestId}`);
+        if (!res.ok) {
+          throw new Error(`Scores fetch failed: ${res.status} ${res.statusText}`);
+        }
+        const data = await res.json();
+        if (data?.scores) {
+          setBracketScores(data.scores);
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to fetch bracket scores';
+        setScoresError(message);
+      }
+    };
+    fetchScores();
+  }, [requestId]);
+
   return (
     <div className="text-center space-y-6">
       <div className="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -97,6 +121,33 @@ export default function ResultsSummaryStep({
             <p className="text-sm text-gray-600 whitespace-pre-line">{generatedSummary}</p>
           </div>
         )}
+
+{scoresError && (
+          <p className="text-sm text-red-600 mb-4">Error: {scoresError}</p>
+        )}
+
+        {bracketScores && (
+          <div className="bg-white rounded-lg p-4 shadow-sm text-left space-y-4 max-w-2xl mx-auto mb-4">
+            <h4 className="font-medium text-gray-800">Bracket Scores</h4>
+            <div className="space-y-3">
+              {Object.entries(bracketScores).map(([trait, info]) => (
+                <div key={trait} className="space-y-1">
+                  <div className="flex justify-between text-sm text-gray-700">
+                    <span className="capitalize">{trait}</span>
+                    <span>{info.level}</span>
+                  </div>
+                  <div className="w-full h-2 bg-gray-200 rounded">
+                    <div
+                      className="h-full bg-green-500 rounded"
+                      style={{ width: `${info.score * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
 
         {/* <div className="text-left space-y-4 max-w-2xl mx-auto">
           <div className="bg-white rounded-lg p-4 shadow-sm">
