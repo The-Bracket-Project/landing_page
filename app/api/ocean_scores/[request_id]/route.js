@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const MAX_ATTEMPTS = 20;
+const RETRY_DELAY_MS = 1000;
 
 export async function GET(request, { params }) {
   const { request_id } = params;
@@ -10,11 +12,18 @@ export async function GET(request, { params }) {
     }
 
     const fullApiUrl = `${API_BASE_URL}/api/ocean_scores/${request_id}`;
-    const response = await fetch(fullApiUrl, {
-      headers: {
-        Accept: 'application/json'
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      response = await fetch(fullApiUrl, {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+      if (response.ok || response.status !== 404) {
+        break;
       }
-    });
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+    }
 
     if (!response.ok) {
       const contentType = response.headers.get('content-type');

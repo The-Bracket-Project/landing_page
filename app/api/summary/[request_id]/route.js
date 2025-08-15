@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-const MAX_ATTEMPTS = 5;
-const RETRY_DELAY_MS = 5000;
+const MAX_ATTEMPTS = 20;
+const RETRY_DELAY_MS = 1000;
 
 export async function GET(request, { params }) {
   const { request_id } = params;
