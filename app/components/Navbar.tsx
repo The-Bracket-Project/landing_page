@@ -103,7 +103,7 @@ function Navbar() {
               href="/showcase"
               className="px-4 py-1 rounded-full bg-cyan-800 text-white font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 hover:transform hover:scale-105 shadow-md hover:shadow-lg"
             >
-              <h1 className="text-sm">Try?</h1>
+              <h1 className="text-sm">Demo</h1>
             </Link>
           </div>
         </div>
