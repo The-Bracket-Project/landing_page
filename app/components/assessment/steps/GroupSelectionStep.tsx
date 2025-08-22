@@ -3,11 +3,11 @@ import { StepProps } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
 export default function GroupSelectionStep({ 
-  onNext, 
+  onNext,
   assessmentState,
   onUpdateData
 }: StepProps) {
-  const { interestsApiStatus, availableGroups} = assessmentState;
+  const { interestsApiStatus, availableGroups, followUpQuestions } = assessmentState;
   
   // State for managing set navigation and selections
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
@@ -17,6 +17,7 @@ export default function GroupSelectionStep({
   // Limit to 5 sets maximum
   const maxSets = Math.min(5, availableGroups.length);
   const currentSet = availableGroups[currentSetIndex] || [];
+  const totalQuestions = maxSets + (followUpQuestions.length || 5);
   
   // Handle group selection (one per set)
   const handleGroupSelect = (group: {description: string; target_ocean: string; ocean_score: string}) => {
@@ -108,7 +109,7 @@ export default function GroupSelectionStep({
           Select how you approach your interests.
         </p>
         <p className="text-sm text-gray-600 mb-6">
-          Set {currentSetIndex + 1} of {maxSets} • Select the ones that resonate with you
+          Question {currentSetIndex + 1} of {totalQuestions} • Select the ones that resonate with you
         </p>
       </div>
 

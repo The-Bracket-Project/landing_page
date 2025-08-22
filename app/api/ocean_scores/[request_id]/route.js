@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
       throw new Error('NEXT_PUBLIC_API_URL environment variable is not configured');
     }
 
-    const fullApiUrl = `${API_BASE_URL}/api/summary/${request_id}`;
+    const fullApiUrl = `${API_BASE_URL}/api/ocean_scores/${request_id}`;
 
     let response;
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
@@ -35,7 +35,6 @@ export async function GET(request, { params }) {
         const text = await response.text();
         errorBody = { error: text.slice(0, 100) };
       }
-
       return NextResponse.json(errorBody, {
         status: response.status,
         headers: {
@@ -46,14 +45,7 @@ export async function GET(request, { params }) {
       });
     }
 
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      const text = await response.text();
-      throw new Error(`Invalid response format: ${text.slice(0, 100)}`);
-    }
-
     const data = await response.json();
-
     return NextResponse.json(data, {
       status: 200,
       headers: {
@@ -63,11 +55,10 @@ export async function GET(request, { params }) {
       },
     });
   } catch (error) {
-    console.error('Error proxying request to API:', error);
-    console.error('API URL used:', `${API_BASE_URL}/api/summary/${params?.request_id}`);
-
+    console.error('Error fetching ocean scores:', error);
+    console.error('API URL used:', `${API_BASE_URL}/api/ocean_scores/${params?.request_id}`);
     return NextResponse.json(
-      { error: 'Failed to fetch summary' },
+      { error: 'Failed to fetch bracket scores' },
       {
         status: 500,
         headers: {
