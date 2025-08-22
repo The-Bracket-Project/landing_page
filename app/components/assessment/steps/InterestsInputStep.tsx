@@ -136,7 +136,7 @@ export default function InterestsInputStep({
             {interests.map((interest, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 px-3 py-2 bg-white text-gray-700 rounded-lg shadow-sm border"
+                className="flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg shadow-sm border"
               >
                 <span className="text-sm">{interest}</span>
                 <button

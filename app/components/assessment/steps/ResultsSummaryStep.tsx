@@ -117,8 +117,8 @@ export default function ResultsSummaryStep({
 
         {generatedSummary && (
           <div className="bg-white rounded-lg p-4 shadow-sm text-left space-y-2 max-w-2xl mx-auto mb-4">
-            <h4 className="font-medium text-gray-800">Your Summary:</h4>
-            <p className="text-sm text-gray-600 whitespace-pre-line">{generatedSummary}</p>
+            <h3 className="font-medium text-gray-800">Your Summary:</h3>
+            <p className="text-gray-600 whitespace-pre-line text-md">{generatedSummary}</p>
           </div>
         )}
 
