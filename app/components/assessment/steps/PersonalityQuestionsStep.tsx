@@ -7,29 +7,31 @@ export default function PersonalityQuestionsStep({
   onUpdateData, 
   assessmentState
 }: StepProps) {
-  const { followUpQuestions } = assessmentState;
+  const { followUpQuestions, groupSelection } = assessmentState;
   
   // State for managing question navigation and selections
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [overallQuestionIndex, setOverallQuestionIndex] = useState(0);
   const [questionResponses, setQuestionResponses] = useState<{[questionIndex: number]: PersonalityResponseData}>({});
   const [isAnimating, setIsAnimating] = useState(false);
   
   const currentQuestion = followUpQuestions[currentQuestionIndex];
-  const totalQuestions = followUpQuestions.length;
+  const questionsPerSet = followUpQuestions.length || 0;
+  const totalQuestions = questionsPerSet * (groupSelection.length || 1);
   
   // Handle option selection
   const handleOptionSelect = (option: FollowUpOption) => {
     if (!currentQuestion) return; // Safety check
     
     const response: PersonalityResponseData = {
-      questionId: `${currentQuestion.target_ocean}_${currentQuestion.interest}_${currentQuestionIndex}`,
+      questionId: `${currentQuestion.target_ocean}_${currentQuestion.interest}_${overallQuestionIndex}`,
       answer: option.text,
       score: option.score // Store the full score array from the selected option
     };
     
     const newResponses = {
       ...questionResponses,
-      [currentQuestionIndex]: response
+      [overallQuestionIndex]: response
     };
     
     setQuestionResponses(newResponses);
@@ -43,10 +45,17 @@ export default function PersonalityQuestionsStep({
   
   // Handle moving to next question with animation
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (overallQuestionIndex < totalQuestions - 1) {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        // Advance within the current set, or reset to start if moving to
+        // the next set of questions.
+        if (currentQuestionIndex < questionsPerSet - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+          setCurrentQuestionIndex(0);
+        }
+        setOverallQuestionIndex(overallQuestionIndex + 1);
         setIsAnimating(false);
       }, 150);
     }
@@ -61,10 +70,10 @@ export default function PersonalityQuestionsStep({
   };
   
   // Check if user has answered current question
-  const hasAnsweredCurrentQuestion = questionResponses[currentQuestionIndex] !== undefined;
+  const hasAnsweredCurrentQuestion = questionResponses[overallQuestionIndex] !== undefined;
   
   // Check if this is the last question
-  const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
+  const isLastQuestion = overallQuestionIndex === totalQuestions - 1;
   
   // Check if all questions have been answered
   const allQuestionsAnswered = Object.keys(questionResponses).length === totalQuestions;
@@ -97,7 +106,7 @@ export default function PersonalityQuestionsStep({
           Based on your interests: <span className="font-semibold">{currentQuestion.interest}</span>
         </p> */}
         <p className="text-sm text-gray-600 mb-6">
-          Question {currentQuestionIndex + 1} of {totalQuestions}
+          Question {overallQuestionIndex + 1} of {totalQuestions}
         </p>
       </div>
 
