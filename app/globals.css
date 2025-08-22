@@ -32,6 +32,21 @@ body {
   font-variation-settings: normal;
 }
 
+/* Fade-in-up reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: opacity, transform;
+  transition-property: opacity, transform;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Hide video controls and play buttons completely */
 video::-webkit-media-controls {
   display: none !important;

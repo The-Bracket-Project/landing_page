@@ -108,7 +108,7 @@ export default function ContactUs() {
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Enter your"
+                placeholder="Enter your name"
                 className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               />
@@ -158,7 +158,7 @@ export default function ContactUs() {
                 id="message"
                 name="message"
                 rows={5}
-                placeholder="Tell us about your project, questions, or how we can help you..."
+                placeholder="Tell us what you’re looking for, and we’ll get back to you."
                 className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               ></textarea>
