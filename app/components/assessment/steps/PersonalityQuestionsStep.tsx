@@ -3,22 +3,23 @@ import { StepProps, PersonalityResponseData, FollowUpOption } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
 export default function PersonalityQuestionsStep({ 
-  onNext, 
-  onUpdateData, 
+  onNext,
+  onUpdateData,
   assessmentState
 }: StepProps) {
-  const { followUpQuestions, groupSelection } = assessmentState;
+  const { followUpQuestions, availableGroups } = assessmentState;
+
+  // Determine total number of questions across both steps
+  const groupQuestionCount = Math.min(5, availableGroups.length);
+  const totalQuestions = groupQuestionCount + followUpQuestions.length;
   
   // State for managing question navigation and selections
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [overallQuestionIndex, setOverallQuestionIndex] = useState(0);
+  const [overallQuestionIndex, setOverallQuestionIndex] = useState(groupQuestionCount);
   const [questionResponses, setQuestionResponses] = useState<{[questionIndex: number]: PersonalityResponseData}>({});
   const [isAnimating, setIsAnimating] = useState(false);
   
-  const currentQuestion = followUpQuestions[currentQuestionIndex];
-  const questionsPerSet = followUpQuestions.length || 0;
-  const totalQuestions = questionsPerSet * (groupSelection.length || 1);
-  
+  const currentQuestion = followUpQuestions[overallQuestionIndex - groupQuestionCount];
+
   // Handle option selection
   const handleOptionSelect = (option: FollowUpOption) => {
     if (!currentQuestion) return; // Safety check
@@ -48,13 +49,6 @@ export default function PersonalityQuestionsStep({
     if (overallQuestionIndex < totalQuestions - 1) {
       setIsAnimating(true);
       setTimeout(() => {
-        // Advance within the current set, or reset to start if moving to
-        // the next set of questions.
-        if (currentQuestionIndex < questionsPerSet - 1) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-          setCurrentQuestionIndex(0);
-        }
         setOverallQuestionIndex(overallQuestionIndex + 1);
         setIsAnimating(false);
       }, 150);
@@ -76,7 +70,7 @@ export default function PersonalityQuestionsStep({
   const isLastQuestion = overallQuestionIndex === totalQuestions - 1;
   
   // Check if all questions have been answered
-  const allQuestionsAnswered = Object.keys(questionResponses).length === totalQuestions;
+  const allQuestionsAnswered = Object.keys(questionResponses).length === followUpQuestions.length;
 
   // Show message if no questions available or current question is invalid
   if (followUpQuestions.length === 0 || !currentQuestion) {
@@ -123,7 +117,7 @@ export default function PersonalityQuestionsStep({
           {/* Options */}
           <div className="space-y-3">
             {currentQuestion.options.map((option, optionIndex) => {
-              const isSelected = questionResponses[currentQuestionIndex]?.answer === option.text;
+              const isSelected = questionResponses[overallQuestionIndex]?.answer === option.text;
               return (
                 <div 
                   key={optionIndex}
