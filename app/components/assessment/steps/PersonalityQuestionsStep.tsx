@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StepProps, PersonalityResponseData, FollowUpOption } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
 export default function PersonalityQuestionsStep({ 
   onNext,
+  onPrevious,
   onUpdateData,
   assessmentState
 }: StepProps) {
@@ -54,6 +55,18 @@ export default function PersonalityQuestionsStep({
       }, 150);
     }
   };
+
+  const handlePrevQuestion = () => {
+    if (overallQuestionIndex > groupQuestionCount) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setOverallQuestionIndex(overallQuestionIndex - 1);
+        setIsAnimating(false);
+      }, 150);
+    } else {
+      onPrevious();
+    }
+  };
   
   // Handle continue (only show after last question)
   const handleContinue = () => {
@@ -71,6 +84,23 @@ export default function PersonalityQuestionsStep({
   
   // Check if all questions have been answered
   const allQuestionsAnswered = Object.keys(questionResponses).length === followUpQuestions.length;
+
+  // Initialize responses from assessment state when component mounts or state changes
+  useEffect(() => {
+    const initialResponses: {[index: number]: PersonalityResponseData} = {};
+    assessmentState.personalityResponses.forEach(res => {
+      const match = res.questionId.match(/_(\d+)$/);
+      const idx = match ? parseInt(match[1], 10) : undefined;
+      if (idx !== undefined) {
+        initialResponses[idx] = res;
+      }
+    });
+    setQuestionResponses(initialResponses);
+    const lastIndex = Object.keys(initialResponses).map(Number).sort((a,b) => b - a)[0];
+    if (lastIndex !== undefined) {
+      setOverallQuestionIndex(Math.min(lastIndex, totalQuestions - 1));
+    }
+  }, [assessmentState.personalityResponses, totalQuestions, groupQuestionCount]);
 
   // Show message if no questions available or current question is invalid
   if (followUpQuestions.length === 0 || !currentQuestion) {
@@ -146,7 +176,14 @@ export default function PersonalityQuestionsStep({
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-center">
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handlePrevQuestion}
+          disabled={isAnimating}
+          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ← Back
+        </button>
         {!isLastQuestion && hasAnsweredCurrentQuestion ? (
           <button
             onClick={handleNextQuestion}
@@ -160,7 +197,7 @@ export default function PersonalityQuestionsStep({
             See my results!
           </ContinueButton>
         ) : (
-          <div className="text-center">
+          <div className="text-right w-full">
             <p className="text-sm text-gray-500">
               {isLastQuestion 
                 ? "Select an option to continue" 

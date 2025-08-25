@@ -311,6 +311,17 @@ export default function AssessmentOrchestrator() {
     await handleInterestsApiCall();
   };
 
+  const goToPreviousStep = useCallback(() => {
+    const currentIndex = steps.indexOf(assessmentState.currentStep);
+    if (currentIndex > 0) {
+      const previousStep = steps[currentIndex - 1];
+      updateAssessmentData({
+        currentStep: previousStep,
+        completedSteps: assessmentState.completedSteps.slice(0, -1)
+      });
+    }
+  }, [assessmentState, steps, updateAssessmentData]);
+
   const goToNextStep = useCallback(async () => {
     const currentIndex = steps.indexOf(assessmentState.currentStep);
     if (currentIndex < steps.length - 1) {
@@ -342,6 +353,7 @@ export default function AssessmentOrchestrator() {
   const renderCurrentStep = () => {
     const stepProps = {
       onNext: goToNextStep,
+      onPrevious: goToPreviousStep,
       onUpdateData: updateAssessmentData,
       assessmentState,
       isLastStep: steps.indexOf(assessmentState.currentStep) === steps.length - 1
