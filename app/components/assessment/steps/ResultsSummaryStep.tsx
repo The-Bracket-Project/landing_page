@@ -6,11 +6,7 @@ export default function ResultsSummaryStep({
   assessmentState,
   onUpdateData
 }: StepProps) {
-  const {
-    generatedSummary,
-    summaryApiStatus,
-    requestId
-  } = assessmentState;
+  const { generatedSummary, summaryApiStatus, requestId } = assessmentState;
 
   type BracketScores = Record<string, { score: number; level: string }>;
   const [bracketScores, setBracketScores] = useState<BracketScores | null>(null);
@@ -23,12 +19,7 @@ export default function ResultsSummaryStep({
 
   const traitMeta: Record<
     string,
-    {
-      emoji: string;
-      from: string; // gradient start
-      to: string;   // gradient end
-      tooltip: string;
-    }
+    { emoji: string; from: string; to: string; tooltip: string }
   > = {
     openness: { emoji: '🎨', from: 'from-purple-500', to: 'to-purple-300', tooltip: 'Curiosity, creativity, preference for variety' },
     conscientiousness: { emoji: '📅', from: 'from-blue-600', to: 'to-blue-300', tooltip: 'Organization, diligence, reliability' },
@@ -38,15 +29,10 @@ export default function ResultsSummaryStep({
   };
 
   useEffect(() => {
-    // Clear saved assessment data since user has completed the assessment
     if (!hasCleared.current) {
       clearAssessmentState();
       hasCleared.current = true;
-
-      // Also clear it again after a short delay to handle any auto-save race conditions
-      setTimeout(() => {
-        clearAssessmentState();
-      }, 100);
+      setTimeout(() => clearAssessmentState(), 100);
     }
   }, []);
 
@@ -60,10 +46,7 @@ export default function ResultsSummaryStep({
       try {
         const res = await fetch(`/api/summary/${requestId}`);
         if (!res.ok) {
-          // If summary not ready (e.g., 404), just keep waiting
-          if (res.status >= 500) {
-            throw new Error(`Summary fetch failed: ${res.status} ${res.statusText}`);
-          }
+          if (res.status >= 500) throw new Error(`Summary fetch failed: ${res.status} ${res.statusText}`);
           return;
         }
         const contentType = res.headers.get('content-type');
@@ -92,18 +75,16 @@ export default function ResultsSummaryStep({
     return () => clearInterval(interval);
   }, [requestId, generatedSummary, onUpdateData]);
 
+  // Fetch scores
   useEffect(() => {
     if (!requestId) return;
     const fetchScores = async () => {
       try {
         const res = await fetch(`/api/ocean_scores/${requestId}`);
-        if (!res.ok) {
-          throw new Error(`Scores fetch failed: ${res.status} ${res.statusText}`);
-        }
+        if (!res.ok) throw new Error(`Scores fetch failed: ${res.status} ${res.statusText}`);
         const data = await res.json();
         if (data?.scores) {
           setBracketScores(data.scores);
-          // allow DOM to paint, then animate bars
           requestAnimationFrame(() => setAnimateBars(true));
         }
       } catch (err) {
@@ -116,14 +97,10 @@ export default function ResultsSummaryStep({
 
   // Helpers
   const prettyLevel = (lvl: string) =>
-    lvl
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, (m) => m.toUpperCase());
+    lvl.replace(/-/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
 
-  const Pill = ({ children, tone = 'green' }: { children: React.ReactNode; tone?: 'green'|'blue'|'amber'|'slate'|'purple'|'emerald' }) => (
-    <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium
-      border-black/5 bg-white/60 backdrop-blur
-      shadow-sm">
+  const Pill = ({ children }: { children: React.ReactNode }) => (
+    <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium border-black/5 bg-white/60 backdrop-blur shadow-sm">
       {children}
     </span>
   );
@@ -143,9 +120,7 @@ export default function ResultsSummaryStep({
       {/* Top banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100 ring-1 ring-emerald-200/60 p-6 mt-2">
         <div className="flex items-start gap-4">
-          <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500 text-white grid place-items-center shadow">
-            ✅
-          </div>
+          <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500 text-white grid place-items-center shadow">✅</div>
           <div className="flex-1">
             <h3 className="text-xl font-semibold text-emerald-900">Assessment Complete</h3>
             <p className="mt-1 text-emerald-800/90">
@@ -154,7 +129,6 @@ export default function ResultsSummaryStep({
           </div>
         </div>
 
-        {/* Status strip */}
         {(summaryApiStatus.loading || !bracketScores) && (
           <div className="mt-4 flex items-center gap-3 text-sm">
             <div className="h-3 w-3 animate-pulse rounded-full bg-emerald-500" />
@@ -168,17 +142,15 @@ export default function ResultsSummaryStep({
         <Card className="p-5">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold text-gray-900">Your Personality Snapshot</h4>
-            {summaryApiStatus.success && <Pill tone="emerald">Ready</Pill>}
-            {summaryApiStatus.loading && <Pill tone="amber">Generating…</Pill>}
-            {summaryApiStatus.error && <Pill tone="slate">Retry recommended</Pill>}
+            {summaryApiStatus.success && <Pill>Ready</Pill>}
+            {summaryApiStatus.loading && <Pill>Generating…</Pill>}
+            {summaryApiStatus.error && <Pill>Retry recommended</Pill>}
           </div>
 
-          {/* Error */}
           {summaryApiStatus.error && (
             <p className="mt-3 text-sm text-red-600">Error: {summaryApiStatus.error}</p>
           )}
 
-          {/* Loading skeleton */}
           {summaryApiStatus.loading && !generatedSummary && (
             <div className="mt-3 space-y-2">
               <SkeletonLine w="w-11/12" />
@@ -187,7 +159,6 @@ export default function ResultsSummaryStep({
             </div>
           )}
 
-          {/* Content */}
           {generatedSummary && (
             <p className="mt-3 text-sm leading-6 text-gray-700 whitespace-pre-line">
               {generatedSummary}
@@ -199,17 +170,16 @@ export default function ResultsSummaryStep({
         <Card className="p-5">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold text-gray-900">Bracket Scores</h4>
-            {bracketScores && <Pill tone="blue">Interactive</Pill>}
+            {bracketScores && <Pill>Interactive</Pill>}
           </div>
 
           {scoresError && (
             <p className="mt-3 text-sm text-red-600">Error: {scoresError}</p>
           )}
 
-          {/* Scores loading skeleton */}
           {!scoresError && !bracketScores && (
             <div className="mt-4 space-y-4">
-              {traitOrder.map((t, i) => (
+              {traitOrder.map((t) => (
                 <div key={t} className="space-y-2">
                   <div className="flex items-center justify-between text-sm text-gray-700">
                     <div className="flex items-center gap-2">
@@ -226,11 +196,9 @@ export default function ResultsSummaryStep({
             </div>
           )}
 
-          {/* Scores content */}
           {bracketScores && (
             <div className="mt-4 space-y-4">
               {traitOrder.map((displayTrait) => {
-                // normalize keys (your API returns lowercase keys)
                 const key = displayTrait.toLowerCase();
                 const info = bracketScores[key];
                 if (!info) return null;
@@ -249,7 +217,6 @@ export default function ResultsSummaryStep({
                     </div>
 
                     <div className="relative h-4 w-full rounded-lg bg-gray-100 ring-1 ring-black/5 overflow-hidden">
-                      {/* subtle pattern backdrop */}
                       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_40%)]" />
                       <div
                         className={[
@@ -274,7 +241,6 @@ export default function ResultsSummaryStep({
           )}
         </Card>
 
-        {/* Closing note */}
         <div className="mx-auto text-center text-sm text-gray-600">
           Your anonymous data helps advance personality research. Thank you for contributing!
         </div>
