@@ -52,6 +52,7 @@ export interface AssessmentState {
 
 export interface StepProps {
   onNext: () => void;
+  onPrevious: () => void;
   onUpdateData: (data: Partial<AssessmentState>) => void;
   assessmentState: AssessmentState;
   isLastStep: boolean;

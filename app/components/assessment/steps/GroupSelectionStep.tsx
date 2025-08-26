@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StepProps } from '../types';
 import ContinueButton from '../shared/ContinueButton';
 
-export default function GroupSelectionStep({ 
+export default function GroupSelectionStep({
   onNext,
+  onPrevious,
   assessmentState,
   onUpdateData
 }: StepProps) {
@@ -45,6 +46,18 @@ export default function GroupSelectionStep({
       }, 150);
     }
   };
+
+  const handlePrevSet = () => {
+    if (currentSetIndex > 0) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentSetIndex(currentSetIndex - 1);
+        setIsAnimating(false);
+      }, 150);
+    } else {
+      onPrevious();
+    }
+  };
   
   // Handle continue (only show after last set)
   const handleContinue = () => {
@@ -56,6 +69,19 @@ export default function GroupSelectionStep({
   
   // Check if this is the last set
   const isLastSet = currentSetIndex === maxSets - 1;
+
+  // Initialize selections from assessment state when component mounts or state changes
+  useEffect(() => {
+    const initialSelections: {[index: number]: {description: string; target_ocean: string; ocean_score: string}} = {};
+    assessmentState.groupSelection.forEach((desc, idx) => {
+      const group = availableGroups[idx]?.find(g => g.description === desc);
+      if (group) initialSelections[idx] = group;
+    });
+    setSetSelections(initialSelections);
+    if (assessmentState.groupSelection.length > 0) {
+      setCurrentSetIndex(Math.min(assessmentState.groupSelection.length - 1, maxSets - 1));
+    }
+  }, [assessmentState.groupSelection, availableGroups, maxSets]);
 
   // Show loading spinner while interests API is pending
   if (interestsApiStatus.loading) {
@@ -147,21 +173,28 @@ export default function GroupSelectionStep({
       )}
 
       {/* Navigation */}
-      <div className="flex justify-center">
+     <div className="flex justify-between items-center">
+        <button
+          onClick={handlePrevSet}
+          disabled={isAnimating}
+          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ← Back
+        </button>
         {!isLastSet && hasSelectionFromCurrentSet ? (
           <button
             onClick={handleNextSet}
             disabled={isAnimating}
             className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Next Set →
+            Next →
           </button>
         ) : isLastSet && Object.keys(setSelections).length > 0 ? (
           <ContinueButton onClick={handleContinue}>
-            Continue           
+            Next →          
           </ContinueButton>
         ) : (
-          <div className="text-center">
+          <div className="text-right w-full">
             <p className="text-sm text-gray-500">
               {isLastSet 
                 ? "Select one option to continue" 
