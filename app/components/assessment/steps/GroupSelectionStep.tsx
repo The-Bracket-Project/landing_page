@@ -187,11 +187,11 @@ export default function GroupSelectionStep({
             disabled={isAnimating}
             className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Next Set →
+            Next →
           </button>
         ) : isLastSet && Object.keys(setSelections).length > 0 ? (
           <ContinueButton onClick={handleContinue}>
-            Continue           
+            Next →          
           </ContinueButton>
         ) : (
           <div className="text-right w-full">
