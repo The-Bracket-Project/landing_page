@@ -18,6 +18,14 @@ export default function ResultsSummaryStep({
   
   const hasCleared = useRef(false);
 
+  const traitColors: Record<string, string> = {
+    openness: 'bg-purple-500',
+    conscientiousness: 'bg-blue-500',
+    extraversion: 'bg-yellow-400',
+    agreeableness: 'bg-green-500',
+    neuroticism: 'bg-gray-700'
+  };
+
   useEffect(() => {
     // Clear saved assessment data since user has completed the assessment
     // Use ref to ensure this only happens once
@@ -130,20 +138,23 @@ export default function ResultsSummaryStep({
           <div className="bg-white rounded-lg p-4 shadow-sm text-left space-y-4 max-w-2xl mx-auto mb-4">
             <h4 className="font-medium text-gray-800">Bracket Scores</h4>
             <div className="space-y-3">
-              {Object.entries(bracketScores).map(([trait, info]) => (
-                <div key={trait} className="space-y-1">
-                  <div className="flex justify-between text-sm text-gray-700">
-                    <span className="capitalize">{trait}</span>
-                    <span>{info.level}</span>
+            {Object.entries(bracketScores).map(([trait, info]) => {
+                const barColor = traitColors[trait.toLowerCase()] || 'bg-green-500';
+                return (
+                  <div key={trait} className="space-y-1">
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span className="capitalize">{trait}</span>
+                      <span>{info.level}</span>
+                    </div>
+                    <div className="w-full h-4 bg-gray-200 rounded">
+                      <div
+                        className={`h-full ${barColor} rounded`}
+                        style={{ width: `${info.score * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full h-2 bg-gray-200 rounded">
-                    <div
-                      className="h-full bg-green-500 rounded"
-                      style={{ width: `${info.score * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
