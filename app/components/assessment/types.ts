@@ -44,6 +44,8 @@ export interface AssessmentState {
   // Phase 5: Results
   generatedSummary: string | null;
   summaryApiStatus: ApiStatus;
+  // Immediate results (if returned by backend)
+  oceanScores?: Record<string, { score: number; level: string }> | null;
   
   // Meta
   startTime: Date;

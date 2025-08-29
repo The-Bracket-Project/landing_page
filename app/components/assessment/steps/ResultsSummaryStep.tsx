@@ -6,7 +6,7 @@ export default function ResultsSummaryStep({
   assessmentState,
   onUpdateData
 }: StepProps) {
-  const { generatedSummary, summaryApiStatus, requestId } = assessmentState;
+  const { generatedSummary, summaryApiStatus, requestId, oceanScores } = assessmentState;
 
   type BracketScores = Record<string, { score: number; level: string }>;
   const [bracketScores, setBracketScores] = useState<BracketScores | null>(null);
@@ -38,7 +38,9 @@ export default function ResultsSummaryStep({
 
   // Poll for summary if not yet generated
   useEffect(() => {
-    if (!requestId || generatedSummary) return;
+    // If summary is already present (immediate mode), do not poll
+    if (generatedSummary) return;
+    if (!requestId) return;
 
     onUpdateData({ summaryApiStatus: { loading: true, error: null, success: false } });
 
@@ -70,13 +72,18 @@ export default function ResultsSummaryStep({
       }
     };
 
-    fetchSummary();
     const interval = setInterval(fetchSummary, 1200);
     return () => clearInterval(interval);
   }, [requestId, generatedSummary, onUpdateData]);
 
   // Fetch scores
   useEffect(() => {
+    // Prefer immediate scores from state; fallback to fetching by requestId
+    if (oceanScores) {
+      setBracketScores(oceanScores);
+      requestAnimationFrame(() => setAnimateBars(true));
+      return;
+    }
     if (!requestId) return;
     const fetchScores = async () => {
       try {
@@ -93,7 +100,7 @@ export default function ResultsSummaryStep({
       }
     };
     fetchScores();
-  }, [requestId]);
+  }, [requestId, oceanScores]);
 
   // Helpers
   const prettyLevel = (lvl: string) =>
