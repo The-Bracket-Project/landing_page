@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Image from "next/image";
+import Reveal from "./components/Reveal";
 
 export default function Home() {
   return (
@@ -15,11 +16,13 @@ export default function Home() {
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center py-30 px-10">
-          <p
-            className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins text-white`}
-          >
-            The AI Engine For Human Compatibility
-          </p>
+          <Reveal>
+            <p
+              className={`text-5xl md:text-6xl lg:text-7xl text-center font-semibold poppins text-white`}
+            >
+              The AI Engine For Human Compatibility
+            </p>
+          </Reveal>
         </div>
 
         <div className="h-130 md:h-140 lg:h-140 flex flex-col items-center justify-center mb-15">
@@ -41,7 +44,7 @@ export default function Home() {
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
+                <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
                   <p className="text-2xl md:text-3xl font-bold">
                     An Expensive And Worsening Problem
                   </p>
@@ -60,9 +63,9 @@ export default function Home() {
                     of Gen Z report feeling loneliness compared to 45% of Baby
                     Boomers (Harlow, 2021)
                   </p>
-                </div>
+                </Reveal>
               </div>
-              <div className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2">
+              <Reveal className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2">
                 <Image
                   src="/loneliness.jpg"
                   alt="loneliness"
@@ -70,13 +73,13 @@ export default function Home() {
                   height={600}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </Reveal>
             </div>
           </div>
 
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
-              <div className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1">
+              <Reveal className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1">
                 <Image
                   src="/cash.jpg"
                   alt="cash"
@@ -84,9 +87,9 @@ export default function Home() {
                   height={600}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </Reveal>
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
+                <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white" delayMs={50}>
                   <p className="text-2xl md:text-3xl font-bold">
                     How It Impacts Businesses
                   </p>
@@ -104,7 +107,7 @@ export default function Home() {
                     of employees would trade compensation for meaningful
                     workplace relationships (BetterUp Labs, 2022)
                   </p>
-                </div>
+                </Reveal>
               </div>
             </div>
           </div>
@@ -112,16 +115,16 @@ export default function Home() {
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-96 md:min-h-110 lg:min-h-110 gap-5 md:gap-1">
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
-                <div className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white">
+                <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start text-white" delayMs={100}>
                   <p className="text-2xl md:text-3xl font-bold">
-                    A Solution That Works
+                    We&apos;re building the infrastructure for better human connection.
                   </p>
                   <p className="text-lg md:text-xl">
-                    We&apos;re building the core infrastructure for better human connection - whether in hiring, health, learning, leadership, or love. Built on established psychological insights and AI technology, our assessment and compatibility system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
+                    Built on established psychological insights and AI technology, our system plugs into existing platforms to reduce friction, surface real compatibility, and drive better outcomes at scale. Already at <span className="font-bold text-xl md:text-2xl">83.9%</span> accuracy, and learning fast.
                   </p>
-                </div>
+                </Reveal>
               </div>
-              <div className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2">
+              <Reveal className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-96 lg:h-110 rounded-3xl overflow-hidden order-1 md:order-2 lg:order-2">
                 <Image
                   src="/earth.jpg"
                   alt="earth"
@@ -129,23 +132,23 @@ export default function Home() {
                   height={600}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col h-140 w-full border-t border-gray-200 items-center justify-center gap-5 text-white">
-          <div className="w-4/5 mx-auto justify-center items-center">
+          <Reveal className="w-4/5 mx-auto justify-center items-center">
             <h1 className="text-center text-5xl font-bold">
               Whatever You Are Connecting, We Make It Compatible.
             </h1>
-          </div>
-          <div className="max-w-100 mx-auto justify-center items-center">
+          </Reveal>
+          <Reveal className="max-w-100 mx-auto justify-center items-center" delayMs={75}>
             <p className="text-center text-3xl">
               Compatibility is not an afterthought anymore.{" "}
               <span className="font-bold text-3xl">We&apos;re Building It</span>
             </p>
-          </div>
+          </Reveal>
         </div>
 
         <Footer />
