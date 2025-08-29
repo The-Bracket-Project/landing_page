@@ -24,6 +24,7 @@ export default function AssessmentOrchestrator() {
     requestId: null,
     generatedSummary: null,
     summaryApiStatus: { loading: false, error: null, success: false },
+    oceanScores: null,
     startTime: new Date(),
     completedSteps: []
   };
@@ -241,11 +242,24 @@ export default function AssessmentOrchestrator() {
         'summaryApiStatus'
       );
 
-      // Store the generated summary
-      const typedResult = result as { request_id?: string };
-      if (typedResult?.request_id) {
-        updateAssessmentData({ requestId: typedResult.request_id });
-      }
+      // Store immediate results when available
+      const typedResult = result as {
+        request_id?: string;
+        summary?: string;
+        scores?: Record<string, { score: number; level: string }>;
+        mode?: string;
+      };
+
+      updateAssessmentData({
+        requestId: typedResult?.request_id || null,
+        generatedSummary: typedResult?.summary ?? null,
+        oceanScores: typedResult?.scores ?? null,
+        summaryApiStatus: {
+          loading: false,
+          error: null,
+          success: Boolean(typedResult?.summary)
+        }
+      });
     } catch (error) {
       console.error('Error with ocean API:', error);
       throw error; // Re-throw for retry handling

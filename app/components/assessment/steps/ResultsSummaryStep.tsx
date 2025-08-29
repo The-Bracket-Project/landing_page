@@ -6,35 +6,41 @@ export default function ResultsSummaryStep({
   assessmentState,
   onUpdateData
 }: StepProps) {
-  const {
-    generatedSummary,
-    summaryApiStatus,
-    requestId
-  } = assessmentState;
+  const { generatedSummary, summaryApiStatus, requestId, oceanScores } = assessmentState;
 
   type BracketScores = Record<string, { score: number; level: string }>;
   const [bracketScores, setBracketScores] = useState<BracketScores | null>(null);
   const [scoresError, setScoresError] = useState<string | null>(null);
-  
+  const [animateBars, setAnimateBars] = useState(false);
+
   const hasCleared = useRef(false);
 
+  const traitOrder = ['Extraversion', 'Conscientiousness', 'Openness', 'Agreeableness', 'Neuroticism'];
+
+  const traitMeta: Record<
+    string,
+    { emoji: string; from: string; to: string; tooltip: string }
+  > = {
+    openness: { emoji: '🎨', from: 'from-purple-500', to: 'to-purple-300', tooltip: 'Curiosity, creativity, preference for variety' },
+    conscientiousness: { emoji: '📅', from: 'from-blue-600', to: 'to-blue-300', tooltip: 'Organization, diligence, reliability' },
+    extraversion: { emoji: '🌟', from: 'from-amber-400', to: 'to-amber-200', tooltip: 'Sociability, assertiveness, energy' },
+    agreeableness: { emoji: '🤝', from: 'from-emerald-500', to: 'to-emerald-300', tooltip: 'Cooperation, empathy, warmth' },
+    neuroticism: { emoji: '🧠', from: 'from-slate-600', to: 'to-slate-400', tooltip: 'Emotional variability, sensitivity to stress' },
+  };
+
   useEffect(() => {
-    // Clear saved assessment data since user has completed the assessment
-    // Use ref to ensure this only happens once
     if (!hasCleared.current) {
       clearAssessmentState();
       hasCleared.current = true;
-      
-      // Also clear it again after a short delay to handle any auto-save race conditions
-      setTimeout(() => {
-        clearAssessmentState();
-      }, 100);
+      setTimeout(() => clearAssessmentState(), 100);
     }
   }, []);
 
   // Poll for summary if not yet generated
   useEffect(() => {
-    if (!requestId || generatedSummary) return;
+    // If summary is already present (immediate mode), do not poll
+    if (generatedSummary) return;
+    if (!requestId) return;
 
     onUpdateData({ summaryApiStatus: { loading: true, error: null, success: false } });
 
@@ -42,10 +48,7 @@ export default function ResultsSummaryStep({
       try {
         const res = await fetch(`/api/summary/${requestId}`);
         if (!res.ok) {
-          // If summary not ready (e.g., 404), just keep waiting
-          if (res.status >= 500) {
-            throw new Error(`Summary fetch failed: ${res.status} ${res.statusText}`);
-          }
+          if (res.status >= 500) throw new Error(`Summary fetch failed: ${res.status} ${res.statusText}`);
           return;
         }
         const contentType = res.headers.get('content-type');
@@ -69,22 +72,27 @@ export default function ResultsSummaryStep({
       }
     };
 
-    fetchSummary();
-    const interval = setInterval(fetchSummary, 3000);
+    const interval = setInterval(fetchSummary, 1200);
     return () => clearInterval(interval);
   }, [requestId, generatedSummary, onUpdateData]);
 
+  // Fetch scores
   useEffect(() => {
+    // Prefer immediate scores from state; fallback to fetching by requestId
+    if (oceanScores) {
+      setBracketScores(oceanScores);
+      requestAnimationFrame(() => setAnimateBars(true));
+      return;
+    }
     if (!requestId) return;
     const fetchScores = async () => {
       try {
         const res = await fetch(`/api/ocean_scores/${requestId}`);
-        if (!res.ok) {
-          throw new Error(`Scores fetch failed: ${res.status} ${res.statusText}`);
-        }
+        if (!res.ok) throw new Error(`Scores fetch failed: ${res.status} ${res.statusText}`);
         const data = await res.json();
         if (data?.scores) {
           setBracketScores(data.scores);
+          requestAnimationFrame(() => setAnimateBars(true));
         }
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Failed to fetch bracket scores';
@@ -92,78 +100,157 @@ export default function ResultsSummaryStep({
       }
     };
     fetchScores();
-  }, [requestId]);
+  }, [requestId, oceanScores]);
+
+  // Helpers
+  const prettyLevel = (lvl: string) =>
+    lvl.replace(/-/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+
+  const Pill = ({ children }: { children: React.ReactNode }) => (
+    <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium border-black/5 bg-white/60 backdrop-blur shadow-sm">
+      {children}
+    </span>
+  );
+
+  const SkeletonLine = ({ w = 'w-3/4' }: { w?: string }) => (
+    <div className={`h-3 ${w} rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse bg-[length:200%_100%]`} />
+  );
+
+  const Card = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
+    <div className={`bg-white/80 backdrop-blur rounded-xl shadow-sm ring-1 ring-black/5 ${className}`}>
+      {children}
+    </div>
+  );
 
   return (
-    <div className="text-center space-y-6">
-      <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-        <h3 className="text-xl font-semibold text-green-800 mb-4">
-          🎉 Assessment Complete!
-        </h3>
-        <p className="text-green-700 mb-4">
-          Thank you for completing the personality assessment. Your responses have been recorded.
-        </p>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      {/* Top banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100 ring-1 ring-emerald-200/60 p-6 mt-2">
+        <div className="flex items-start gap-4">
+          <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500 text-white grid place-items-center shadow">✅</div>
+          <div className="flex-1">
+            <h3 className="text-xl font-semibold text-emerald-900">Assessment Complete</h3>
+            <p className="mt-1 text-emerald-800/90">
+              Thanks for completing the personality assessment. We’re preparing your personalized insights.
+            </p>
+          </div>
+        </div>
 
-        {summaryApiStatus.loading && (
-          <div className="flex flex-col items-center mb-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mb-2"></div>
-            <p className="text-sm text-gray-600">Generating your personalized summary...</p>
+        {(summaryApiStatus.loading || !bracketScores) && (
+          <div className="mt-4 flex items-center gap-3 text-sm">
+            <div className="h-3 w-3 animate-pulse rounded-full bg-emerald-500" />
+            <p className="text-emerald-900">Crunching results… this typically takes a few seconds.</p>
           </div>
         )}
+      </div>
 
-        {summaryApiStatus.error && (
-          <p className="text-sm text-red-600 mb-4">Error: {summaryApiStatus.error}</p>
-        )}
-
-        {generatedSummary && (
-          <div className="bg-white rounded-lg p-4 shadow-sm text-left space-y-2 max-w-2xl mx-auto mb-4">
-            <h3 className="font-medium text-gray-800">Your Summary:</h3>
-            <p className="text-gray-600 whitespace-pre-line text-md">{generatedSummary}</p>
+      <div className="mt-6 grid gap-6">
+        {/* Summary */}
+        <Card className="p-5">
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold text-gray-900">Your Personality Snapshot</h4>
+            {summaryApiStatus.success && <Pill>Ready</Pill>}
+            {summaryApiStatus.loading && <Pill>Generating…</Pill>}
+            {summaryApiStatus.error && <Pill>Retry recommended</Pill>}
           </div>
-        )}
 
-{scoresError && (
-          <p className="text-sm text-red-600 mb-4">Error: {scoresError}</p>
-        )}
+          {summaryApiStatus.error && (
+            <p className="mt-3 text-sm text-red-600">Error: {summaryApiStatus.error}</p>
+          )}
 
-        {bracketScores && (
-          <div className="bg-white rounded-lg p-4 shadow-sm text-left space-y-4 max-w-2xl mx-auto mb-4">
-            <h4 className="font-medium text-gray-800">Bracket Scores</h4>
-            <div className="space-y-3">
-              {Object.entries(bracketScores).map(([trait, info]) => (
-                <div key={trait} className="space-y-1">
-                  <div className="flex justify-between text-sm text-gray-700">
-                    <span className="capitalize">{trait}</span>
-                    <span>{info.level}</span>
+          {summaryApiStatus.loading && !generatedSummary && (
+            <div className="mt-3 space-y-2">
+              <SkeletonLine w="w-11/12" />
+              <SkeletonLine w="w-10/12" />
+              <SkeletonLine w="w-9/12" />
+            </div>
+          )}
+
+          {generatedSummary && (
+            <p className="mt-3 text-sm leading-6 text-gray-700 whitespace-pre-line">
+              {generatedSummary}
+            </p>
+          )}
+        </Card>
+
+        {/* Scores */}
+        <Card className="p-5">
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold text-gray-900">Bracket Scores</h4>
+            {bracketScores && <Pill>Interactive</Pill>}
+          </div>
+
+          {scoresError && (
+            <p className="mt-3 text-sm text-red-600">Error: {scoresError}</p>
+          )}
+
+          {!scoresError && !bracketScores && (
+            <div className="mt-4 space-y-4">
+              {traitOrder.map((t) => (
+                <div key={t} className="space-y-2">
+                  <div className="flex items-center justify-between text-sm text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <span className="opacity-60">⬤</span>
+                      <span className="capitalize">{t}</span>
+                    </div>
+                    <div className="h-5 w-20 rounded bg-gray-100 animate-pulse" />
                   </div>
-                  <div className="w-full h-2 bg-gray-200 rounded">
-                    <div
-                      className="h-full bg-green-500 rounded"
-                      style={{ width: `${info.score * 100}%` }}
-                    ></div>
+                  <div className="h-4 w-full rounded-lg bg-gray-100 overflow-hidden">
+                    <div className="h-full w-1/3 bg-gray-200 animate-pulse" />
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
+          {bracketScores && (
+            <div className="mt-4 space-y-4">
+              {traitOrder.map((displayTrait) => {
+                const key = displayTrait.toLowerCase();
+                const info = bracketScores[key];
+                if (!info) return null;
 
-        {/* <div className="text-left space-y-4 max-w-2xl mx-auto">
-          <div className="bg-white rounded-lg p-4 shadow-sm">
-            <h4 className="font-medium text-gray-800 mb-2">Summary:</h4>
-            <ul className="space-y-1 text-sm text-gray-600">
-              <li>• Interests shared: {interests.length}</li>
-              <li>• Self-description provided: {selfDescription ? 'Yes' : 'No'}</li>
-              <li>• Groups selected: {groupSelection.length}</li>
-              <li>• Questions answered: {personalityResponses.length}</li>
-            </ul>
-          </div>
-        </div> */}
+                const meta = traitMeta[key];
+                const width = `${Math.max(0, Math.min(100, info.score * 100))}%`;
 
-        <p className="text-sm text-gray-600 mt-4">
+                return (
+                  <div key={key} className="space-y-2" title={meta?.tooltip}>
+                    <div className="flex items-center justify-between text-sm text-gray-800">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{meta?.emoji ?? '•'}</span>
+                        <span className="capitalize">{displayTrait}</span>
+                      </div>
+                      <Pill>{prettyLevel(info.level)}</Pill>
+                    </div>
+
+                    <div className="relative h-4 w-full rounded-lg bg-gray-100 ring-1 ring-black/5 overflow-hidden">
+                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_40%)]" />
+                      <div
+                        className={[
+                          'relative h-full rounded-lg transition-all duration-700 ease-out will-change-[width]',
+                          'bg-gradient-to-r',
+                          meta?.from ?? 'from-emerald-500',
+                          meta?.to ?? 'to-emerald-300',
+                          animateBars ? '' : 'w-0'
+                        ].join(' ')}
+                        style={{ width: animateBars ? width : '0%' }}
+                        aria-label={`${displayTrait} score`}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={Math.round(info.score * 100)}
+                        role="progressbar"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Card>
+
+        <div className="mx-auto text-center text-sm text-gray-600">
           Your anonymous data helps advance personality research. Thank you for contributing!
-        </p>
+        </div>
       </div>
     </div>
   );
