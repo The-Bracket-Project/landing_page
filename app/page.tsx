@@ -15,7 +15,7 @@ export default function Home() {
           <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start order-1 md:order-1 mb-12 md:mb-0">
             <div className="w-[92vw] h-[52vw] sm:w-[360px] sm:h-[205px] md:w-[520px] md:h-[320px] rounded-xl overflow-hidden">
               <AutoPlayVideo
-                src="/NodeGridScene.mp4"
+                src="/NodeGridScene_noaudio.mp4"
                 className="w-full h-full object-cover"
                 style={{ outline: 'none' }}
               />
