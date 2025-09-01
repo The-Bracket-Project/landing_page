@@ -1,13 +1,15 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-type Props = React.VideoHTMLAttributes<HTMLVideoElement> & {
+type Props = Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src' | 'controls'> & {
   src: string;
+  poster?: string;
 };
 
-export default function AutoPlayVideo({ src, className = "", style, ...rest }: Props) {
+export default function AutoPlayVideo({ src, poster = "/placeholder.jpg", className = "", style, ...rest }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const triedRef = useRef(false);
+  const [needsPlay, setNeedsPlay] = useState(false);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -19,13 +21,16 @@ export default function AutoPlayVideo({ src, className = "", style, ...rest }: P
     v.playsInline = true;
     v.setAttribute("playsinline", "");
     v.setAttribute("webkit-playsinline", "");
+    v.setAttribute("muted", "");
 
     const tryPlay = async () => {
       if (!v) return;
       try {
         await v.play();
+        setNeedsPlay(false);
       } catch {
-        // Swallow; iOS may still require a user gesture. We'll retry on interaction.
+        // iOS may still require a user gesture; show overlay to hint tap-to-play
+        setNeedsPlay(true);
       }
     };
 
@@ -34,7 +39,9 @@ export default function AutoPlayVideo({ src, className = "", style, ...rest }: P
 
     // Retry on canplay and visibility user interactions
     const onCanPlay = () => tryPlay();
+    const onLoadedMeta = () => tryPlay();
     v.addEventListener("canplay", onCanPlay);
+    v.addEventListener("loadedmetadata", onLoadedMeta);
 
     const onFirstInteract = () => {
       if (triedRef.current) return;
@@ -53,6 +60,7 @@ export default function AutoPlayVideo({ src, className = "", style, ...rest }: P
 
     return () => {
       v.removeEventListener("canplay", onCanPlay);
+      v.removeEventListener("loadedmetadata", onLoadedMeta);
       window.removeEventListener("touchstart", onFirstInteract);
       window.removeEventListener("click", onFirstInteract, true);
       document.removeEventListener("visibilitychange", onVisibility);
@@ -60,21 +68,43 @@ export default function AutoPlayVideo({ src, className = "", style, ...rest }: P
   }, []);
 
   return (
-    <video
-      ref={videoRef}
-      className={className}
-      style={style}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      controls={false}
-      controlsList="nodownload nofullscreen noplaybackrate"
-      disablePictureInPicture
-      {...rest}
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className={className} style={style}>
+      <video
+        ref={videoRef}
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster={poster}
+        controls={false}
+        controlsList="nodownload nofullscreen noplaybackrate noremoteplayback"
+        disablePictureInPicture
+        disableRemotePlayback
+        className="w-full h-full object-cover block"
+        style={{ outline: 'none' }}
+        {...rest}
+      />
+      {needsPlay && (
+        <button
+          type="button"
+          aria-label="Play video"
+          onClick={() => {
+            const v = videoRef.current;
+            if (!v) return;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.playsInline = true;
+            v.play().then(() => setNeedsPlay(false)).catch(() => setNeedsPlay(true));
+          }}
+          className="absolute inset-0 flex items-center justify-center bg-black/20 text-white"
+        >
+          <svg width="54" height="54" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+      )}
+    </div>
   );
 }
