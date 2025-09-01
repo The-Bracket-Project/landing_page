@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 
 type Props = Omit<React.VideoHTMLAttributes<HTMLVideoElement>, "src" | "controls"> & {
   src: string;
-  poster?: string;
+  poster?: string; // optional; leave undefined to start from first frame
 };
 
 export default function AutoPlayVideo({
@@ -19,51 +19,58 @@ export default function AutoPlayVideo({
     const v = videoRef.current;
     if (!v) return;
 
-    // Ensure autoplay-eligibility BEFORE loading the source
+    // Make it autoplay-eligible BEFORE loading the source
     v.muted = true;
     v.defaultMuted = true;
     v.playsInline = true;
+    v.autoplay = true;
     v.setAttribute("playsinline", "");
     v.setAttribute("webkit-playsinline", "");
     v.setAttribute("muted", "");
+    v.setAttribute("autoplay", "");
 
-    // Always set src AFTER muted/playsInline are in place
+    // Set/refresh src AFTER flags are set
     v.src = src;
-    v.load();
+
+    let cancelled = false;
 
     const tryPlay = async () => {
+      if (!videoRef.current || cancelled) return;
       try {
         await v.play();
       } catch {
-        // ignore; will retry on events or user interaction
+        // ignore; we'll retry on more events or user interaction
       }
     };
 
-    // Retry on ready events
-    const onLoadedMeta = () => tryPlay();
-    const onCanPlay = () => tryPlay();
+    // Retry on multiple readiness signals (covers more iOS paths)
+    const onLoadedMetadata = () => tryPlay();
     const onLoadedData = () => tryPlay();
-    v.addEventListener("loadedmetadata", onLoadedMeta);
-    v.addEventListener("canplay", onCanPlay);
+    const onCanPlay = () => tryPlay();
+    const onCanPlayThrough = () => tryPlay();
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") tryPlay();
+    };
+
+    v.addEventListener("loadedmetadata", onLoadedMetadata);
     v.addEventListener("loadeddata", onLoadedData);
-
-    // As a last resort, retry on visibility or first pointer
-    const onVisibility = () =>
-      document.visibilityState === "visible" && tryPlay();
-    const onPointer = () => tryPlay();
+    v.addEventListener("canplay", onCanPlay);
+    v.addEventListener("canplaythrough", onCanPlayThrough);
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pointerdown", onPointer, {
-      passive: true,
-      once: true,
-    });
 
-    // Kick off initial attempt
+    // First attempt (some devices accept an immediate call)
     tryPlay();
 
+    // Fallback: first user pointer (anywhere) -> try play once
+    const onPointer = () => tryPlay();
+    window.addEventListener("pointerdown", onPointer, { passive: true, once: true });
+
     return () => {
-      v.removeEventListener("loadedmetadata", onLoadedMeta);
-      v.removeEventListener("canplay", onCanPlay);
+      cancelled = true;
+      v.removeEventListener("loadedmetadata", onLoadedMetadata);
       v.removeEventListener("loadeddata", onLoadedData);
+      v.removeEventListener("canplay", onCanPlay);
+      v.removeEventListener("canplaythrough", onCanPlayThrough);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointerdown", onPointer);
     };
@@ -72,7 +79,7 @@ export default function AutoPlayVideo({
   return (
     <video
       ref={videoRef}
-      // src is set programmatically in useEffect
+      // src set programmatically in effect
       autoPlay
       loop
       muted
