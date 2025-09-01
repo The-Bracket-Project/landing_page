@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Image from "next/image";
+import AutoPlayVideo from "./components/AutoPlayVideo";
 import Reveal from "./components/Reveal";
 
 export default function Home() {
@@ -9,24 +10,15 @@ export default function Home() {
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Hero */}
-        <div className="grid grid-cols-5 gap-1 md:gap-8 items-center content-start md:content-center min-h-[calc(100vh-96px)]">
+        <div className="grid grid-cols-5 gap-1 md:gap-12 items-center content-start md:content-center min-h-[calc(100vh-96px)] pt-8 md:pt-4">
           {/* Left: animation */}
           <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start order-1 md:order-1 mb-12 md:mb-0">
             <div className="w-[92vw] h-[52vw] sm:w-[360px] sm:h-[205px] md:w-[520px] md:h-[320px] rounded-xl overflow-hidden">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls={false}
-                preload="auto"
-                controlsList="nodownload nofullscreen noplaybackrate"
-                disablePictureInPicture
+              <AutoPlayVideo
+                src="/NodeGridScene.mp4"
                 className="w-full h-full object-cover"
                 style={{ outline: 'none' }}
-              >
-                <source src="/NodeGridScene.mp4" type="video/mp4" />
-              </video>
+              />
             </div>
           </div>
           {/* Right: headline and CTA */}
