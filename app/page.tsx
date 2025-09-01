@@ -9,9 +9,9 @@ export default function Home() {
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Hero */}
-        <div className="grid grid-cols-5 gap-2 md:gap-8 items-center min-h-[calc(100vh-96px)]">
+        <div className="grid grid-cols-5 gap-1 md:gap-8 items-center content-start md:content-center min-h-[calc(100vh-96px)]">
           {/* Left: animation */}
-          <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start order-1 md:order-1">
+          <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start order-1 md:order-1 mb-12 md:mb-0">
             <div className="w-[92vw] h-[52vw] sm:w-[360px] sm:h-[205px] md:w-[520px] md:h-[320px] rounded-xl overflow-hidden">
               <video
                 autoPlay
@@ -36,7 +36,7 @@ export default function Home() {
                 The AI Engine for Human Compatibility
               </p>
             </Reveal>
-            <div className="pt-1 md:pt-2 w-full flex justify-center md:justify-start">
+            <div className="pt-2 md:pt-2 w-full flex justify-center md:justify-start">
               <a
                 href="/contactus"
                 className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
