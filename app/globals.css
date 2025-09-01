@@ -22,10 +22,11 @@
   font-family: 'DM Sans', sans-serif;
 }
 
+/* Force light theme variables even when user prefers dark */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #faf9f5; /* keep cream */
+    --foreground: #061F40; /* keep deep blue text */
   }
 }
 
