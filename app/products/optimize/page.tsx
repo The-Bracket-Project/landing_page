@@ -21,7 +21,7 @@ export default function OptimizePage() {
           </div>
           <div className="justify-self-center">
             <Image
-              src="/placeholder.jpg"
+              src="/placeholder.png"
               alt="Compatibility OS graphic placeholder"
               width={560}
               height={360}
@@ -83,7 +83,6 @@ export default function OptimizePage() {
         {/* CTA */}
         <div className="py-12 text-center">
           <Button asChild className="rounded-full px-6 py-3">
-            {/* @ts-ignore */}
             <a href="/contactus">Request a Demo</a>
           </Button>
         </div>

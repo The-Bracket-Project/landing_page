@@ -19,14 +19,12 @@ export default function Button({ variant = 'primary', className = '', asChild, c
   const bg = variant === 'primary' ? { background: 'var(--brand-accent)' } : undefined;
 
   if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<any>;
+    const child = children as React.ReactElement<{ className?: string; style?: React.CSSProperties }>;
     const mergedClassName = [classes, child.props.className].filter(Boolean).join(' ');
-    const mergedStyle = { ...(bg || {}), ...(child.props?.style || {}) };
-    const { type, ...rest } = props as any; // avoid passing button-only 'type' prop to anchors
+    const mergedStyle = { ...(bg || {}), ...(child.props?.style || {}) } as React.CSSProperties;
     return React.cloneElement(child, {
       className: mergedClassName,
       style: mergedStyle,
-      ...rest,
     });
   }
 

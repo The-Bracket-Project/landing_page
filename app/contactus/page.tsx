@@ -4,7 +4,6 @@ import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
 
 export default function ContactUs() {
-  const [isHovering, setIsHovering] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
   const [submitMessage, setSubmitMessage] = useState('');
 
@@ -144,8 +143,6 @@ export default function ContactUs() {
               type="submit"
               className="w-full text-white font-semibold py-3 px-6 rounded-full focus:ring-4 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
               style={{ background: 'var(--brand-accent)' }}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
             >
               Send Message
             </button>
