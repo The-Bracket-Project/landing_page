@@ -21,7 +21,7 @@ export default function OptimizePage() {
           </div>
           <div className="justify-self-center">
             <Image
-              src="/placeholder.png"
+              src="/placeholder.jpg"
               alt="Compatibility OS graphic placeholder"
               width={560}
               height={360}

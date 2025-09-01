@@ -21,7 +21,7 @@ export default function IdentifyPage() {
           </div>
           <div className="justify-self-center">
             <Image
-              src="/placeholder.png"
+              src="/placeholder.jpg"
               alt="Quantification graphic placeholder"
               width={560}
               height={360}

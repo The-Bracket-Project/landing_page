@@ -15,6 +15,7 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showProducts, setShowProducts] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const hideProductsTimeoutRef = useRef<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -72,6 +73,25 @@ function Navbar() {
     };
   }, []);
 
+  // Lock body scroll when mobile menu is open, close on Escape
+  useEffect(() => {
+    if (!mounted) return;
+    const originalOverflow = document.body.style.overflow;
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalOverflow || '';
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    if (mobileOpen) document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow || '';
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [mobileOpen, mounted]);
+
   return (
     <>
       {/* Placeholder to prevent layout jump when navbar becomes fixed */}
@@ -93,17 +113,7 @@ function Navbar() {
         ref={navRef}
       >
         <div className="flex flex-row justify-between items-center h-16">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="flex item-center gap-2">
-              <h1
-                className={`text-xl font-semibold ${dmSans.className} hidden lg:block md:block transition-all duration-400 ${
-                  isScrolled ? "transform scale-95" : ""
-                }`}
-                style={isScrolled ? { color: 'var(--brand-k)' } : { color: 'var(--brand-k)' }}
-              >
-                Bracket AI
-              </h1>
-            </Link>
+          <Link href="/" className="flex items-center gap-2">
             <Image 
               src="/logo.PNG" 
               alt="Bracket AI" 
@@ -113,9 +123,18 @@ function Navbar() {
                 isScrolled ? "transform scale-90" : ""
               }`}
             />
-          </div>
+            <h1
+              className={`text-xl font-semibold ${dmSans.className} hidden lg:block md:block transition-all duration-400 ${
+                isScrolled ? "transform scale-95" : ""
+              }`}
+              style={isScrolled ? { color: 'var(--brand-k)' } : { color: 'var(--brand-k)' }}
+            >
+              Bracket AI
+            </h1>
+          </Link>
+          {/* Desktop nav */}
           <div
-            className={`relative flex flex-row items-center font-medium gap-3 md:gap-5 lg:gap-5 ${dmSans.className}`}
+            className={`relative hidden md:flex flex-row items-center font-medium gap-3 md:gap-5 lg:gap-5 ${dmSans.className}`}
             style={{ color: 'var(--brand-text)' }}
           >
             {/* Products dropdown */}
@@ -223,6 +242,20 @@ function Navbar() {
               <h1 className="text-sm">Demo</h1>
             </Link>
           </div>
+
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            aria-label="Open menu"
+            className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg hover:bg-black/5 transition-colors"
+            onClick={() => setMobileOpen((v) => !v)}
+            style={{ color: 'var(--brand-text)' }}
+          >
+            <span className="sr-only">Toggle menu</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
         
         {/* Scroll Progress Bar */}
@@ -243,6 +276,53 @@ function Navbar() {
         </div>
         )}
       </div>
+
+      {/* Mobile menu panel */}
+      {mounted && mobileOpen && createPortal(
+        <div
+          className="fixed inset-x-0 z-[99990] md:hidden"
+          style={{ top: menuTop }}
+        >
+          <div className="mx-4 rounded-2xl shadow-2xl bg-white/95 backdrop-blur-lg border border-black/5 overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-black/5">
+            <div className="flex items-center gap-2" style={{ color: 'var(--brand-text)' }}>
+              <Link href="/" onClick={() => setMobileOpen(false)}>
+                <Image src="/logo.PNG" alt="Bracket AI" width={28} height={28} className="rounded" />
+              </Link>
+              <span className="text-sm font-semibold">Menu</span>
+            </div>
+              <button
+                type="button"
+                aria-label="Close menu"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg hover:bg-black/5"
+                onClick={() => setMobileOpen(false)}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+            <div className="divide-y divide-black/5" style={{ color: 'var(--brand-text)' }}>
+              <div className="p-4">
+                <div className="text-xs uppercase font-semibold" style={{ color: 'var(--brand-k)' }}>Products</div>
+                <div className="mt-2 flex flex-col">
+                  <Link href="/products/identify" className="px-2 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>Identify Compatibility</Link>
+                  <Link href="/products/optimize" className="px-2 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>Optimize Compatibility</Link>
+                </div>
+              </div>
+              <Link href="/" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>About</Link>
+              <Link href="/contactus" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Contact</Link>
+              <a href="https://dashboard.thebracket.io/" target="_blank" rel="noopener noreferrer" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Dashboard</a>
+              <div className="p-4">
+                <Link href="/showcase" onClick={() => setMobileOpen(false)}>
+                  <span className="inline-flex px-5 py-2 rounded-full text-white font-semibold shadow-md" style={{ background: 'var(--brand-accent)' }}>Demo</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }

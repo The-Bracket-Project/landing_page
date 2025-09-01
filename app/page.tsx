@@ -9,16 +9,18 @@ export default function Home() {
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Hero */}
-        <div className="grid grid-cols-5 gap-8 items-center min-h-[calc(100vh-96px)]">
+        <div className="grid grid-cols-5 gap-2 md:gap-8 items-center min-h-[calc(100vh-96px)]">
           {/* Left: animation */}
-          <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start">
-            <div className="w-[360px] h-[220px] md:w-[520px] md:h-[320px] rounded-xl overflow-hidden">
+          <div className="col-span-5 md:col-span-2 flex justify-center md:justify-start order-1 md:order-1">
+            <div className="w-[92vw] h-[52vw] sm:w-[360px] sm:h-[205px] md:w-[520px] md:h-[320px] rounded-xl overflow-hidden">
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
                 controls={false}
+                preload="auto"
+                controlsList="nodownload nofullscreen noplaybackrate"
                 disablePictureInPicture
                 className="w-full h-full object-cover"
                 style={{ outline: 'none' }}
@@ -28,16 +30,16 @@ export default function Home() {
             </div>
           </div>
           {/* Right: headline and CTA */}
-          <div className="col-span-5 md:col-span-3 flex flex-col items-center md:items-start gap-6">
+          <div className="col-span-5 md:col-span-3 flex flex-col items-center md:items-start gap-2 md:gap-6 order-2 md:order-2">
             <Reveal>
               <p className="text-4xl md:text-6xl lg:text-7xl font-semibold poppins text-center md:text-left" style={{ color: 'var(--brand-k)' }}>
                 The AI Engine for Human Compatibility
               </p>
             </Reveal>
-            <div className="pt-2 w-full">
+            <div className="pt-1 md:pt-2 w-full flex justify-center md:justify-start">
               <a
                 href="/contactus"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow mx-auto md:mx-0"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
                 style={{ background: 'var(--brand-accent)' }}
               >
                 Request a Demo
