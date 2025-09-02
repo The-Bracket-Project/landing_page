@@ -16,10 +16,13 @@ function Navbar() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showProducts, setShowProducts] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [hideOnScroll, setHideOnScroll] = useState(false);
   const hideProductsTimeoutRef = useRef<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
   const [menuTop, setMenuTop] = useState<number>(72);
+  const lastYRef = useRef<number>(0);
 
   const clearHideProducts = () => {
     if (hideProductsTimeoutRef.current !== null) {
@@ -63,6 +66,19 @@ function Navbar() {
       
       setIsScrolled(scrollTop > 100);
       setScrollProgress(Math.min(progress, 100)); // Cap at 100%
+
+      // Determine scroll direction to auto-hide/show navbar
+      const lastY = lastYRef.current || 0;
+      const delta = scrollTop - lastY;
+      lastYRef.current = scrollTop;
+
+      if (scrollTop < 10) {
+        setHideOnScroll(false);
+      } else if (delta > 4) {
+        setHideOnScroll(true);
+      } else if (delta < -4) {
+        setHideOnScroll(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -104,7 +120,7 @@ function Navbar() {
       <div 
         className={`px-4 md:px-10 lg:px-10 py-1 transition-all duration-300 ease-in-out ${
           isScrolled 
-            ? "fixed top-0 left-0 right-0 z-[80] shadow-lg transform translate-y-0 bg-white/85 backdrop-blur-lg border-b" 
+            ? `fixed top-0 left-0 right-0 z-[80] shadow-lg transform ${hideOnScroll ? '-translate-y-full' : 'translate-y-0'} bg-white/85 backdrop-blur-lg border-b` 
             : "relative bg-white/70 backdrop-blur-lg"
         }`}
         style={isScrolled ? {
@@ -173,12 +189,7 @@ function Navbar() {
                         <span className="inline-block text-sm mt-2 group-hover:underline" style={{ color: 'var(--brand-k)' }}>Open →</span>
                       </Link>
                     </div>
-                    <div className="flex items-center justify-between px-6 py-3" style={{ background: 'rgba(33,61,97,0.04)' }}>
-                      <span className="text-xs" style={{ color: 'var(--brand-text)' }}>Explore the full details and examples</span>
-                      <Link href="/products" className="text-sm font-semibold hover:opacity-80" style={{ color: 'var(--brand-k)' }}>
-                        View Products →
-                      </Link>
-                    </div>
+                    {/* Footer link removed intentionally (no standalone products index) */}
                   </div>,
                   document.body
                 )
@@ -242,11 +253,10 @@ function Navbar() {
         >
           <div className="mx-4 rounded-2xl shadow-2xl bg-white/95 backdrop-blur-lg border border-black/5 overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-black/5">
-            <div className="flex items-center gap-2" style={{ color: 'var(--brand-text)' }}>
+                    <div className="flex items-center gap-2" style={{ color: 'var(--brand-text)' }}>
               <Link href="/" onClick={() => setMobileOpen(false)}>
                 <Image src="/logo.PNG" alt="Bracket AI" width={28} height={28} className="rounded" />
               </Link>
-              <span className="text-sm font-semibold">Menu</span>
             </div>
               <button
                 type="button"
@@ -260,16 +270,34 @@ function Navbar() {
               </button>
             </div>
             <div className="divide-y divide-black/5" style={{ color: 'var(--brand-text)' }}>
+              {/* Products (collapsible on mobile) */}
               <div className="p-4">
-                <div className="text-xs uppercase font-semibold" style={{ color: 'var(--brand-k)' }}>Products</div>
-                <div className="mt-2 flex flex-col gap-3">
-                  <Link href="/products/identify" onClick={() => setMobileOpen(false)}>
-                    <span className="inline-flex w-full items-center justify-center px-4 py-2 rounded-full text-white font-semibold shadow" style={{ background: 'var(--brand-accent)' }}>Personality Quantification</span>
-                  </Link>
-                  <Link href="/products/optimize" onClick={() => setMobileOpen(false)}>
-                    <span className="inline-flex w-full items-center justify-center px-4 py-2 rounded-full text-white font-semibold shadow" style={{ background: 'var(--brand-k)' }}>Compatibility OS</span>
-                  </Link>
-                </div>
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-black/5 transition-colors"
+                  onClick={() => setMobileProductsOpen((v) => !v)}
+                  aria-expanded={mobileProductsOpen}
+                >
+                  <span className="text-sm uppercase font-semibold" style={{ color: 'var(--brand-k)' }}>Products</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${mobileProductsOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                  >
+                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.085l3.71-3.855a.75.75 0 111.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                {mobileProductsOpen && (
+                  <div className="mt-2 flex flex-col">
+                    <Link href="/products/identify" className="block px-4 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>
+                      <div className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>Personality Quantification</div>
+                      <div className="text-xs text-gray-600">OCEAN quantification for interpretable traits</div>
+                    </Link>
+                    <Link href="/products/optimize" className="block px-4 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>
+                      <div className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>Compatibility OS</div>
+                      <div className="text-xs text-gray-600">Match, route, and organize people and teams</div>
+                    </Link>
+                  </div>
+                )}
               </div>
               {/* About removed */}
               <Link href="/contactus" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Contact Us</Link>

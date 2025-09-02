@@ -30,17 +30,17 @@ export default function Home() {
             </Reveal>
             <div className="pt-2 md:pt-2 w-full flex justify-center md:justify-start">
               <a
-                href="/contactus"
+                href="#main-content"
                 className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
                 style={{ background: 'var(--brand-accent)' }}
               >
-                Request a Demo
+                Discover More
               </a>
             </div>
           </div>
         </div>
 
-        <div className="flex gap-10 md:gap-1 lg:gap-1 flex-col items-center justify-center pb-25">
+        <div id="main-content" className="flex gap-10 md:gap-1 lg:gap-1 flex-col items-center justify-center pb-25">
           <div className="w-full max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-center min-h-72 md:min-h-96 lg:min-h-96 gap-5 md:gap-1">
               <div className="w-full md:w-1/2 flex flex-col justify-center order-2 md:order-1 lg:order-1">
@@ -126,6 +126,15 @@ export default function Home() {
               <span className="font-bold text-3xl">We&apos;re Building It</span>
             </p>
           </Reveal>
+          <div className="pt-2">
+            <a
+              href="/contactus"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
+              style={{ background: 'var(--brand-accent)' }}
+            >
+              Request a Demo
+            </a>
+          </div>
         </div>
 
         <Footer />

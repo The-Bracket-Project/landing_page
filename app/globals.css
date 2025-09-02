@@ -39,6 +39,9 @@ body {
   letter-spacing: -0.03em; /* designer preference */
 }
 
+/* Smooth anchor scrolling site-wide */
+html { scroll-behavior: smooth; }
+
 /* Fade-in-up reveal animation */
 .reveal {
   opacity: 0;

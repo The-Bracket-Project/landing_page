@@ -38,7 +38,7 @@ export default function Footer() {
       </div>
 
       <div className="mt-8 pt-6 text-center text-sm" style={{ color: 'var(--brand-b)' }}>
-        <p>&copy; 2024 Bracket IO. All rights reserved.</p>
+        <p>&copy; 2025 The Bracket, INC. All rights reserved.</p>
       </div>
     </footer>
   );
