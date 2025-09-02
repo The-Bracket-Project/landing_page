@@ -10,7 +10,7 @@ export default function Footer() {
         </div>
 
         {/* Navigation and Social Links */}
-        <div className="flex-1 flex flex-col items-end space-y-4 min-w-[240px]">
+        <div className="flex-1 flex flex-col items-end space-y-4">
           {/* Navigation Links */}
           <ul className="space-y-2 text-sm">
             <li>
