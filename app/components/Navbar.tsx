@@ -157,51 +157,21 @@ function Navbar() {
                     onBlur={handleProductsLeave}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
-                      {/* Column: Identify Compatibility */}
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Identify Compatibility</p>
-                          <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>OCEAN Quantification</h3>
-                          <p className="text-sm mt-1 text-gray-600">Encode users into stable, interpretable trait vectors for personalization and insights.</p>
-                        </div>
-                        <div className="flex flex-col divide-y divide-gray-100 rounded-lg overflow-hidden">
-                          <a href="/products/identify" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Overview</div>
-                            <div className="text-xs text-gray-600">How quantification works and where to use it</div>
-                          </a>
-                          <a href="/products/identify" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Developer API</div>
-                            <div className="text-xs text-gray-600">Assign traits via API with simple requests</div>
-                          </a>
-                          <a href="/products/identify" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Real‑time Signals</div>
-                            <div className="text-xs text-gray-600">Build profiles from in‑app behavior</div>
-                          </a>
-                        </div>
-                      </div>
+                      {/* Column: Personality Quantification (clickable card) */}
+                      <Link href="/products/identify" className="space-y-1 block group">
+                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Personality Quantification</p>
+                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>OCEAN Quantification</h3>
+                        <p className="text-sm mt-1 text-gray-600">Encode users into stable, interpretable trait vectors.</p>
+                        <span className="inline-block text-sm mt-2 group-hover:underline" style={{ color: 'var(--brand-k)' }}>Open →</span>
+                      </Link>
 
-                      {/* Column: Optimize Compatibility */}
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Optimize Compatibility</p>
-                          <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Compatibility OS</h3>
-                          <p className="text-sm mt-1 text-gray-600">Operationalize compatibility to match, route, and organize people and teams.</p>
-                        </div>
-                        <div className="flex flex-col divide-y divide-gray-100 rounded-lg overflow-hidden">
-                          <a href="/products/optimize" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Overview</div>
-                            <div className="text-xs text-gray-600">From quantification to real‑world routing</div>
-                          </a>
-                          <a href="/products/optimize" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Hiring Suite</div>
-                            <div className="text-xs text-gray-600">Instant visibility into candidate–org fit</div>
-                          </a>
-                          <a href="/products/optimize" className="px-4 py-3 hover:bg-black/5 transition-colors">
-                            <div className="font-medium">Use Cases</div>
-                            <div className="text-xs text-gray-600">Sales, events, healthcare, mentorship, and more</div>
-                          </a>
-                        </div>
-                      </div>
+                      {/* Column: Compatibility OS (clickable card) */}
+                      <Link href="/products/optimize" className="space-y-1 block group">
+                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Compatibility OS</p>
+                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Compatibility OS</h3>
+                        <p className="text-sm mt-1 text-gray-600">Operationalize compatibility to match, route, and organize.</p>
+                        <span className="inline-block text-sm mt-2 group-hover:underline" style={{ color: 'var(--brand-k)' }}>Open →</span>
+                      </Link>
                     </div>
                     <div className="flex items-center justify-between px-6 py-3" style={{ background: 'rgba(33,61,97,0.04)' }}>
                       <span className="text-xs" style={{ color: 'var(--brand-text)' }}>Explore the full details and examples</span>
@@ -214,32 +184,19 @@ function Navbar() {
                 )
               )}
             </div>
-            <Link 
-              href="/" 
-              className="hover:opacity-70 transition-all duration-200 hover:transform hover:scale-105"
-            >
-              <h1>About</h1>
-            </Link>
+            {/* About removed */}
             <Link
               href="/contactus"
               className="hover:opacity-70 transition-all duration-200 hover:transform hover:scale-105"
             >
-              <h1>Contact</h1>
+              <h1>Contact Us</h1>
             </Link>
             <Link
-              href="https://dashboard.thebracket.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:opacity-70 transition-all duration-200 hover:transform hover:scale-105"
-            >
-              <h1>Dashboard</h1>
-            </Link>
-            <Link
-              href="/showcase"
+              href="/password"
               className="px-5 py-2 rounded-full text-white font-semibold transition-all duration-200 hover:transform hover:scale-105 shadow-md hover:shadow-lg"
               style={{ background: 'var(--brand-accent)' }}
             >
-              <h1 className="text-sm">Demo</h1>
+              <h1 className="text-sm">Log in</h1>
             </Link>
           </div>
 
@@ -305,17 +262,20 @@ function Navbar() {
             <div className="divide-y divide-black/5" style={{ color: 'var(--brand-text)' }}>
               <div className="p-4">
                 <div className="text-xs uppercase font-semibold" style={{ color: 'var(--brand-k)' }}>Products</div>
-                <div className="mt-2 flex flex-col">
-                  <Link href="/products/identify" className="px-2 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>Identify Compatibility</Link>
-                  <Link href="/products/optimize" className="px-2 py-3 rounded hover:bg-black/5" onClick={() => setMobileOpen(false)}>Optimize Compatibility</Link>
+                <div className="mt-2 flex flex-col gap-3">
+                  <Link href="/products/identify" onClick={() => setMobileOpen(false)}>
+                    <span className="inline-flex w-full items-center justify-center px-4 py-2 rounded-full text-white font-semibold shadow" style={{ background: 'var(--brand-accent)' }}>Personality Quantification</span>
+                  </Link>
+                  <Link href="/products/optimize" onClick={() => setMobileOpen(false)}>
+                    <span className="inline-flex w-full items-center justify-center px-4 py-2 rounded-full text-white font-semibold shadow" style={{ background: 'var(--brand-k)' }}>Compatibility OS</span>
+                  </Link>
                 </div>
               </div>
-              <Link href="/" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>About</Link>
-              <Link href="/contactus" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Contact</Link>
-              <a href="https://dashboard.thebracket.io/" target="_blank" rel="noopener noreferrer" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Dashboard</a>
+              {/* About removed */}
+              <Link href="/contactus" className="block px-4 py-3 hover:bg-black/5" onClick={() => setMobileOpen(false)}>Contact Us</Link>
               <div className="p-4">
-                <Link href="/showcase" onClick={() => setMobileOpen(false)}>
-                  <span className="inline-flex px-5 py-2 rounded-full text-white font-semibold shadow-md" style={{ background: 'var(--brand-accent)' }}>Demo</span>
+                <Link href="/password" onClick={() => setMobileOpen(false)}>
+                  <span className="inline-flex px-5 py-2 rounded-full text-white font-semibold shadow-md" style={{ background: 'var(--brand-accent)' }}>Log in</span>
                 </Link>
               </div>
             </div>

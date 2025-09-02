@@ -22,9 +22,9 @@ export default function ProductsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="rounded-2xl border p-6 md:p-8 hover:shadow-lg transition-shadow" style={{ borderColor: 'rgba(33,61,97,0.12)', background: 'rgba(255,255,255,0.75)' }}>
             <div className="flex items-start gap-4">
-              <Image src="/placeholder.jpg" alt="Identify Compatibility" width={120} height={120} className="rounded-md object-cover" />
+              <Image src="/placeholder.jpg" alt="Personality Quantification" width={120} height={120} className="rounded-md object-cover" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold" style={{ color: 'var(--brand-k)' }}>Identify Compatibility</h2>
+                <h2 className="text-xl md:text-2xl font-semibold" style={{ color: 'var(--brand-k)' }}>Personality Quantification</h2>
                 <p className="text-sm mt-1" style={{ color: 'var(--brand-text)' }}>OCEAN Quantification Mechanism to encode users into stable, interpretable trait vectors.</p>
               </div>
             </div>
@@ -34,17 +34,17 @@ export default function ProductsPage() {
             </div>
             <div className="mt-6">
               <Link href="/products/identify" className="inline-block">
-                <Button className="rounded-full px-5">Explore Identify</Button>
+                <Button className="rounded-full px-5">Explore Personality Quantification</Button>
               </Link>
             </div>
           </div>
 
           <div className="rounded-2xl border p-6 md:p-8 hover:shadow-lg transition-shadow" style={{ borderColor: 'rgba(33,61,97,0.12)', background: 'rgba(255,255,255,0.75)' }}>
             <div className="flex items-start gap-4">
-              <Image src="/placeholder.jpg" alt="Optimize Compatibility" width={120} height={120} className="rounded-md object-cover" />
+              <Image src="/placeholder.jpg" alt="Compatibility OS" width={120} height={120} className="rounded-md object-cover" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold" style={{ color: 'var(--brand-k)' }}>Optimize Compatibility</h2>
-                <p className="text-sm mt-1" style={{ color: 'var(--brand-text)' }}>Compatibility OS to route, organize, and match people and teams.</p>
+                <h2 className="text-xl md:text-2xl font-semibold" style={{ color: 'var(--brand-k)' }}>Compatibility OS</h2>
+                <p className="text-sm mt-1" style={{ color: 'var(--brand-text)' }}>An operating system to route, organize, and match people and teams.</p>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-3 text-sm">
@@ -53,7 +53,7 @@ export default function ProductsPage() {
             </div>
             <div className="mt-6">
               <Link href="/products/optimize" className="inline-block">
-                <Button className="rounded-full px-5">Explore Optimize</Button>
+                <Button className="rounded-full px-5">Explore Compatibility OS</Button>
               </Link>
             </div>
           </div>

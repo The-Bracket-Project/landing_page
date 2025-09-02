@@ -15,13 +15,8 @@ export default function Footer() {
           {/* Navigation Links */}
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/" className="hover:opacity-80">
-                About Us
-              </Link>
-            </li>
-            <li>
               <a href="/contactus" className="hover:opacity-80">
-                Contact
+                Contact Us
               </a>
             </li>
           </ul>
