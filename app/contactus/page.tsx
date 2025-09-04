@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
+import Button from "../components/ui/Button";
 
 export default function ContactUs() {
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
@@ -139,13 +140,13 @@ export default function ContactUs() {
               ></textarea>
             </div>
 
-            <button
+            <Button
               type="submit"
-              className="w-full text-white font-semibold py-3 px-6 rounded-full focus:ring-4 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+              className="w-full text-white font-semibold py-3 px-6 rounded-full"
               style={{ background: 'var(--brand-accent)' }}
             >
               Send Message
-            </button>
+            </Button>
           </form>
         </div>
         <Footer />

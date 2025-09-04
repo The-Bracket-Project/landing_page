@@ -31,8 +31,7 @@ export default function Home() {
             <div className="pt-2 md:pt-2 w-full flex justify-center md:justify-start">
               <a
                 href="#main-content"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
-                style={{ background: 'var(--brand-accent)' }}
+                className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
               >
                 Discover More
               </a>
@@ -54,8 +53,7 @@ export default function Home() {
                   <div className="pt-2">
                     <a
                       href="/products/identify"
-                      className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow"
-                      style={{ background: 'var(--brand-accent)' }}
+                      className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                     >
                       Discover More
                     </a>
@@ -100,8 +98,7 @@ export default function Home() {
                   <div className="pt-2">
                     <a
                       href="/products/optimize"
-                      className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow"
-                      style={{ background: 'var(--brand-accent)' }}
+                      className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                     >
                       Discover More
                     </a>
@@ -129,8 +126,7 @@ export default function Home() {
           <div className="pt-2">
             <a
               href="/contactus"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow"
-              style={{ background: 'var(--brand-accent)' }}
+              className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
             >
               Request a Demo
             </a>
