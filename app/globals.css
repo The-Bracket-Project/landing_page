@@ -25,7 +25,7 @@
 /* Force light theme variables even when user prefers dark */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #faf9f5; /* keep cream */
+    --background: #faf9f6; /* keep cream */
     --foreground: #061F40; /* keep deep blue text */
   }
 }
