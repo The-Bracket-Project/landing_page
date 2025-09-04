@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf9f5; /* cream */
+  --background: #faf9f6; /* cream */
   --foreground: #061F40; /* deep blue text */
   --brand-logo: #3e5f88;
   --brand-name: #315178;
