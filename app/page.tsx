@@ -46,13 +46,13 @@ export default function Home() {
                 <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start" style={{ color: 'var(--brand-text)' }}>
                   <p className="text-2xl md:text-3xl font-bold">Personality Quantification</p>
                   <p className="text-lg md:text-xl">
-                    OCEAN Quantification Mechanism to encode users into stable, interpretable trait vectors.
+                    Personality Quantification mechanism to encode users into stable, interpretable trait vectors.
                     <br />
                     <span className="text-base">Only 10 questions — takes under 300 seconds.</span>
                   </p>
                   <div className="pt-2">
                     <a
-                      href="/products/identify"
+                      href="/identify"
                       className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                     >
                       Discover More
@@ -97,7 +97,7 @@ export default function Home() {
                   </p>
                   <div className="pt-2">
                     <a
-                      href="/products/optimize"
+                      href="/optimize"
                       className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                     >
                       Discover More

@@ -1,7 +1,7 @@
-import Container from "../../components/ui/Container";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import Button from "../../components/ui/Button";
+import Container from "../components/ui/Container";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Button from "../components/ui/Button";
 import Image from "next/image";
 
 export default function OptimizePage() {
@@ -46,3 +46,4 @@ export default function OptimizePage() {
     </div>
   );
 }
+
