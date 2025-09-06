@@ -1,36 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f6; /* cream */
+  --foreground: #061F40; /* deep blue text */
+  --brand-logo: #3e5f88;
+  --brand-name: #315178;
+  --brand-b: #33537a;
+  --brand-k: #213d61;
+  --brand-accent: #3E6089;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
-.poppins {
-  font-family: 'Poppins', sans-serif;
+.poppins { /* keep class name, map to DM Sans for safety */
+  font-family: 'DM Sans', sans-serif;
 }
 
+/* Force light theme variables even when user prefers dark */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #faf9f6; /* keep cream */
+    --foreground: #061F40; /* keep deep blue text */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   font-variation-settings: normal;
+  letter-spacing: -0.03em; /* designer preference */
 }
+
+/* Smooth anchor scrolling site-wide */
+html { scroll-behavior: smooth; }
 
 /* Fade-in-up reveal animation */
 .reveal {

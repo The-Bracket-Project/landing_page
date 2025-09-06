@@ -12,6 +12,8 @@ type RevealProps = {
   threshold?: number;
   /** Root margin to trigger a bit earlier/later */
   rootMargin?: string;
+  /** Optional inline styles to apply to the wrapper */
+  style?: React.CSSProperties;
 };
 
 export default function Reveal({
@@ -21,6 +23,7 @@ export default function Reveal({
   as: ElementTag = 'div',
   threshold = 0.15,
   rootMargin = '0px 0px -10% 0px',
+  style: userStyle,
 }: RevealProps) {
   const containerRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -60,9 +63,10 @@ export default function Reveal({
     .join(' ')
     .trim();
 
-  const style: React.CSSProperties = delayMs
-    ? { transitionDelay: `${Math.max(0, delayMs)}ms` }
-    : {};
+  const style: React.CSSProperties = {
+    ...(userStyle || {}),
+    ...(delayMs ? { transitionDelay: `${Math.max(0, delayMs)}ms` } : {}),
+  };
 
   return (
     <ElementTag ref={containerRef as React.RefObject<HTMLElement>} className={classes} style={style}>
@@ -70,5 +74,4 @@ export default function Reveal({
     </ElementTag>
   );
 }
-
 

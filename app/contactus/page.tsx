@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
+import Button from "../components/ui/Button";
 
 export default function ContactUs() {
-  const [isHovering, setIsHovering] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
   const [submitMessage, setSubmitMessage] = useState('');
 
@@ -59,26 +59,14 @@ export default function ContactUs() {
         }
       `}</style>
       
-      <div
-        className="min-h-screen"
-        style={{
-          minHeight: "100vh",
-          background:
-            "linear-gradient(to bottom, #ffffff 0%, #8C7A48 30%, #000000 60%)",
-        }}
-      >
+      <div className="min-h-screen" style={{ minHeight: '100vh', background: 'var(--background)', color: 'var(--foreground)' }}>
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8">
         <div className="flex flex-col items-center justify-center py-10  px-4">
-          <p
-            className={`text-5xl md:text-6xl lg:text-6xl text-center font-semibold poppins`}
-            style={{ color: "#000000" }}
-          >
+          <p className={`text-5xl md:text-6xl lg:text-6xl text-center font-semibold poppins`} style={{ color: 'var(--brand-k)' }}>
             Get In Touch With Us
           </p>
-          <p
-            className={`text-3xl md:text-4xl lg:text-5xl text-center font-semibold poppins text-white`}
-          >
+          <p className={`text-2xl md:text-3xl lg:text-4xl text-center font-semibold poppins`} style={{ color: 'var(--brand-text)' }}>
             Enquiries and Collaborations
           </p>
         </div>
@@ -86,22 +74,19 @@ export default function ContactUs() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Status Messages */}
             {submitStatus === 'success' && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
-                <p className="font-medium">✅ {submitMessage}</p>
+              <div className="px-4 py-3 rounded-lg mb-4" style={{ background: '#e9f7ef', border: '1px solid #a1e3c1', color: '#216e3a' }}>
+                <p className="font-medium">{submitMessage}</p>
               </div>
             )}
             
             {submitStatus === 'error' && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
-                <p className="font-medium">❌ {submitMessage}</p>
+              <div className="px-4 py-3 rounded-lg mb-4" style={{ background: '#fdecea', border: '1px solid #f5c6cb', color: '#842029' }}>
+                <p className="font-medium">{submitMessage}</p>
               </div>
             )}
 
             <div>
-              <label 
-                htmlFor="name" 
-                className="block text-sm font-medium text-white-700 mb-2 text-white"
-              >
+              <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'var(--brand-text)' }}>
                 Name
               </label>
               <input
@@ -109,16 +94,13 @@ export default function ContactUs() {
                 id="name"
                 name="name"
                 placeholder="Enter your name"
-                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
+                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-[var(--brand-accent)] focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               />
             </div>
 
             <div>
-              <label 
-                htmlFor="company" 
-                className="block text-sm font-medium text-white-700 mb-2 text-white"
-              >
+              <label htmlFor="company" className="block text-sm font-medium mb-2" style={{ color: 'var(--brand-text)' }}>
                 Company
               </label>
               <input
@@ -126,15 +108,12 @@ export default function ContactUs() {
                 id="company"
                 name="company"
                 placeholder="Your company or organization"
-                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
+                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-[var(--brand-accent)] focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
               />
             </div>
 
             <div>
-              <label 
-                htmlFor="email" 
-                className="block text-sm font-medium text-white-900 mb-2 text-white"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--brand-text)' }}>
                 Email
               </label>
               <input
@@ -142,16 +121,13 @@ export default function ContactUs() {
                 id="email"
                 name="email"
                 placeholder="your.email@example.com"
-                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
+                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-[var(--brand-accent)] focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               />
             </div>
 
             <div>
-              <label 
-                htmlFor="message" 
-                className="block text-sm font-medium text-white-700 mb-2 text-white"
-              >
+              <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'var(--brand-text)' }}>
                 Message
               </label>
               <textarea
@@ -159,25 +135,18 @@ export default function ContactUs() {
                 name="message"
                 rows={5}
                 placeholder="Tell us what you’re looking for, and we’ll get back to you."
-                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
+                className="w-full px-4 py-3 bg-white rounded-lg focus:ring-2 focus:ring-[var(--brand-accent)] focus:border-transparent transition-all duration-200 text-gray-900 placeholder-black-400"
                 required
               ></textarea>
             </div>
 
-            <button
+            <Button
               type="submit"
-              className="w-full text-white font-semibold py-3 px-6 rounded-lg focus:ring-4 focus:ring-blue-500/50 transform hover:scale-[1.02] transition-all duration-300 shadow-lg relative overflow-hidden"
-              style={{
-                background: 'linear-gradient(90deg, #2563eb 0%, #0891b2 25%, #2563eb 50%, #0891b2 75%, #2563eb 100%)',
-                backgroundSize: '400% 100%',
-                backgroundPosition: '0% 0%',
-                animation: isHovering ? 'flowingGradient 3s linear infinite' : 'none'
-              }}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
+              className="w-full text-white font-semibold py-3 px-6 rounded-full"
+              style={{ background: 'var(--brand-accent)' }}
             >
               Send Message
-            </button>
+            </Button>
           </form>
         </div>
         <Footer />

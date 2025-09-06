@@ -58,22 +58,22 @@ export default function PersonalityAssessment() {
                     {/* Features Preview */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                         <div className="text-center space-y-2">
-                            <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center mx-auto">
-                                <span className="text-xl">🧠</span>
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: '#e6ebf2' }}>
+                                <span className="text-sm" style={{ color: 'var(--brand-k)' }}>Insight</span>
                             </div>
                             <h3 className="font-semibold text-black">Deep Insights</h3>
                             <p className="text-sm text-black/70">Comprehensive personality analysis</p>
                         </div>
                         <div className="text-center space-y-2">
-                            <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center mx-auto">
-                                <span className="text-xl">⚡</span>
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: '#e6ebf2' }}>
+                                <span className="text-sm" style={{ color: 'var(--brand-k)' }}>Fast</span>
                             </div>
                             <h3 className="font-semibold text-black">Quick & Easy</h3>
                             <p className="text-sm text-black/70">Takes only 3-6 minutes</p>
                         </div>
                         <div className="text-center space-y-2">
-                            <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center mx-auto">
-                                <span className="text-xl">🔬</span>
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: '#e6ebf2' }}>
+                                <span className="text-sm" style={{ color: 'var(--brand-k)' }}>Research</span>
                             </div>
                             <h3 className="font-semibold text-black">Contribute to Research</h3>
                             <p className="text-sm text-black/70">Anonymous data helps advance understanding</p>

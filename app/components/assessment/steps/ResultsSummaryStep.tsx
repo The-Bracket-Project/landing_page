@@ -17,15 +17,12 @@ export default function ResultsSummaryStep({
 
   const traitOrder = ['Extraversion', 'Conscientiousness', 'Openness', 'Agreeableness', 'Neuroticism'];
 
-  const traitMeta: Record<
-    string,
-    { emoji: string; from: string; to: string; tooltip: string }
-  > = {
-    openness: { emoji: '🎨', from: 'from-purple-500', to: 'to-purple-300', tooltip: 'Curiosity, creativity, preference for variety' },
-    conscientiousness: { emoji: '📅', from: 'from-blue-600', to: 'to-blue-300', tooltip: 'Organization, diligence, reliability' },
-    extraversion: { emoji: '🌟', from: 'from-amber-400', to: 'to-amber-200', tooltip: 'Sociability, assertiveness, energy' },
-    agreeableness: { emoji: '🤝', from: 'from-emerald-500', to: 'to-emerald-300', tooltip: 'Cooperation, empathy, warmth' },
-    neuroticism: { emoji: '🧠', from: 'from-slate-600', to: 'to-slate-400', tooltip: 'Emotional variability, sensitivity to stress' },
+  const traitMeta: Record<string, { tooltip: string }> = {
+    openness: { tooltip: 'Curiosity, creativity, preference for variety' },
+    conscientiousness: { tooltip: 'Organization, diligence, reliability' },
+    extraversion: { tooltip: 'Sociability, assertiveness, energy' },
+    agreeableness: { tooltip: 'Cooperation, empathy, warmth' },
+    neuroticism: { tooltip: 'Emotional variability, sensitivity to stress' },
   };
 
   useEffect(() => {
@@ -125,12 +122,12 @@ export default function ResultsSummaryStep({
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       {/* Top banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100 ring-1 ring-emerald-200/60 p-6 mt-2">
+      <div className="relative overflow-hidden rounded-2xl ring-1 p-6 mt-2" style={{ background: '#eef2f7', borderColor: 'rgba(33,61,97,0.2)' }}>
         <div className="flex items-start gap-4">
-          <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500 text-white grid place-items-center shadow">✅</div>
+          <div className="h-10 w-10 shrink-0 rounded-full grid place-items-center shadow" style={{ background: 'var(--brand-b)', color: 'white' }}>OK</div>
           <div className="flex-1">
-            <h3 className="text-xl font-semibold text-emerald-900">Assessment Complete</h3>
-            <p className="mt-1 text-emerald-800/90">
+            <h3 className="text-xl font-semibold" style={{ color: 'var(--brand-k)' }}>Assessment Complete</h3>
+            <p className="mt-1" style={{ color: 'var(--brand-b)' }}>
               Thanks for completing the personality assessment. We’re preparing your personalized insights.
             </p>
           </div>
@@ -138,8 +135,8 @@ export default function ResultsSummaryStep({
 
         {(summaryApiStatus.loading || !bracketScores) && (
           <div className="mt-4 flex items-center gap-3 text-sm">
-            <div className="h-3 w-3 animate-pulse rounded-full bg-emerald-500" />
-            <p className="text-emerald-900">Crunching results… this typically takes a few seconds.</p>
+            <div className="h-3 w-3 animate-pulse rounded-full" style={{ background: 'var(--brand-accent)' }} />
+            <p style={{ color: 'var(--brand-k)' }}>Crunching results… this typically takes a few seconds.</p>
           </div>
         )}
       </div>
@@ -148,7 +145,7 @@ export default function ResultsSummaryStep({
         {/* Summary */}
         <Card className="p-5">
           <div className="flex items-center justify-between">
-            <h4 className="font-semibold text-gray-900">Your Personality Snapshot</h4>
+            <h4 className="font-semibold" style={{ color: 'var(--brand-k)' }}>Your Personality Snapshot</h4>
             {summaryApiStatus.success && <Pill>Ready</Pill>}
             {summaryApiStatus.loading && <Pill>Generating…</Pill>}
             {summaryApiStatus.error && <Pill>Retry recommended</Pill>}
@@ -167,7 +164,7 @@ export default function ResultsSummaryStep({
           )}
 
           {generatedSummary && (
-            <p className="mt-3 text-sm leading-6 text-gray-700 whitespace-pre-line">
+            <p className="mt-3 text-sm leading-6 whitespace-pre-line" style={{ color: 'var(--brand-text)' }}>
               {generatedSummary}
             </p>
           )}
@@ -176,7 +173,7 @@ export default function ResultsSummaryStep({
         {/* Scores */}
         <Card className="p-5">
           <div className="flex items-center justify-between">
-            <h4 className="font-semibold text-gray-900">Bracket Scores</h4>
+            <h4 className="font-semibold" style={{ color: 'var(--brand-k)' }}>Bracket Scores</h4>
             {bracketScores && <Pill>Interactive</Pill>}
           </div>
 
@@ -190,7 +187,7 @@ export default function ResultsSummaryStep({
                 <div key={t} className="space-y-2">
                   <div className="flex items-center justify-between text-sm text-gray-700">
                     <div className="flex items-center gap-2">
-                      <span className="opacity-60">⬤</span>
+                      <span className="inline-block w-2 h-2 rounded-full" style={{ background: '#c9d3e3' }} />
                       <span className="capitalize">{t}</span>
                     </div>
                     <div className="h-5 w-20 rounded bg-gray-100 animate-pulse" />
@@ -215,30 +212,27 @@ export default function ResultsSummaryStep({
 
                 return (
                   <div key={key} className="space-y-2" title={meta?.tooltip}>
-                    <div className="flex items-center justify-between text-sm text-gray-800">
+                    <div className="flex items-center justify-between text-sm" style={{ color: 'var(--brand-text)' }}>
                       <div className="flex items-center gap-2">
-                        <span className="text-base">{meta?.emoji ?? '•'}</span>
                         <span className="capitalize">{displayTrait}</span>
                       </div>
                       <Pill>{prettyLevel(info.level)}</Pill>
                     </div>
 
-                    <div className="relative h-4 w-full rounded-lg bg-gray-100 ring-1 ring-black/5 overflow-hidden">
+                    <div className="relative h-4 w-full rounded-lg overflow-hidden" style={{ background: '#e6ebf2', boxShadow: 'inset 0 0 0 1px rgba(33,61,97,0.08)' }}>
                       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_40%)]" />
                       <div
-                        className={[
-                          'relative h-full rounded-lg transition-all duration-700 ease-out will-change-[width]',
-                          'bg-gradient-to-r',
-                          meta?.from ?? 'from-emerald-500',
-                          meta?.to ?? 'to-emerald-300',
-                          animateBars ? '' : 'w-0'
-                        ].join(' ')}
+                        className={['relative h-full rounded-lg transition-all duration-700 ease-out will-change-[width]', animateBars ? '' : 'w-0'].join(' ')}
                         style={{ width: animateBars ? width : '0%' }}
                         aria-label={`${displayTrait} score`}
                         aria-valuemin={0}
                         aria-valuemax={100}
                         aria-valuenow={Math.round(info.score * 100)}
                         role="progressbar"
+                      />
+                      <div
+                        className="absolute inset-0 rounded-lg pointer-events-none"
+                        style={{ background: 'linear-gradient(90deg, var(--brand-k), var(--brand-b))', width: animateBars ? width : '0%' }}
                       />
                     </div>
                   </div>

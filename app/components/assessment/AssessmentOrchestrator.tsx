@@ -423,9 +423,9 @@ export default function AssessmentOrchestrator() {
               </p>
               
               {restorePromptInfo?.needsApiFallback && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
-                  <p className="text-sm text-yellow-800">
-                    ⚠️ Some data needs to be refreshed. We&apos;ll automatically retry any missing API calls.
+                <div className="rounded-lg p-3 mb-4" style={{ background: '#fff6e5', border: '1px solid #ffd59e' }}>
+                  <p className="text-sm" style={{ color: '#7a4b00' }}>
+                    Some data needs to be refreshed. We&apos;ll automatically retry any missing API calls.
                   </p>
                 </div>
               )}
@@ -463,6 +463,8 @@ export default function AssessmentOrchestrator() {
       <ProgressBar 
         currentStep={assessmentState.currentStep}
         allSteps={steps}
+        subTotal={assessmentState.currentStep === 'personality-questions' ? assessmentState.followUpQuestions.length : undefined}
+        subCurrent={assessmentState.currentStep === 'personality-questions' ? assessmentState.personalityResponses.length : undefined}
       />
 
       {/* Current Step Content */}
