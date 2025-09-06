@@ -46,7 +46,7 @@ export default function Home() {
                 <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start" style={{ color: 'var(--brand-text)' }}>
                   <p className="text-2xl md:text-3xl font-bold">Personality Quantification</p>
                   <p className="text-lg md:text-xl">
-                    Personality Quantification mechanism to encode users into stable, interpretable trait vectors.
+                    A proprietary mechanism built on the OCEAN model, which encodes users in stable, interpretable trait vectors with unparalleled accuracy.
                     <br />
                     <span className="text-base">Only 10 questions — takes under 300 seconds.</span>
                   </p>
@@ -93,7 +93,7 @@ export default function Home() {
                 <Reveal className="px-4 md:px-10 flex flex-col gap-4 justify-center items-start" delayMs={50} style={{ color: 'var(--brand-text)' }}>
                   <p className="text-2xl md:text-3xl font-bold">Compatibility OS</p>
                   <p className="text-lg md:text-xl">
-                    Bracket’s Compatibility Operating System is designed to connect people in ways that truly matter. By combining our advanced Personality Quantification mechanism with a powerful Graph Neural Network, the system predicts context-specific compatibility with remarkable accuracy.
+                    Bracket’s Compatibility Operating System is designed to decipher context specific compatibility by combining our advanced Personality Quantification mechanism with a powerful Neural Network. Our OS helps you answer two questions: “Who should work with whom?” and “Where will they thrive?” It runs across interpersonal and organizational use cases without adding process overhead. The roadmap: distill these insights into customizable, person-aware tools that adapt to your uses.
                   </p>
                   <div className="pt-2">
                     <a
