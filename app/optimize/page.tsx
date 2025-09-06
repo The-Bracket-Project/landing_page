@@ -17,10 +17,9 @@ export default function OptimizePage() {
             </h1>
             <div className="mt-4 space-y-4 text-lg" style={{ color: 'var(--brand-text)' }}>
               <p>
-                From placing the right candidate or assembling a team that actually ships, to matching a customer with the right plan, feature, or account manager, the Compatibility OS powers meaningful, efficient connections across hiring, team design, onboarding, and customer journeys. It can be integrated into any environment, from consumer apps to enterprise platforms, so the same understanding of fit runs through your stack, making it the engine for human connection and retention.
-              </p>
+                From helping someone find friends or build lasting relationships, to matching with an account manager or financial broker, to creating high-performing professional teams, the Compatibility OS powers meaningful efficient context specific connections across various personal, social, and organizational settings. With seamless integration in a diverse array of environments from consumer apps to enterprise platforms the Compatibility OS serves as the AI engine for human connection.               </p>
               <p>
-                Built on the Compatibility OS, <b>Bracket &</b> turns scores into action: build stronger teams, reshuffle when needed, and ramp new hires; we are currently building <b>Bracket +</b> to point customers to the right product, keep them longer, and grow accounts.
+                Built on top of the Compatibility OS, our Enterprise Optimization Suite leverages our proprietary models to optimize employee and customer acquisition and retention. From placing candidates in their ideal environments to re-assembling teams to boost performance, or even matching sales strategies, product features, or AI agents to customers, based on their unique personality profile  the suite  helps organizations streamline hiring, reduce churn, and drive both workforce stability and long-term customer relationships.
               </p>
             </div>
             <div className="py-8">
