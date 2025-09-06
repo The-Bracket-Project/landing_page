@@ -17,10 +17,10 @@ export default function OptimizePage() {
             </h1>
             <div className="mt-4 space-y-4 text-lg" style={{ color: 'var(--brand-text)' }}>
               <p>
-                From helping someone find friends or build lasting relationships, to matching with an account manager or financial broker, to creating high-performing professional teams, the Compatibility OS powers meaningful and efficient connections across personal, social, and organizational contexts. It can be seamlessly integrated into any environment, from consumer apps to enterprise platforms, making it the AI engine for human connection.
+                From placing the right candidate or assembling a team that actually ships, to matching a customer with the right plan, feature, or account manager, the Compatibility OS powers meaningful, efficient connections across hiring, team design, onboarding, and customer journeys. It can be integrated into any environment, from consumer apps to enterprise platforms, so the same understanding of fit runs through your stack, making it the engine for human connection and retention.
               </p>
               <p>
-                Built on top of the Compatibility OS, the Organization Optimization Suite enhances organizational productivity by strengthening structure and unlocking hidden synergies within the existing talent pool. It not only streamlines hiring but also helps companies reconfigure teams to maximize effectiveness and cultural alignment.
+                Built on the Compatibility OS, <b>Bracket &</b> turns scores into action: build stronger teams, reshuffle when needed, and ramp new hires; we are currently building <b>Bracket +</b> to point customers to the right product, keep them longer, and grow accounts.
               </p>
             </div>
             <div className="py-8">
