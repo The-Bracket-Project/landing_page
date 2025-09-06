@@ -47,8 +47,6 @@ export default function Home() {
                   <p className="text-2xl md:text-3xl font-bold">Personality Quantification</p>
                   <p className="text-lg md:text-xl">
                     A proprietary mechanism built on the OCEAN model, which encodes users in stable, interpretable trait vectors with unparalleled accuracy.
-                    <br />
-                    <span className="text-base">Only 10 questions — takes under 300 seconds.</span>
                   </p>
                   <div className="pt-2">
                     <a
