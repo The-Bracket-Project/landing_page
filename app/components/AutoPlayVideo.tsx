@@ -1,98 +1,90 @@
+// ./components/AutoPlayVideo.tsx
 "use client";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-type Props = Omit<React.VideoHTMLAttributes<HTMLVideoElement>, "src" | "controls"> & {
+type Props = {
   src: string;
-  poster?: string; // optional; leave undefined to start from first frame
+  className?: string;
+  style?: React.CSSProperties;
+  /** How long to hold the last frame before looping (ms) */
+  holdOnEndMs?: number;
+  /** Force normal loop with no hold (optional) */
+  loop?: boolean;
 };
 
 export default function AutoPlayVideo({
   src,
-  poster,
-  className = "",
+  className,
   style,
-  ...rest
+  holdOnEndMs = 10000, // 10s
+  loop = false,
 }: Props) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const ref = useRef<HTMLVideoElement>(null);
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
+    const el = ref.current;
+    if (!el) return;
 
-    // Make it autoplay-eligible BEFORE loading the source
-    v.muted = true;
-    v.defaultMuted = true;
-    v.playsInline = true;
-    v.autoplay = true;
-    v.setAttribute("playsinline", "");
-    v.setAttribute("webkit-playsinline", "");
-    v.setAttribute("muted", "");
-    v.setAttribute("autoplay", "");
+    // Ensure autoplay works cross-browser
+    el.muted = true;
 
-    // Set/refresh src AFTER flags are set
-    v.src = src;
-
-    let cancelled = false;
-
-    const tryPlay = async () => {
-      if (!videoRef.current || cancelled) return;
-      try {
-        await v.play();
-      } catch {
-        // ignore; we'll retry on more events or user interaction
+    const cleanupTimer = () => {
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
     };
 
-    // Retry on multiple readiness signals (covers more iOS paths)
-    const onLoadedMetadata = () => tryPlay();
-    const onLoadedData = () => tryPlay();
-    const onCanPlay = () => tryPlay();
-    const onCanPlayThrough = () => tryPlay();
-    const onVisibility = () => {
-      if (document.visibilityState === "visible") tryPlay();
+    const onEnded = () => {
+      if (loop) {
+        el.currentTime = 0;
+        void el.play();
+        return;
+      }
+      // Keep last frame visible; Safari-safe: seek slightly before the end
+      const d = el.duration || 0;
+      if (isFinite(d) && d > 0) {
+        try { el.currentTime = Math.max(0, d - 0.05); } catch { /* no-op */ }
+      }
+      el.pause();
+
+      // Wait, then loop
+      cleanupTimer();
+      timerRef.current = window.setTimeout(() => {
+        const v = ref.current;
+        if (!v) return;
+        v.currentTime = 0;
+        void v.play();
+      }, holdOnEndMs);
     };
 
-    v.addEventListener("loadedmetadata", onLoadedMetadata);
-    v.addEventListener("loadeddata", onLoadedData);
-    v.addEventListener("canplay", onCanPlay);
-    v.addEventListener("canplaythrough", onCanPlayThrough);
-    document.addEventListener("visibilitychange", onVisibility);
+    const tryPlay = () => { void el.play().catch(() => {}); };
 
-    // First attempt (some devices accept an immediate call)
-    tryPlay();
-
-    // Fallback: first user pointer (anywhere) -> try play once
-    const onPointer = () => tryPlay();
-    window.addEventListener("pointerdown", onPointer, { passive: true, once: true });
+    el.addEventListener("ended", onEnded);
+    el.addEventListener("play", cleanupTimer); // if it restarts early, clear timer
+    if (el.readyState >= 2) tryPlay();
+    else el.addEventListener("canplay", tryPlay, { once: true });
 
     return () => {
-      cancelled = true;
-      v.removeEventListener("loadedmetadata", onLoadedMetadata);
-      v.removeEventListener("loadeddata", onLoadedData);
-      v.removeEventListener("canplay", onCanPlay);
-      v.removeEventListener("canplaythrough", onCanPlayThrough);
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pointerdown", onPointer);
+      cleanupTimer();
+      el.removeEventListener("ended", onEnded);
+      el.removeEventListener("play", cleanupTimer);
+      el.removeEventListener("canplay", tryPlay);
     };
-  }, [src]);
+  }, [src, holdOnEndMs, loop]);
 
   return (
     <video
-      ref={videoRef}
-      // src set programmatically in effect
-      autoPlay
-      loop
-      muted
+      ref={ref}
+      src={src}
+      className={className}
+      style={style}
       playsInline
+      muted
+      autoPlay
       preload="auto"
-      poster={poster}
-      controls={false}
-      controlsList="nodownload nofullscreen noplaybackrate noremoteplayback"
-      disablePictureInPicture
-      disableRemotePlayback
-      className={`w-full h-full object-cover block ${className}`}
-      style={{ outline: "none", ...(style || {}) }}
-      {...rest}
+      // no `loop` attribute — we control it manually
     />
   );
 }

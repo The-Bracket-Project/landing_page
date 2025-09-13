@@ -9,6 +9,10 @@
   --brand-b: #33537a;
   --brand-k: #213d61;
   --brand-accent: #3E6089;
+  /* Products background: toned-out neutral grey for soft handoff */
+  --background-alt: #f4f4f7;
+  /* Slightly deeper grey used for eyebrow top fade */
+  --background-alt-strong: #dce1e6;
 }
 
 @theme inline {
@@ -39,8 +43,130 @@ body {
   letter-spacing: -0.03em; /* designer preference */
 }
 
+/* Page root wrapper to avoid inline style parsing issues */
+.page-root {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 /* Smooth anchor scrolling site-wide */
 html { scroll-behavior: smooth; }
+
+/* Optional: gentle section snap for nicer landings */
+/* scroll-snap removed for a gentler feel */
+
+/* Hero and Section layout helpers to avoid mobile 100vh issues */
+/* default navbar height variable; tweak if header size changes */
+:root { --nav-h: 72px; }
+
+.hero {
+  /* Make the hero exactly the visible viewport across browsers */
+  min-block-size: calc(100svh - var(--nav-h)); /* correct when browser UI is visible */
+  padding-block: clamp(48px, 8vh, 128px); /* avoid margin-collapsing gaps */
+  margin: 0;
+  position: relative;
+  z-index: 0;
+  /* no scroll-snap */
+}
+
+@supports (height: 100dvh) {
+  .hero { min-block-size: calc(100dvh - var(--nav-h)); }
+}
+
+.section {
+  padding-block: clamp(40px, 6vh, 100px);
+  margin: 0; /* prevents margin-collapsing mystery space */
+  /* no scroll-snap */
+}
+
+.hero::after { content: ""; position: absolute; inset: 0; width: 0; height: 0; background: none; pointer-events: none; }
+
+/* Peeking eyebrow element anchored to the hero bottom */
+.hero-eyebrow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw; /* full-bleed wrapper aligned to viewport */
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* don't block clicks */
+  z-index: 5; /* below the arrow (z-10) */
+}
+
+.hero-eyebrow__bar {
+  /* Match products section technique: fill the full-bleed wrapper */
+  position: relative;
+  width: 100%;
+  max-width: none;
+  height: 72px; /* visible and distinct */
+  /* Two-layer background: a short top fade from deeper grey
+     into the regular products grey, over the base products grey */
+  background:
+    linear-gradient(to bottom, var(--background-alt-strong), var(--background-alt) 60%),
+    var(--background-alt);
+  background-size: 100% 48px, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: top, center;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.hero-eyebrow__bar::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -24px;
+  height: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.06), transparent);
+}
+
+/* Tighter top rhythm for the first content block under hero */
+.section--first { padding-top: clamp(12px, 2vh, 28px); }
+
+/* Products section: subtle alternate background to meet hero fade */
+.section--products {
+  position: relative; /* anchor pseudo-element */
+  background: var(--background-alt);
+  /* Ensure the products background goes edge-to-edge even inside wrappers */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+}
+
+/* Remove previous products-based peek to avoid duplication */
+.section--products::before { content: none; }
+
+/* Subtle scroll cue at the hero bottom on mobile */
+.scroll-cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  margin: 0 auto;
+  transform: none;
+  opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  animation: cue-bounce 2s ease-in-out infinite;
+}
+
+@keyframes cue-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 6px); }
+}
+
+/* Clamp hero typography and CTA spacing */
+.hero .hero-title { font-size: clamp(28px, 6vw, 64px); line-height: 1.08; }
+.hero .hero-subtitle { font-size: clamp(16px, 3.8vw, 20px); }
+.hero .cta { margin-top: clamp(16px, 3vh, 32px); }
 
 /* Fade-in-up reveal animation */
 .reveal {
