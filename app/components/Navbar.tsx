@@ -155,18 +155,18 @@ function Navbar() {
                     onBlur={handleProductsLeave}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8" style={{ fontSize: '12pt' }}>
-                      {/* Column: Personality Quantification (clickable card) */}
+                      {/* Column: Bracket Poseidon (clickable card) */}
                       <Link href="/identify" className="space-y-1 block group">
-                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Personality Quantification</p>
-                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Personality Quantification</h3>
+                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Bracket Poseidon</p>
+                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Bracket Poseidon</h3>
                         <p className="text-sm mt-1 text-gray-600">Encode users into stable, interpretable trait vectors.</p>
                         <span className="inline-block text-sm mt-2 group-hover:underline" style={{ color: 'var(--brand-k)' }}>Open →</span>
                       </Link>
 
-                      {/* Column: Compatibility OS (clickable card) */}
+                      {/* Column: Bracket Indra (clickable card) */}
                       <Link href="/optimize" className="space-y-1 block group">
-                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Compatibility OS</p>
-                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Compatibility OS</h3>
+                        <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand-k)' }}>Bracket Indra</p>
+                        <h3 className="text-lg md:text-xl font-semibold mt-1" style={{ color: 'var(--brand-text)' }}>Bracket Indra</h3>
                         <p className="text-sm mt-1 text-gray-600">Operationalize compatibility to match, route, and organize.</p>
                         <span className="inline-block text-sm mt-2 group-hover:underline" style={{ color: 'var(--brand-k)' }}>Open →</span>
                       </Link>
@@ -267,10 +267,10 @@ function Navbar() {
               {mobileProductsOpen && (
                 <div className="flex flex-col">
                   <Link href="/identify" className="block px-4 py-3 hover:bg-black/5 hover:text-[#33537a]" onClick={() => setMobileOpen(false)}>
-                    Personality Quantification
+                    Bracket Poseidon
                   </Link>
                   <Link href="/optimize" className="block px-4 py-3 hover:bg-black/5 hover:text-[#33537a]" onClick={() => setMobileOpen(false)}>
-                    Compatibility OS
+                    Bracket Indra
                   </Link>
                 </div>
               )}

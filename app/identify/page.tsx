@@ -13,16 +13,16 @@ export default function IdentifyPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
           <div>
             <h1 className="text-4xl md:text-5xl font-semibold" style={{ color: 'var(--brand-k)' }}>
-              Personality Quantification
+              Bracket Poseidon
             </h1>
             <p className="mt-3 text-lg" style={{ color: 'var(--brand-text)' }}>
-              Our personality quantification mechanism uses customised Large Language Models to transform personality assessments into a seamless experience, delivering detailed trait-based profiles tailored specifically to a given individual. By reimagining the traditionally static OCEAN personality exam as an intuitive, dynamic process, Bracket AI delivers unprecedented efficiency while maintaining exceptional accuracy (achieving roughly 93% reliability) in capturing individual personality traits.
+              Bracket Poseidon uses customised Large Language Models to transform personality assessments into a seamless experience, delivering detailed trait‑based profiles tailored to each individual. By reimagining the traditionally static OCEAN personality exam as an intuitive, dynamic process, Bracket AI delivers unprecedented efficiency while maintaining exceptional accuracy (roughly 93% reliability) in capturing individual personality traits.
             </p>
           </div>
           <div className="justify-self-center">
             <Image
               src="/identify.png"
-              alt="Personality Quantification"
+              alt="Bracket Poseidon"
               width={560}
               height={360}
               className="object-contain"
@@ -42,4 +42,3 @@ export default function IdentifyPage() {
     </div>
   );
 }
-

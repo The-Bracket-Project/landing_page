@@ -13,13 +13,14 @@ export default function OptimizePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-12">
           <div>
             <h1 className="text-4xl md:text-5xl font-semibold" style={{ color: 'var(--brand-k)' }}>
-              Compatibility OS
+              Bracket Indra
             </h1>
             <div className="mt-4 space-y-4 text-lg" style={{ color: 'var(--brand-text)' }}>
               <p>
-                From helping someone find friends or build lasting relationships, to matching with an account manager or financial broker, to creating high-performing professional teams, the Compatibility OS powers meaningful efficient context specific connections across various personal, social, and organizational settings. With seamless integration in a diverse array of environments from consumer apps to enterprise platforms the Compatibility OS serves as the AI engine for human connection.               </p>
+                From helping someone find friends or build lasting relationships, to matching with an account manager or financial broker, to creating high‑performing professional teams, Bracket Indra powers meaningful, efficient, context‑specific connections across personal, social, and organizational settings. With seamless integration in a diverse array of environments—from consumer apps to enterprise platforms—Bracket Indra serves as the AI engine for human connection.
+              </p>
               <p>
-                Built on top of the Compatibility OS, our Enterprise Optimization Suite leverages our proprietary models to optimize employee and customer acquisition and retention. From placing candidates in their ideal environments to re-assembling teams to boost performance, or even matching sales strategies, product features, or AI agents to customers, based on their unique personality profile  the suite  helps organizations streamline hiring, reduce churn, and drive both workforce stability and long-term customer relationships.
+                Built on top of Bracket Indra, our Enterprise Optimization Suite leverages our proprietary models to optimize employee and customer acquisition and retention. From placing candidates in their ideal environments to re‑assembling teams to boost performance, or even matching sales strategies, product features, or AI agents to customers based on their unique personality profile, the suite helps organizations streamline hiring, reduce churn, and drive both workforce stability and long‑term customer relationships.
               </p>
             </div>
             <div className="py-8">
@@ -31,7 +32,7 @@ export default function OptimizePage() {
           <div className="justify-self-center">
             <Image
               src="/quantify.png"
-              alt="Compatibility OS"
+              alt="Bracket Indra"
               width={560}
               height={360}
               className="object-contain"
@@ -45,4 +46,3 @@ export default function OptimizePage() {
     </div>
   );
 }
-
