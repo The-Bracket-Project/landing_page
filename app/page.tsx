@@ -72,7 +72,7 @@ export default function Home() {
                 </p>
                 <div>
                   <a
-                    href="/identify"
+                    href="/poseidon"
                     className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                   >
                     Discover More
@@ -98,7 +98,7 @@ export default function Home() {
                 </p>
                 <div>
                   <a
-                    href="/optimize"
+                    href="/indra"
                     className="inline-flex items-center justify-center px-6 py-2 rounded-full text-white shadow bg-[var(--brand-accent)] hover:brightness-110"
                   >
                     Discover More

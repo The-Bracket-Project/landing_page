@@ -11,8 +11,8 @@ Quick Start
 Project Structure
 - `app/page.tsx`: Main landing page (hero video, two feature sections, CTA).
 - `app/components/`: Navbar, Footer, UI, and helpers (e.g., `AutoPlayVideo`).
-- `app/identify`: Personality Quantification page.
-- `app/optimize`: Compatibility OS page.
+- `app/poseidon`: Personality Quantification page.
+- `app/indra`: Compatibility OS page.
 - `app/contactus`: Contact form (server route uses Resend email service).
 - `app/showcase`: Password-gated Personality Assessment demo.
 - `app/password`: Open demo selection page (no password) linking to Showcase and the OS demo.
