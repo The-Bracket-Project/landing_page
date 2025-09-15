@@ -60,17 +60,12 @@ html { scroll-behavior: smooth; }
 :root { --nav-h: 72px; }
 
 .hero {
-  /* Make the hero exactly the visible viewport across browsers */
-  min-block-size: calc(100svh - var(--nav-h)); /* correct when browser UI is visible */
-  padding-block: clamp(48px, 8vh, 128px); /* avoid margin-collapsing gaps */
+  /* Keep hero height stable on mobile to avoid jump when UI hides */
+  min-block-size: calc(100svh - var(--nav-h));
+  padding-block: clamp(48px, 8vh, 128px);
   margin: 0;
   position: relative;
   z-index: 0;
-  /* no scroll-snap */
-}
-
-@supports (height: 100dvh) {
-  .hero { min-block-size: calc(100dvh - var(--nav-h)); }
 }
 
 .section {
