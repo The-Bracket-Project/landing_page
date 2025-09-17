@@ -2,6 +2,7 @@
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { EXTERNAL_DEMO_URL, CHATBOT_DEMO_URL } from "../utils/config";
 
 export default function PasswordGate() {
   return (
@@ -15,8 +16,12 @@ export default function PasswordGate() {
               <div className="text-base md:text-lg uppercase font-semibold tracking-wide" style={{ color: 'var(--brand-k)' }}>Quantify Personality</div>
               <div className="mt-2 text-base" style={{ color: 'var(--brand-text)' }}>Guided LLM-based assessment demo</div>
             </a>
-            <a href="https://demo.thebracket.ai" target="_blank" rel="noopener noreferrer" className="block rounded-2xl border p-7 md:p-8 hover:shadow-lg transition min_h-[160px]" style={{ borderColor: 'rgba(33,61,97,0.12)' }}>
+            <a href={EXTERNAL_DEMO_URL} target="_blank" rel="noopener noreferrer" className="block rounded-2xl border p-7 md:p-8 hover:shadow-lg transition min_h-[160px]" style={{ borderColor: 'rgba(33,61,97,0.12)' }}>
               <div className="text-base md:text-lg uppercase font-semibold tracking-wide" style={{ color: 'var(--brand-k)' }}>Full OS Demo</div>
+              <div className="mt-2 text-base" style={{ color: 'var(--brand-text)' }}>External demo environment</div>
+            </a>
+            <a href={CHATBOT_DEMO_URL} target="_blank" rel="noopener noreferrer" className="block rounded-2xl border p-7 md:p-8 hover:shadow-lg transition min-h-[160px]" style={{ borderColor: 'rgba(33,61,97,0.12)' }}>
+              <div className="text-base md:text-lg uppercase font-semibold tracking-wide" style={{ color: 'var(--brand-k)' }}>Bracket Agents</div>
               <div className="mt-2 text-base" style={{ color: 'var(--brand-text)' }}>External demo environment</div>
             </a>
           </div>
