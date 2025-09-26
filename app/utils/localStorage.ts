@@ -165,11 +165,13 @@ export function validateStepDataIntegrity(state: AssessmentState): {
       // No dependencies
       break;
 
-    case 'self-description':
-      // No API dependencies, just check if interests are present
+    case 'name-input':
       if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
+      } else if (!state.userName || state.userName.trim().length === 0) {
+        missingData.push('userName');
+        suggestedStep = 'name-input';
       }
       break;
 
@@ -178,9 +180,12 @@ export function validateStepDataIntegrity(state: AssessmentState): {
       if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
+      } else if (!state.userName || state.userName.trim().length === 0) {
+        missingData.push('userName');
+        suggestedStep = 'name-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
         missingData.push('availableGroups');
-        suggestedStep = 'self-description'; // Fall back to previous step
+        suggestedStep = 'name-input';
       }
       break;
 
@@ -189,9 +194,12 @@ export function validateStepDataIntegrity(state: AssessmentState): {
       if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
+      } else if (!state.userName || state.userName.trim().length === 0) {
+        missingData.push('userName');
+        suggestedStep = 'name-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
         missingData.push('availableGroups');
-        suggestedStep = 'self-description';
+        suggestedStep = 'name-input';
       } else if (!state.followUpQuestions || state.followUpQuestions.length === 0) {
         missingData.push('followUpQuestions');
         suggestedStep = 'group-selection'; // Fall back to previous step
@@ -203,9 +211,12 @@ export function validateStepDataIntegrity(state: AssessmentState): {
       if (!state.interests || state.interests.length < 3) {
         missingData.push('interests');
         suggestedStep = 'interests-input';
+      } else if (!state.userName || state.userName.trim().length === 0) {
+        missingData.push('userName');
+        suggestedStep = 'name-input';
       } else if (!state.availableGroups || state.availableGroups.length === 0) {
         missingData.push('availableGroups');
-        suggestedStep = 'self-description';
+        suggestedStep = 'name-input';
       } else if (!state.followUpQuestions || state.followUpQuestions.length === 0) {
         missingData.push('followUpQuestions');
         suggestedStep = 'group-selection';
@@ -269,7 +280,7 @@ export function loadValidatedAssessmentState(): {
 function getCompletedStepsUpTo(targetStep: AssessmentStep): AssessmentStep[] {
   const allSteps: AssessmentStep[] = [
     'interests-input',
-    'self-description',
+    'name-input',
     'group-selection',
     'personality-questions',
     'results-summary'
@@ -296,7 +307,7 @@ function validateCurrentStepOnly(state: AssessmentState): boolean {
     case 'interests-input':
       return true; // Always save interests step
       
-    case 'self-description':
+    case 'name-input':
       // Only requires interests (no API dependencies)
       return state.interests && state.interests.length >= 3;
       

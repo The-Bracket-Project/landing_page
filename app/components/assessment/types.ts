@@ -1,7 +1,7 @@
 // Assessment phases
 export type AssessmentStep = 
   | 'interests-input'
-  | 'self-description' 
+  | 'name-input' 
   | 'group-selection'
   | 'personality-questions'
   | 'results-summary';
@@ -28,8 +28,8 @@ export interface AssessmentState {
   interests: string[];
   interestsApiStatus: ApiStatus;
   
-  // Phase 2: Description
-  selfDescription: string;
+  // Phase 2: Name collection
+  userName: string;
   
   // Phase 3: Group Selection
   availableGroups: InterestsGroups[][]; // From interests API (raw data)

@@ -29,6 +29,16 @@ export default function AutoPlayVideo({
     // Ensure autoplay works cross-browser
     el.muted = true;
 
+    const playWithCatch = (video: HTMLVideoElement | null) => {
+      if (!video) return;
+      const playResult = video.play();
+      if (playResult && typeof playResult.catch === "function") {
+        playResult.catch(() => {
+          // Browsers may pause background videos to save power; ignore the rejection.
+        });
+      }
+    };
+
     const cleanupTimer = () => {
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);
@@ -39,7 +49,7 @@ export default function AutoPlayVideo({
     const onEnded = () => {
       if (loop) {
         el.currentTime = 0;
-        void el.play();
+        playWithCatch(el);
         return;
       }
       // Keep last frame visible; Safari-safe: seek slightly before the end
@@ -55,11 +65,11 @@ export default function AutoPlayVideo({
         const v = ref.current;
         if (!v) return;
         v.currentTime = 0;
-        void v.play();
+        playWithCatch(v);
       }, holdOnEndMs);
     };
 
-    const tryPlay = () => { void el.play().catch(() => {}); };
+    const tryPlay = () => playWithCatch(el);
 
     el.addEventListener("ended", onEnded);
     el.addEventListener("play", cleanupTimer); // if it restarts early, clear timer

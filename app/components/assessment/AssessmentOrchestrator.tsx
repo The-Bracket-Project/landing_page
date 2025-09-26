@@ -5,7 +5,7 @@ import { AssessmentState, AssessmentStep, InterestsApiRequest, InterestsApiRespo
 import { useAssessmentStorage } from '../../hooks/useAssessmentStorage';
 import ProgressBar from './shared/ProgressBar';
 import InterestsInputStep from './steps/InterestsInputStep';
-import SelfDescriptionStep from './steps/SelfDescriptionStep';
+import NameInputStep from './steps/NameInputStep';
 import GroupSelectionStep from './steps/GroupSelectionStep';
 import PersonalityQuestionsStep from './steps/PersonalityQuestionsStep';
 import ResultsSummaryStep from './steps/ResultsSummaryStep';
@@ -15,7 +15,7 @@ export default function AssessmentOrchestrator() {
     currentStep: 'interests-input',
     interests: [],
     interestsApiStatus: { loading: false, error: null, success: false },
-    selfDescription: '',
+    userName: '',
     availableGroups: [],
     groupSelection: [],
     followUpQuestions: [],
@@ -31,7 +31,7 @@ export default function AssessmentOrchestrator() {
 
   const steps: AssessmentStep[] = useMemo(() => [
     'interests-input',
-    'self-description', 
+    'name-input', 
     'group-selection',
     'personality-questions',
     'results-summary'
@@ -229,7 +229,8 @@ export default function AssessmentOrchestrator() {
               selected_group: assessmentState.groupSelection.map(g => g),
               target_traits: targetTraits,
               follow_up_answers: followAnswers,
-              interests: assessmentState.interests
+              interests: assessmentState.interests,
+              user_name: assessmentState.userName.trim()
             }),
           });
 
@@ -344,7 +345,7 @@ export default function AssessmentOrchestrator() {
       // Console log all assessment data when moving from personality-questions to results-summary
       if (assessmentState.currentStep === 'personality-questions' && nextStep === 'results-summary') {
         console.log('Interests:', assessmentState.interests);
-        console.log('Self Description:', assessmentState.selfDescription);
+        console.log('User Name:', assessmentState.userName);
         console.log('Available Groups:', assessmentState.availableGroups);
         console.log('Selected Groups:', assessmentState.groupSelection);
         console.log('Follow-up Questions:', assessmentState.followUpQuestions);
@@ -376,8 +377,8 @@ export default function AssessmentOrchestrator() {
     switch (assessmentState.currentStep) {
       case 'interests-input':
         return <InterestsInputStep {...stepProps} onSubmitInterests={handleInterestsSubmission} />;
-      case 'self-description':
-        return <SelfDescriptionStep {...stepProps} />;
+      case 'name-input':
+        return <NameInputStep {...stepProps} />;
       case 'group-selection':
         return <GroupSelectionStep {...stepProps} />;
       case 'personality-questions':
@@ -393,8 +394,8 @@ export default function AssessmentOrchestrator() {
     switch (assessmentState.currentStep) {
       case 'interests-input':
         return 'Tell us about your interests';
-      case 'self-description':
-        return 'Describe yourself';
+      case 'name-input':
+        return 'How should we address you?';
       case 'group-selection':
         return 'Select what resonates with you';
       case 'personality-questions':
