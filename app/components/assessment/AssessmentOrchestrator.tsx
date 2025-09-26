@@ -265,7 +265,16 @@ export default function AssessmentOrchestrator() {
       console.error('Error with ocean API:', error);
       throw error; // Re-throw for retry handling
     }
-  }, [handleApiCall, updateAssessmentData, assessmentState.availableGroups, assessmentState.groupSelection, assessmentState.personalityResponses, assessmentState.interests, assessmentState.requestId]);
+  }, [
+    handleApiCall,
+    updateAssessmentData,
+    assessmentState.availableGroups,
+    assessmentState.groupSelection,
+    assessmentState.personalityResponses,
+    assessmentState.interests,
+    assessmentState.requestId,
+    assessmentState.userName
+  ]);
 
   // State restoration fallback logic - runs after API handlers are defined
   const executeStateRestorationFallbacks = useCallback((

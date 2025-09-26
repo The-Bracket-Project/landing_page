@@ -83,7 +83,7 @@ export default function ResultsSummaryStep({
           <div className="flex-1">
             <h3 className="text-xl font-semibold" style={{ color: 'var(--brand-k)' }}>Assessment Complete</h3>
             <p className="mt-1" style={{ color: 'var(--brand-b)' }}>
-              Thanks for completing the personality assessment. We're preparing your personalized insights.
+              Thanks for completing the personality assessment. We&apos;re preparing your personalized insights.
             </p>
           </div>
         </div>
