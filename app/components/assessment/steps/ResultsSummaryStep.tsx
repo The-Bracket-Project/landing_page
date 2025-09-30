@@ -1,6 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
+
+const STUDY_DEMO_BASE_URL = process.env.NEXT_PUBLIC_STUDY_DEMO_URL ?? '/study';
 
 export default function ResultsSummaryStep({
   assessmentState,
@@ -74,6 +76,21 @@ export default function ResultsSummaryStep({
     </div>
   );
 
+  const participantSlug = useMemo(() => {
+    const base = assessmentState.userName?.trim() || 'participant';
+    return base.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'participant';
+  }, [assessmentState.userName]);
+
+  const demoUrl = useMemo(() => {
+    if (!requestId) return null;
+    const params = new URLSearchParams({
+      participantId: participantSlug,
+      oceanRequestId: requestId,
+    });
+    const separator = STUDY_DEMO_BASE_URL.includes('?') ? '&' : '?';
+    return `${STUDY_DEMO_BASE_URL}${separator}${params.toString()}`;
+  }, [participantSlug, requestId]);
+
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       {/* Top banner */}
@@ -124,6 +141,37 @@ export default function ResultsSummaryStep({
             </p>
           )}
         </Card>
+
+        {demoUrl && (
+          <Card className="p-5 text-center">
+            <h4 className="text-lg font-semibold" style={{ color: 'var(--brand-k)' }}>
+              Ready to try the adaptive task demo?
+            </h4>
+            <p className="mt-2 text-sm text-gray-600">
+              Carry your freshly generated trait profile into a realistic workflow and see how personalization behaves.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
+              <a
+                href={demoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+              >
+                Open Task Demo
+              </a>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(demoUrl).catch(() => undefined)}
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-100"
+              >
+                Copy Demo Link
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-gray-500">
+              Link includes your survey token ({requestId}) so the demo auto-loads your trait lenses.
+            </p>
+          </Card>
+        )}
         <div className="mx-auto text-center text-sm text-gray-600">
           Your anonymous data helps advance personality research. Thank you for contributing!
         </div>

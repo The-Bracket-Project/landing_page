@@ -19,12 +19,13 @@ Project Structure
 - `public/`: Static assets (images, videos).
 - `manim_scenes/`: Optional Manim CE scenes (see below).
 
-Navigation / Flows
-- Products dropdown: two side-by-side items (Personality Quantification, Compatibility OS) linking to their product pages.
-- Login button: goes to `/password`, where you can choose:
-  - “Quantify Personality” → `/showcase` (password is prompted there)
-  - “Full OS Demo” → external `https://demo.thebracket.ai` (handles auth itself)
-- Client Portal link was removed from the navbar.
+- Navigation / Flows
+  - Products dropdown: two side-by-side items (Personality Quantification, Compatibility OS) linking to their product pages.
+  - Login button: goes to `/password`, where you can choose:
+    - “Quantify Personality” → `/showcase` (password is prompted there)
+    - “Full OS Demo” → external `https://demo.thebracket.ai` (handles auth itself)
+  - The assessment results page now includes a CTA that deep-links into the task demo (`/study`) using the freshly generated `request_id`. Configure the target via `NEXT_PUBLIC_STUDY_DEMO_URL` (see Env below).
+  - Client Portal link was removed from the navbar.
 
 Media & Fitting
 - Hero video uses `AutoPlayVideo` with `NodeGridScene_noaudio.mp4` (muted, inline, no controls).
@@ -45,8 +46,10 @@ Optional Manim Animations
   - `manim -qk GlobalReachScene.py GlobalReachScene -o GlobalReachScene.mp4`
 - Copy outputs to `public/` and update `app/page.tsx` sources/posters if you switch from static images to videos. Currently, the hero uses video; the two feature sections use static images.
 
-Environment Variables (Email/Resend)
-- The contact form API route uses Resend. During `next build`, the route may initialize the client and fail if the key is missing. To avoid build errors, set:
+Environment Variables
+- Assessment → Task Demo hand-off:
+  - `NEXT_PUBLIC_STUDY_DEMO_URL` – Base URL that the results page links to (defaults to `/study`). Query params `participantId` and `oceanRequestId` are appended automatically.
+- Contact form (Resend):
   - `RESEND_API_KEY=your_resend_key`
   - Optionally, `EMAIL_FROM=notifications@yourdomain`
 - If you don’t need the contact route in local builds, you can also temporarily comment out its server code.
