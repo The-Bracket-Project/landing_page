@@ -230,7 +230,8 @@ export default function AssessmentOrchestrator() {
               target_traits: targetTraits,
               follow_up_answers: followAnswers,
               interests: assessmentState.interests,
-              user_name: assessmentState.userName.trim()
+              user_name: assessmentState.userName.trim(),
+              mode: 'queue'
             }),
           });
 
