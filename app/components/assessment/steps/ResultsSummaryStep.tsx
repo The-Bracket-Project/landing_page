@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { StepProps } from '../types';
 import { clearAssessmentState } from '../../../utils/localStorage';
 
-const STUDY_DEMO_BASE_URL = process.env.NEXT_PUBLIC_STUDY_DEMO_URL ?? '/study';
+const STUDY_DEMO_BASE_URL = 'https://demo-chatbot-nu.vercel.app/study';
 
 export default function ResultsSummaryStep({
   assessmentState,
